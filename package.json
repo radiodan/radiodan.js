@@ -1,0 +1,22 @@
+{
+  "name": "radiodan",
+  "preferGlobal": true,
+  "version": "0.1.0",
+  "author": "Dan Nuttall <dan.nuttall@bbc.co.uk>",
+  "description": "Programmable radios operating at web scale",
+  "contributors": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/radiodan/radiodan.js.git"
+  },
+  "bin": {
+    "radiodan": "./bin/radiodan"
+  },
+  "dependencies": {
+    "mpd": "~1.0.2",
+    "commander": "~2.0.0"
+  },
+ "engines": {
+    "node": ">=0.10.20"
+  }
+}

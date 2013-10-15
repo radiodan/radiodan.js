@@ -1,0 +1,12 @@
+#!/usr/bin/env node
+var program = require('commander'),
+    radiodan = require('../lib/radiodan'),
+    package = require('../package.json');
+
+program
+  .version(package.version)
+  .option('-n, --number [number]', 'Number of radiodan instances [1]', 1)
+  .option('-c, --config [path]', 'Location of MPD config files [~/.mpd.conf]', '~/.mpd.conf')
+  .parse(process.argv)
+
+console.log(program.config.split(','));
