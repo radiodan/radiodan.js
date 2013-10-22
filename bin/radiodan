@@ -4,12 +4,16 @@ var program = require('commander'),
 
 program
   .version(package.version)
-  .option('-n, --number [number]', 'Number of radiodan instances [1]', 1)
-  .option('-c, --config [path]', 'Location of MPD config files [mpd.conf]', './mpd.conf')
-  .parse(process.argv)
+  //.option('-n, --number [number]', 'Number of radiodan instances [1]', 1)
+  .usage('[options] mpd_paths')
+  .parse(process.argv);
 
+if (program.args.length == 0) {
+  program.help();
+}
+ 
 var Radiodan = require('../lib/radiodan');
 
-var radiodan = Radiodan.instance({path: program.config});
-radiodan.start();
-
+for(var i=0; i < program.args.length; i++) {
+  Radiodan.instance({path: program.args[i]}).start();
+}
