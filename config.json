@@ -1,0 +1,16 @@
+{
+  "paths": {
+    "music": "~/Music",
+    "playlist": "~/Music",
+    "log": "~/.mpd/mpd.log",
+    "db": "~/.mpd/mpd.db"
+  },
+  "radios": [
+    { 
+      "name": "My radio"
+    },
+    {
+      "name": "another one"
+    }
+  ]
+}

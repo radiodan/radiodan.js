@@ -1,19 +1,22 @@
 #!/usr/bin/env node
 var program = require('commander'),
+    path    = require('path'),
     package = require('../package.json');
 
 program
   .version(package.version)
-  //.option('-n, --number [number]', 'Number of radiodan instances [1]', 1)
-  .usage('[options] mpd_paths')
+  .usage('[options] config_file')
   .parse(process.argv);
 
-if (program.args.length == 0) {
+if (program.args.length != 1) {
   program.help();
 }
  
-var Radiodan = require('../lib/radiodan');
+var Radiodan = require(__dirname+'/../lib/radiodan'),
+    config   = require(path.relative(__dirname, program.args[0]));
 
-for(var i=0; i < program.args.length; i++) {
-  Radiodan.instance({path: program.args[i]}).start();
+for(var i=0; i < config.radios.length; i++) {
+  var radioConfig = config.paths;
+  radioConfig.name  = config.radios[i].name;
+  Radiodan.instance(radioConfig).start();
 }
