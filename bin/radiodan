@@ -8,6 +8,8 @@ program
   .option('-c, --config [path]', 'Location of MPD config files [mpd.conf]', './mpd.conf')
   .parse(process.argv)
 
-console.log(program.config.split(','));
+var Radiodan = require('../lib/radiodan');
 
-var radiodan = require('../lib/radiodan');
+var radiodan = Radiodan.instance({path: program.config});
+radiodan.start();
+
