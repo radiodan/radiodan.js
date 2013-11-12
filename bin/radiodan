@@ -1,22 +1,36 @@
 #!/usr/bin/env node
 var program = require('commander'),
     path    = require('path'),
-    package = require('../package.json');
+    package = require('../package.json')
+    configFile = 'config.json';
 
 program
   .version(package.version)
   .usage('[options] config_file')
   .parse(process.argv);
 
-if (program.args.length != 1) {
-  program.help();
+switch(true) {
+  case program.args.length == 1:
+    configFile = program.args[0];
+    break;
+  case program.args.length > 1:
+    program.help();
+    break;
+  default:
+    //No config leaves us with defaults
 }
- 
-var Radiodan = require(__dirname+'/../lib/radiodan'),
-    config   = require(path.relative(__dirname, program.args[0]));
+
+var Radiodan = require(__dirname+'/../lib/radiodan');
+
+try {
+  var config = require(path.relative(__dirname, configFile));
+} catch(err) {
+  program.help();
+  process.exit(1);
+}
 
 for(var i=0; i < config.radios.length; i++) {
   var radioConfig = config.paths;
-  radioConfig.name  = config.radios[i].name;
-  Radiodan.instance(radioConfig).start();
+  radioConfig.name = config.radios[i].name;
+  Radiodan.instance(config.paths, config.radios[i]).start();
 }
