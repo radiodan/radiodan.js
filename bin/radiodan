@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 var program = require('commander'),
     path    = require('path'),
-    package = require('../package.json')
+    package = require('../package.json'),
     configFile = 'config.json';
 
 program
@@ -33,13 +33,13 @@ try {
 for(var i=0; i < config.radios.length; i++) {
   var radioConfig = config.paths;
   radioConfig.name = config.radios[i].name;
-  var radiodan = Radiodan.create(config.paths, config.radios[i])
-  radiodan.start();
+
+  var radiodan = Radiodan.create(config.paths, config.radios[i]).start();
 
   if(i === 0) {
-    radiodan.client.playAllRandom();
+    setTimeout(radiodan.playAllRandom, 4000);
   } else {
-    radiodan.client.playAllRandomAsync();
+    radiodan.playAllRandomAsync();
   }
 
   radios.push(radiodan);
