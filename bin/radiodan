@@ -20,7 +20,8 @@ switch(true) {
     //No config leaves us with defaults
 }
 
-var Radiodan = require(__dirname+'/../lib/radiodan');
+var Radiodan = require(__dirname+'/../lib/radiodan'),
+    radios = [];
 
 try {
   var config = require(path.relative(__dirname, configFile));
@@ -32,5 +33,14 @@ try {
 for(var i=0; i < config.radios.length; i++) {
   var radioConfig = config.paths;
   radioConfig.name = config.radios[i].name;
-  Radiodan.instance(config.paths, config.radios[i]).start();
+  var radiodan = Radiodan.create(config.paths, config.radios[i])
+  radiodan.start();
+
+  if(i === 0) {
+    radiodan.client.playAllRandom();
+  } else {
+    radiodan.client.playAllRandomAsync();
+  }
+
+  radios.push(radiodan);
 }
