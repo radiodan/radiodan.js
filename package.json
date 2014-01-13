@@ -25,7 +25,8 @@
     "lodash": "~2.4.1"
   },
   "devDependencies": {
-    "mocha": "~1.17.0"
+    "mocha": "~1.17.0",
+    "sinon": "~1.7.3"
   },
   "engines": {
     "node": ">=0.10.20"
