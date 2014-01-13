@@ -26,7 +26,9 @@
   },
   "devDependencies": {
     "mocha": "~1.17.0",
-    "sinon": "~1.7.3"
+    "sinon": "~1.7.3",
+    "chai": "~1.8.1",
+    "chai-as-promised": "~4.1.0"
   },
   "engines": {
     "node": ">=0.10.20"

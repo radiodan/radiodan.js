@@ -1,4 +1,4 @@
-var assert = require("assert"),
+var assert = require("chai").assert,
     sinon  = require("sinon"),
     EventEmitter = require("events").EventEmitter,
     net    = require("net");
