@@ -1,12 +1,19 @@
 var assert = require("assert"),
     sinon  = require("sinon"),
-    EventEmitter = require("events").EventEmitter;
+    EventEmitter = require("events").EventEmitter,
+    net    = require("net");
 
 var waitForSocket = require("../lib/wait-for-socket");
 
 describe('waitForSocket', function(){
   before(function () {
     this.port = 65535;
+  });
+
+  beforeEach(function () {
+    this.mockSocket = new EventEmitter();
+    this.mockSocket.connect = sinon.spy();
+    this.mockSocket.setTimeout = sinon.spy();
   });
 
   describe('#connect', function() {
@@ -18,25 +25,50 @@ describe('waitForSocket', function(){
     });
 
     it('resolves the promise on connect', function () {
-      var mockSocket = new EventEmitter();
-      var waitFor = waitForSocket.create(this.port, mockSocket);
+      var waitFor = waitForSocket.create(this.port, this.mockSocket);
       var promise = waitFor.connect();
 
-      mockSocket.emit('connect');
+      this.mockSocket.emit('connect');
       assert.equal(promise.isFulfilled(), true);
+    });
+
+    it('sets a timeout on the socket', function () {
+      this.mockSocket.setTimeout = sinon.spy();
+
+      var waitFor = waitForSocket.create(this.port, this.mockSocket);
+      assert(this.mockSocket.setTimeout.calledWith(2500));
+    });
+
+
+    it('tries again on failure', function () {
+      var clock = sinon.useFakeTimers(),
+          timeout = 10;
+
+      var waitFor = waitForSocket.create(this.port, this.mockSocket);
+      var promise = waitFor.connect();
+
+      this.mockSocket.emit('error');
+      clock.tick(timeout + 1);
+
+      assert.equal(this.mockSocket.connect.calledTwice, true);
+
+      this.mockSocket.emit('connect');
+      assert.equal(promise.isFulfilled(), true);
+
+      clock.restore();
     });
   });
 
   describe('#_addHandlers()', function(){
     it('should bind a socket to connect and error events', function(){
-      var mockSocket = { on: sinon.spy() };
-      var waitFor = waitForSocket.create(this.port, mockSocket);
+      this.mockSocket.on = sinon.spy();
+      var waitFor = waitForSocket.create(this.port, this.mockSocket);
 
       waitFor._addHandlers();
 
-      assert.equal(mockSocket.on.calledTwice, true);
-      assert.equal(mockSocket.on.calledWith('connect'), true);
-      assert.equal(mockSocket.on.calledWith('error'), true);
+      assert.equal(this.mockSocket.on.calledTwice, true);
+      assert.equal(this.mockSocket.on.calledWith('connect'), true);
+      assert.equal(this.mockSocket.on.calledWith('error'), true);
     });
   });
 });
