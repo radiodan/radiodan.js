@@ -1,16 +1,20 @@
-var assert = require("assert");
+var assert = require("assert"),
+    sinon  = require("sinon");
+
 var waitForSocket = require("../lib/wait-for-socket");
 
 describe('waitForSocket', function(){
-  describe('#connect()', function(){
-    it('should resolve when socket is connected', function(){
+  describe('#addHandlers()', function(){
+    it('should listen for connect and error events', function(){
       var port = 65535;
-      var waitFor = waitForSocket.create(port);
+      var mockSocket = { on: sinon.spy() };
+      var waitFor = waitForSocket.create(port, mockSocket);
 
-      waitFor.onConnect();
-      var promise = waitFor.connect();
+      waitFor._addHandlers();
 
-      assert.equal(true, promise.isFulfilled());
+      assert.equal(mockSocket.on.calledTwice, true);
+      assert.equal(mockSocket.on.calledWith('connect'), true);
+      assert.equal(mockSocket.on.calledWith('error'), true);
     })
   })
 });
