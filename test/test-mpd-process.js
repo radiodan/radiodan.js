@@ -1,5 +1,6 @@
 var assert = require("assert"),
-    sinon  = require("sinon");
+    sinon  = require("sinon"),
+    EventEmitter = require("events").EventEmitter;
 
 var waitForSocket = require("../lib/wait-for-socket");
 
@@ -14,6 +15,15 @@ describe('waitForSocket', function(){
       var promise = waitFor.connect();
 
       assert.equal(promise.isPending(), true);
+    });
+
+    it('resolves the promise on connect', function () {
+      var mockSocket = new EventEmitter();
+      var waitFor = waitForSocket.create(this.port, mockSocket);
+      var promise = waitFor.connect();
+
+      mockSocket.emit('connect');
+      assert.equal(promise.isFulfilled(), true);
     });
   });
 
