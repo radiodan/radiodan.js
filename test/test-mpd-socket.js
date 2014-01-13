@@ -1,9 +1,11 @@
-var assert = require("chai").assert,
-    sinon  = require("sinon"),
-    EventEmitter = require("events").EventEmitter,
-    net    = require("net");
+/* globals describe, it, before, beforeEach */
+'use strict';
 
-var waitForSocket = require("../lib/wait-for-socket");
+var assert = require('chai').assert,
+    sinon  = require('sinon'),
+    EventEmitter = require('events').EventEmitter;
+
+var waitForSocket = require('../lib/wait-for-socket');
 
 describe('waitForSocket', function(){
   before(function () {
@@ -35,7 +37,7 @@ describe('waitForSocket', function(){
     it('sets a timeout on the socket', function () {
       this.mockSocket.setTimeout = sinon.spy();
 
-      var waitFor = waitForSocket.create(this.port, this.mockSocket);
+      waitForSocket.create(this.port, this.mockSocket);
       assert(this.mockSocket.setTimeout.calledWith(2500));
     });
 

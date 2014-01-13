@@ -1,15 +1,16 @@
-var chai = require("chai"),
+/* globals describe, it, before */
+'use strict';
+
+var chai = require('chai'),
     assert = chai.assert,
-    chaiAsPromised = require("chai-as-promised"),
-    sinon  = require("sinon"),
-    EventEmitter = require("events").EventEmitter,
-    net    = require("net");
+    chaiAsPromised = require('chai-as-promised'),
+    sinon  = require('sinon');
 
 var Q = require('Q');
 
 chai.use(chaiAsPromised);
 
-var subject = require("../lib/mpd-child-process");
+var subject = require('../lib/mpd-child-process');
 
 describe('mpdProcess', function(){
 
@@ -28,7 +29,7 @@ describe('mpdProcess', function(){
 
         dfd.resolve(['/sommat/sommert/mpd']);
         return promise;
-      }
+      };
 
       subject.processPath(exec);
 
