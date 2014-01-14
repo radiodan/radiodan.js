@@ -45,7 +45,7 @@ describe('mpdProcess', function(){
     });
 
     it('spawns using the correct binary', function (done) {
-      var mock = sinon.spy(),
+      var spawnMock = sinon.spy(),
           binPath = this.binaryPath;
 
       subject.processPath = function () {
@@ -54,10 +54,10 @@ describe('mpdProcess', function(){
         return dfd.promise;
       };
 
-      var promise = subject.create('some/config.conf', mock);
+      var promise = subject.create('some/config.conf', spawnMock);
 
       promise.then(function () {
-        assert(mock.calledWithExactly(binPath, ['some/config.conf', '--no-daemon']));
+        assert(spawnMock.calledWithExactly(binPath, ['some/config.conf', '--no-daemon']));
         assert(promise.isFulfilled());
         done();
       });
