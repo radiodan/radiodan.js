@@ -45,7 +45,7 @@ describe('mpdProcess', function(){
     });
 
     it('spawns using the correct binary', function (done) {
-      var spawnMock = sinon.spy(),
+      var spawnMock = sinon.stub(),
           binPath = this.binaryPath;
 
       subject.processPath = function () {
@@ -54,16 +54,35 @@ describe('mpdProcess', function(){
         return dfd.promise;
       };
 
+      spawnMock.returns({stdout: {on: function(_,cb){ cb(); }}});
+
       var promise = subject.create('some/config.conf', spawnMock);
 
-      promise.then(function () {
+      assert.isFulfilled(promise).then(function () {
         assert(spawnMock.calledWithExactly(binPath, ['some/config.conf', '--no-daemon']));
-        assert(promise.isFulfilled());
         done();
       });
     });
 
-    it('rejects the promise on spawning error');
+    it('rejects the promise on spawning error', function(done) {
+      var spawnMock = sinon.stub(),
+          binPath = this.binaryPath;
+
+      subject.processPath = function () {
+        var dfd = Q.defer();
+        dfd.resolve(binPath);
+        return dfd.promise;
+      };
+
+      spawnMock.returns({stdout: {on: function(){}}, on: function(_,cb){ cb(); }});
+      var promise = subject.create('some/config.conf', spawnMock);
+
+      assert.isRejected(promise).then(function () {
+        assert(spawnMock.calledWithExactly(binPath, ['some/config.conf', '--no-daemon']));
+        done();
+      });
+    });
+
     it('rejects the promise if no mpd binary is found');
   });
 
