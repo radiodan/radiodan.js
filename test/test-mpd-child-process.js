@@ -113,7 +113,7 @@ describe('mpdProcess', function(){
   });
 
   describe('logging output from the mpd process', function () {
-    it('logs stdout from the child process', function () {
+    it('logs stdout from the child process', function (done) {
       var spawnMock = sinon.stub(),
           loggerMock = sinon.stub(),
           binPath = this.binaryPath;
@@ -124,15 +124,54 @@ describe('mpdProcess', function(){
         return dfd.promise;
       };
 
+      spawnMock.returns({
+        stdout: {on: function(eventName,cb){
+          if(eventName === 'data') {
+            cb();
+          }
+        }},
+        on: function(){},
+        stderr: {on: function(){}},
+      });
+
       var promise = subject.create('some/config.conf', spawnMock, {info: loggerMock});
 
       assert.isFulfilled(promise).then(function () {
-        assert(loggerMock.calledOnce());
+        assert(loggerMock.calledOnce);
         done();
       });
     });
 
-    it('logs stderr from the child process');
+    it('logs stderr from the child process', function(done) {
+      var spawnMock = sinon.stub(),
+          loggerMock = sinon.stub(),
+          binPath = this.binaryPath;
 
+      subject.processPath = function () {
+        var dfd = Q.defer();
+        dfd.resolve();
+        return dfd.promise;
+      };
+
+      spawnMock.returns({
+        stderr: {on: function(eventName,cb){
+          if(eventName === 'data') {
+            cb();
+          }
+        }},
+        on: function(){},
+        stdout: {on: function(){}},
+      });
+
+      var promise = subject.create(
+        'some/config.conf',
+        spawnMock, {warn: loggerMock}
+        );
+
+      assert.isFulfilled(promise).then(function () {
+        assert(loggerMock.calledOnce);
+        done();
+      });
+    });
   });
 });
