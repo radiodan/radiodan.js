@@ -13,7 +13,6 @@ chai.use(chaiAsPromised);
 var subject = require('../lib/mpd-child-process');
 
 describe('mpdProcess', function(){
-
   describe('locating the mpd binary', function () {
     it('uses which to locate binary', function () {
       var exec = sinon.stub().returns({ done: function () {} });
@@ -44,8 +43,10 @@ describe('mpdProcess', function(){
       this.binaryPath = '/sommat/mpd';
     });
 
+
     it('spawns using the correct binary', function (done) {
       var spawnMock = sinon.stub(),
+          loggerMock = {info: sinon.stub()},
           binPath = this.binaryPath;
 
       subject.processPath = function () {
@@ -56,7 +57,7 @@ describe('mpdProcess', function(){
 
       spawnMock.returns({stdout: {on: function(_,cb){ cb(); }}});
 
-      var promise = subject.create('some/config.conf', spawnMock);
+      var promise = subject.create('some/config.conf', spawnMock, loggerMock);
 
       assert.isFulfilled(promise).then(function () {
         assert(spawnMock.calledWithExactly(binPath, ['some/config.conf', '--no-daemon']));
@@ -74,7 +75,16 @@ describe('mpdProcess', function(){
         return dfd.promise;
       };
 
-      spawnMock.returns({stdout: {on: function(){}}, on: function(_,cb){ cb(); }});
+      spawnMock.returns({
+        stdout: {on: function(){}},
+        stderr: {on: function(){}},
+        on: function(eventName,cb){
+          if(eventName === 'error') {
+            cb();
+          }
+        }
+      });
+
       var promise = subject.create('some/config.conf', spawnMock);
 
       assert.isRejected(promise).then(function () {
@@ -103,8 +113,26 @@ describe('mpdProcess', function(){
   });
 
   describe('logging output from the mpd process', function () {
-    it('logs stdout from the child process');
-    it('logs stderr from the child process');
-  });
+    it('logs stdout from the child process', function () {
+      var spawnMock = sinon.stub(),
+          loggerMock = sinon.stub(),
+          binPath = this.binaryPath;
 
+      subject.processPath = function () {
+        var dfd = Q.defer();
+        dfd.resolve();
+        return dfd.promise;
+      };
+
+      var promise = subject.create('some/config.conf', spawnMock, {info: loggerMock});
+
+      assert.isFulfilled(promise).then(function () {
+        assert(loggerMock.calledOnce());
+        done();
+      });
+    });
+
+    it('logs stderr from the child process');
+
+  });
 });
