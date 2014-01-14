@@ -83,7 +83,23 @@ describe('mpdProcess', function(){
       });
     });
 
-    it('rejects the promise if no mpd binary is found');
+    it('rejects the promise if no mpd binary is found', function(done) {
+      var spawnMock = sinon.stub(),
+          binPath = this.binaryPath;
+
+      subject.processPath = function () {
+        var dfd = Q.defer();
+        dfd.reject('');
+        return dfd.promise;
+      };
+
+      var promise = subject.create('some/config.conf', spawnMock);
+
+      assert.isRejected(promise).then(function () {
+        assert.equal(0, spawnMock.callCount);
+        done();
+      });
+    });
   });
 
   describe('logging output from the mpd process', function () {
