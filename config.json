@@ -6,7 +6,7 @@
     "db": "~/.mpd/mpd.db"
   },
   "radios": [
-    { 
+    {
       "name": "My radio"
     },
     {
