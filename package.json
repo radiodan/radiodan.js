@@ -13,7 +13,7 @@
     "radiodan": "./bin/radiodan"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha"
+    "test": "node_modules/mocha/bin/mocha"
   },
   "dependencies": {
     "mpd": "~1.0.2",
