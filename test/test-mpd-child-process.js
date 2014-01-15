@@ -7,7 +7,7 @@ var chai = require('chai'),
     sinon  = require('sinon'),
     EventEmitter = require('events').EventEmitter;
 
-var Q = require('Q');
+var Q = require('q');
 
 chai.use(chaiAsPromised);
 
