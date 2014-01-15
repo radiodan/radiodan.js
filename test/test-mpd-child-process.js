@@ -4,7 +4,8 @@
 var chai = require('chai'),
     assert = chai.assert,
     chaiAsPromised = require('chai-as-promised'),
-    sinon  = require('sinon');
+    sinon  = require('sinon'),
+    EventEmitter = require('events').EventEmitter;
 
 var Q = require('Q');
 
@@ -134,7 +135,9 @@ describe('mpdProcess', function(){
         stderr: {on: function(){}},
       });
 
-      var promise = subject.create('some/config.conf', spawnMock, {info: loggerMock});
+      var promise = subject.create(
+          'some/config.conf',
+          spawnMock, {info: loggerMock});
 
       assert.isFulfilled(promise).then(function () {
         assert(loggerMock.calledOnce);
@@ -147,26 +150,27 @@ describe('mpdProcess', function(){
           loggerMock = sinon.stub(),
           binPath = this.binaryPath;
 
+      var processPromise = Q.defer();
       subject.processPath = function () {
-        var dfd = Q.defer();
-        dfd.resolve();
-        return dfd.promise;
+        processPromise.resolve();
+        return processPromise.promise;
       };
 
-      spawnMock.returns({
-        stderr: {on: function(eventName,cb){
-          if(eventName === 'data') {
-            cb();
-          }
-        }},
-        on: function(){},
-        stdout: {on: function(){}},
-      });
+      var spawnEvent = new EventEmitter();
+      spawnEvent.stdout = new EventEmitter();
+      spawnEvent.stderr = new EventEmitter();
+
+      spawnMock.returns(spawnEvent);
 
       var promise = subject.create(
         'some/config.conf',
         spawnMock, {warn: loggerMock}
         );
+
+      // wait for spawn promise to complete...
+      processPromise.promise.then(function(){
+        spawnEvent.stderr.emit('data');
+      });
 
       assert.isFulfilled(promise).then(function () {
         assert(loggerMock.calledOnce);
