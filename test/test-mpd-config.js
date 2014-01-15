@@ -60,7 +60,7 @@ describe('mpdConfig', function (){
 
   it('generates a temporary file path to write to', function (done) {
     var mpdConfig = subject.create(),
-        promise = mpdConfig.generateFileName();
+        promise = mpdConfig.fileName();
 
     assert.isFulfilled(promise).then(function (filePath) {
       assert.notOk(fs.existsSync(filePath));
