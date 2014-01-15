@@ -15,10 +15,10 @@ var subject = require('../lib/mpd-child-process');
 
 describe('mpdProcess', function(){
   describe('locating the mpd binary', function () {
-    it('uses which to locate binary', function () {
+    it('uses POSIX commands to locate binary', function () {
       var exec = sinon.stub().returns({ done: function () {} });
       subject.processPath(exec);
-      assert(exec.calledWith('which mpd'), 'wrong command');
+      assert(exec.calledWith('command -v mpd'), 'wrong command');
     });
 
     it('finds the first mpd binary on the system', function (done) {
