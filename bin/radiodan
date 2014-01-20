@@ -36,11 +36,11 @@ for(var i=0; i < config.radios.length; i++) {
 
   var radiodan = Radiodan.create(config.paths, config.radios[i]).start();
 
-  if(i === 0) {
-    setTimeout(radiodan.playAllRandom, 4000);
-  } else {
-    radiodan.playAllRandomAsync();
-  }
+  radiodan.ready().then(function() {
+    radiodan.sendCommands([
+      ['clear'], ['add', ['iTunes']], ['random', ['1']], ['play']
+    ]);
+  });
 
   radios.push(radiodan);
 }
