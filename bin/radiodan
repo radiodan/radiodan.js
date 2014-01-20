@@ -30,11 +30,11 @@ try {
   process.exit(1);
 }
 
-for(var i=0; i < config.radios.length; i++) {
+radios = config.radios.map(function(radio, i) {
   var radioConfig = config.paths;
-  radioConfig.name = config.radios[i].name;
+  radioConfig.name = radio.name;
 
-  var radiodan = Radiodan.create(config.paths, config.radios[i]).start();
+  var radiodan = Radiodan.create(config.paths, radio).start();
 
   radiodan.ready().then(function() {
     radiodan.sendCommands([
@@ -42,5 +42,5 @@ for(var i=0; i < config.radios.length; i++) {
     ]);
   });
 
-  radios.push(radiodan);
-}
+  return radiodan;
+});
