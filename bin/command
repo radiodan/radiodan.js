@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+var amqp    = require('amqp');
+
+var connection = amqp.createConnection({
+  host: 'localhost'
+});
+
+connection.on('ready', function() {
+console.log('ready');
+  var exchange = connection.exchange('radiodan', { confirm: true });
+  exchange.publish('commands.play', {playerId: 1, player: 'random'}, {},
+  function(){
+    console.log('finished'); connection.end(); process.exit();
+  });
+});
