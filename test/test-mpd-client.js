@@ -53,6 +53,9 @@ describe('mpdClient', function (){
     mpdMock.sendCommands = function(commands,cb){ commandSpy(commands); cb(); }
 
     client.connect(mpdMock);
+    // resolve promise sendCommand is reliant on
+    client.ready = function() { var d = Q.defer(); d.resolve(); return d.promise;}
+
     var commandPromise = client.sendCommands([['add', ['1.mp3']]]);
 
     assert.isFulfilled(commandPromise).then(function() {
@@ -63,6 +66,34 @@ describe('mpdClient', function (){
       assert.equal('add', calledArgs[0].name);
       assert.deepEqual(['1.mp3'], calledArgs[0].args);
       done();
+    });
+  });
+
+  it('will not send commands unless mpd instance is ready', function(done){
+    var client = subject.create(4321, winston);
+    var mpdMock = new EventEmitter();
+    var connectPromise = client.connect(mpdMock);
+    mpdMock.emit('error');
+
+    mpdMock.sendCommands = function(commands,cb){ cb(); }
+    var commandPromise = client.sendCommands([['add', ['1.mp3']]]);
+
+    assert.isRejected(connectPromise).then(function() {
+      assert.isRejected(commandPromise).notify(done);
+    });
+  });
+
+  it('will send commands when mpd instance is ready', function(done) {
+    var client = subject.create(4321, winston);
+    var mpdMock = new EventEmitter();
+    var connectPromise = client.connect(mpdMock);
+    mpdMock.emit('ready');
+
+    var commandPromise = client.sendCommands([['add', ['1.mp3']]]);
+    mpdMock.sendCommands = function(commands,cb){ cb(); }
+
+    assert.isFulfilled(connectPromise).then(function() {
+      assert.isFulfilled(commandPromise).notify(done);
     });
   });
 
