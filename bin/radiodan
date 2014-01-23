@@ -58,14 +58,10 @@ context.on('ready', function() {
     command = JSON.parse(commandJSON);
     switch(command.player) {
       case 'random':
-        console.log("randomz", command.playerId);
         var radio = radios[command.playerId];
-        radio.ready().then(function() {
-          console.log('sending');
-          radio.sendCommands([
-            ['clear'], ['add', ['iTunes']], ['random', ['1']], ['play']
-          ]);
-        });
+        radio.sendCommands([
+          ['clear'], ['add', ['iTunes']], ['random', ['1']], ['play']
+        ]).then(function() { console.log("DONE")});
         break;
       default:
         console.log("Don't know what to do with" + command.player);
