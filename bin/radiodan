@@ -46,11 +46,16 @@ var client = require('../lib/messaging-client').create();
 client.createAndBindToExchange({
   queueName: 'commands',
   exchangeName: 'radiodan',
-  topicsKey: 'commands.play'
+  topicsKey: 'commands.*'
 });
 
 client.on('commands.play', doSomething);
+client.on('message', logMessage);
 
+function logMessage(data) {
+  console.log('new message: ', data.fields.routingKey);
+  data.ack();
+}
 
 function doSomething(data) {
   console.log('data', data);
