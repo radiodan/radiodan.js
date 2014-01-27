@@ -22,6 +22,7 @@ audio_output {
 }
 {{/alsa}}
 
+{{#httpStreaming}}
 audio_output {
     type            "httpd"
     name            "Web Stream"
@@ -32,3 +33,4 @@ audio_output {
     format          "44100:16:1"
     max_clients     "0"
 }
+{{/httpStreaming}}

@@ -61,16 +61,17 @@ describe('mpdConfig', function (){
   it('provides its own HTTP port assignment', function() {
     subject.resetPortNumber();
 
-    var portConfig = this.configObject;
-    portConfig.port = 7171;
+    var config = this.configObject;
+    config.httpPort = 7171;
+    config.httpStreaming = true;
 
     var mpdConfig = subject.create();
-    var mpdContent = mpdConfig.build(this.configObject);
+    var mpdContent = mpdConfig.build(config);
 
     assert.match(mpdContent, /port (\s+) "8000"$/m);
 
     var mpdConfig = subject.create();
-    var mpdContent = mpdConfig.build(this.configObject);
+    var mpdContent = mpdConfig.build(config);
     assert.match(mpdContent, /port (\s+) "8001"$/m);
   });
 

@@ -4,7 +4,8 @@
     "playlist": "~/Music",
     "log": "~/.mpd/mpd.log",
     "db": "~/.mpd/mpd.db",
-    "platform": "coreAudio"
+    "platform": "coreAudio",
+    "httpStreaming": false
   },
   "radios": [
     {
