@@ -45,12 +45,24 @@ try {
 
 
 var radios = config.radios.map(function(radio, i) {
-  var client = MessagingClient.create();
+  var client = MessagingClient.create(),
+      mergedConfig = mergeObjects(config.defaults, radio);
 
   // TODO: Change this name
-  var radiodan = Radiodan.create(config.defaults, radio).start();
+  var radiodan = Radiodan.create(mergedConfig).start();
   var controller = RadioController.create(radiodan, client);
 
   return radiodan;
 });
+
+function mergeObjects(defaultObj, specificObj) {
+  var obj = JSON.parse(JSON.stringify(defaultObj)),
+      cleanSpecificObj = JSON.parse(JSON.stringify(specificObj));
+
+  Object.keys(cleanSpecificObj).forEach(function (key) {
+    obj[key] = cleanSpecificObj[key];
+  });
+
+  return obj;
+}
 
