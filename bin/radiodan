@@ -67,7 +67,6 @@ function logMessage(data) {
 }
 
 function doSomething(data) {
-  console.log('data', data);
   var command = data.content;
   console.log('command', command);
   switch(command.player) {
