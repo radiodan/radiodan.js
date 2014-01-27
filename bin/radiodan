@@ -22,6 +22,15 @@ switch(true) {
     //No config leaves us with defaults
 }
 
+process.on('SIGINT', function () {
+  process.exit();
+});
+
+process.on('uncaughtException', function (e) {
+  console.error(e.stack);
+  process.exit();
+});
+
 var Radiodan = require(__dirname+'/../lib/radiodan'),
     radios = [];
 
