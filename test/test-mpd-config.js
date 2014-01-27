@@ -58,6 +58,22 @@ describe('mpdConfig', function (){
     assert.match(mpdContent, /^port (\s+) "6601"$/m);
   });
 
+  it('provides its own HTTP port assignment', function() {
+    subject.resetPortNumber();
+
+    var portConfig = this.configObject;
+    portConfig.port = 7171;
+
+    var mpdConfig = subject.create();
+    var mpdContent = mpdConfig.build(this.configObject);
+
+    assert.match(mpdContent, /port (\s+) "8000"$/m);
+
+    var mpdConfig = subject.create();
+    var mpdContent = mpdConfig.build(this.configObject);
+    assert.match(mpdContent, /port (\s+) "8001"$/m);
+  });
+
   it('generates a platform-specific boolean key', function() {
     subject.resetPortNumber();
 
