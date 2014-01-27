@@ -4,6 +4,7 @@ var program = require('commander'),
     package = require('../package.json'),
     amqp    = require('amqplib'),
     Q       = require('q'),
+    MessagingClient = require('../lib/messaging-client'),
     configFile = 'config.json';
 
 program
@@ -32,6 +33,7 @@ process.on('uncaughtException', function (e) {
 });
 
 var Radiodan = require(__dirname+'/../lib/radiodan'),
+    RadioController = require(__dirname+'/../lib/radio-controller'),
     radios = [];
 
 try {
@@ -41,44 +43,17 @@ try {
   process.exit(1);
 }
 
+
 var radios = config.radios.map(function(radio, i) {
   var radioConfig = config.paths;
+  var client = MessagingClient.create();
+
   radioConfig.name = radio.name;
 
+  // TODO: Change this name
   var radiodan = Radiodan.create(config.paths, radio).start();
+  var controller = RadioController.create(radiodan, client);
 
   return radiodan;
-})
-
-var client = require('../lib/messaging-client').create();
-
-client.createAndBindToExchange({
-  queueName: 'commands',
-  exchangeName: 'radiodan',
-  topicsKey: 'commands.*'
 });
 
-client.on('commands.play', doSomething);
-client.on('message', logMessage);
-
-function logMessage(data) {
-  console.log('new message: ', data.fields.routingKey);
-  data.ack();
-}
-
-function doSomething(data) {
-  var command = data.content;
-  console.log('command', command);
-  switch(command.player) {
-    case 'random':
-      var radio = radios[command.playerId];
-      radio.sendCommands([
-        ['clear'], ['add', ['iTunes']], ['random', ['1']], ['play']
-      ]).then(function() { console.log("Played Randomly")});
-      break;
-    default:
-      console.log("Don't know what to do with" + command.player);
-  }
-
-  data.ack();
-}

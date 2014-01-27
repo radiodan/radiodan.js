@@ -3,21 +3,25 @@ var amqp    = require('amqplib');
 
 var waitForConnection = amqp.connect('amqp://localhost');
 
-var radioId = parseInt(process.argv[2]) || 0;
+var radioId = process.argv[2];
+
+if (!radioId) {
+  console.error('Usage bin/control <uuid>\n  UUID of radio instance to control');
+  process.exit();
+}
 
 var channel;
 
-var command = JSON.stringify( {playerId: radioId, player: 'random'} );
+var command = JSON.stringify( {player: 'random'} );
 
 waitForConnection.then(function (connection) {
   var waitForChannel = connection.createConfirmChannel();
   waitForChannel.then(function (ch) {
-    console.log('channel created', ch);
     channel = ch;
     var waitForExchange = channel.assertExchange('radiodan', 'topic');
     waitForExchange.then(function () {
-      channel.publish('radiodan', 'commands.play', new Buffer(command), {}, done);
-      console.log('published');
+      channel.publish('radiodan', topicForId(radioId), new Buffer(command), {}, done);
+      console.log('published %o to %o', command, topicForId(radioId));
     }).fail(function () {
       console.error('error')
     });
@@ -27,4 +31,8 @@ waitForConnection.then(function (connection) {
 function done(err, ok) {
   console.log('Done');
   process.exit();
+}
+
+function topicForId(id) {
+  return 'radio.' + id + '.command';
 }
