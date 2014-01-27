@@ -3,9 +3,21 @@ music_directory         "{{{music}}}"
 playlist_directory      "{{{playlist}}}"
 db_file                 "{{{db}}}"
 log_file                "{{{log}}}"
+
+{{#coreAudio}}
 audio_output {
     type "osx"
     name "CoreAudio"
     mixer_type "software"
 }
+{{/coreAudio}}
 
+{{#alsa}}
+audio_output {
+    type            "alsa"
+    name            "Speakers"
+    device          "hw:0,0"
+    format          "44100:16:2"
+    mixer_type      "software"
+}
+{{/alsa}}

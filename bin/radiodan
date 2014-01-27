@@ -45,13 +45,10 @@ try {
 
 
 var radios = config.radios.map(function(radio, i) {
-  var radioConfig = config.paths;
   var client = MessagingClient.create();
 
-  radioConfig.name = radio.name;
-
   // TODO: Change this name
-  var radiodan = Radiodan.create(config.paths, radio).start();
+  var radiodan = Radiodan.create(config.defaults, radio).start();
   var controller = RadioController.create(radiodan, client);
 
   return radiodan;
