@@ -2,7 +2,8 @@
 var program = require('commander'),
     path    = require('path'),
     package = require('../package.json'),
-    amqp    = require('amqp'),
+    amqp    = require('amqplib'),
+    Q       = require('q'),
     configFile = 'config.json';
 
 program
@@ -48,30 +49,38 @@ var radios = config.radios.map(function(radio, i) {
   return radiodan;
 })
 
+var waitForConnection = amqp.connect('amqp://localhost');
 
-var connection = amqp.createConnection({
-  host: 'localhost'
-});
+var channel;
 
+waitForConnection.then(function (connection) {
+  var waitForChannel = connection.createChannel();
+  waitForChannel.then(function (ch) {
+    channel = ch;
+    var waitForExchange = channel.assertExchange('radiodan', 'topic');
+    var waitForQueue = channel.assertQueue('commands');
+    var waitForBind  = Q.all([waitForExchange, waitForQueue]).then(function (nothing, qok) {
+      channel.bindQueue('commands', 'radiodan', 'commands.play');
 
-connection.on('ready', function() {
-  var exchange = connection.exchange('radiodan', { confirm: true });
-  //console.log('exc', exchange);
-  var queue  = connection.queue('commands');
-  //console.log('queue', queue);
-  queue.bind('radiodan', 'commands.play');
-  queue.subscribe({ack: true},function(command){
-    console.log('data', command);
-    switch(command.player) {
-      case 'random':
-        var radio = radios[command.playerId];
-        radio.sendCommands([
-          ['clear'], ['add', ['iTunes']], ['random', ['1']], ['play']
-        ]).then(function() { console.log("Played Randomly")});
-        break;
-      default:
-        console.log("Don't know what to do with" + command.player);
-    }
+      channel.consume('commands', doSomething);
+    });
   });
 });
 
+function doSomething(data) {
+  console.log('data', data);
+  var command = JSON.parse(data.content);
+  console.log('command', command);
+  switch(command.player) {
+    case 'random':
+      var radio = radios[command.playerId];
+      radio.sendCommands([
+        ['clear'], ['add', ['iTunes']], ['random', ['1']], ['play']
+      ]).then(function() { console.log("Played Randomly")});
+      break;
+    default:
+      console.log("Don't know what to do with" + command.player);
+  }
+
+  channel.ack(data);
+}

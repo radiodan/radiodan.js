@@ -23,7 +23,7 @@
     "mustache": "~0.7.2",
     "tmp": "0.0.21",
     "lodash": "~2.4.1",
-    "amqp": "~0.1.8"
+    "amqplib": "~0.1.1"
   },
   "devDependencies": {
     "mocha": "~1.17.0",

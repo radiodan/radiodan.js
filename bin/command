@@ -1,15 +1,24 @@
 #!/usr/bin/env node
-var amqp    = require('amqp');
+var amqp    = require('amqplib');
 
-var connection = amqp.createConnection({
-  host: 'localhost'
-});
+var waitForConnection = amqp.connect('amqp://localhost');
 
-connection.on('ready', function() {
-console.log('ready');
-  var exchange = connection.exchange('radiodan', { confirm: true });
-  exchange.publish('commands.play', {playerId: 1, player: 'random'}, {},
-  function(){
-    console.log('finished'); connection.end(); process.exit();
+var channel;
+
+var command = JSON.stringify( {playerId: 1, player: 'random'} );
+
+waitForConnection.then(function (connection) {
+  var waitForChannel = connection.createChannel();
+  waitForChannel.then(function (ch) {
+    console.log('channel created', ch);
+    channel = ch;
+    var waitForExchange = channel.assertExchange('radiodan', 'topic');
+    waitForExchange.then(function () {
+      console.log('exchange asserted');
+      channel.publish('radiodan', 'commands.play', new Buffer(command));
+      console.log('published');
+    }).fail(function () {
+      console.error('error')
+    });
   });
 });
