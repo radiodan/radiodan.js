@@ -3,22 +3,28 @@ var amqp    = require('amqplib');
 
 var waitForConnection = amqp.connect('amqp://localhost');
 
+var radioId = parseInt(process.argv[2]) || 0;
+
 var channel;
 
-var command = JSON.stringify( {playerId: 1, player: 'random'} );
+var command = JSON.stringify( {playerId: radioId, player: 'random'} );
 
 waitForConnection.then(function (connection) {
-  var waitForChannel = connection.createChannel();
+  var waitForChannel = connection.createConfirmChannel();
   waitForChannel.then(function (ch) {
     console.log('channel created', ch);
     channel = ch;
     var waitForExchange = channel.assertExchange('radiodan', 'topic');
     waitForExchange.then(function () {
-      console.log('exchange asserted');
-      channel.publish('radiodan', 'commands.play', new Buffer(command));
+      channel.publish('radiodan', 'commands.play', new Buffer(command), {}, done);
       console.log('published');
     }).fail(function () {
       console.error('error')
     });
   });
 });
+
+function done(err, ok) {
+  console.log('Done');
+  process.exit();
+}
