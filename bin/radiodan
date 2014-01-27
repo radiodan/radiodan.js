@@ -38,7 +38,7 @@ radios = config.radios.map(function(radio, i) {
 
   radiodan.ready().then(function() {
     radiodan.sendCommands([
-      ['clear'], ['add', ['iTunes']], ['random', ['1']], ['play']
+      ['update'], ['clear'], ['add', ['iTunes']], ['random', ['1']], ['play']
     ]);
   });
 
