@@ -74,5 +74,25 @@ describe('random volume', function() {
       done();
     });
   });
+
+  it('bounds differential values to percentages', function(done) {
+    var radio = { sendCommands: sinon.spy() };
+
+    var promiseStatus = Q.defer();
+    radio.status = function() {
+      promiseStatus.resolve("volume: 100\n");
+      return promiseStatus.promise;
+    };
+
+    subject(radio, {diff: -110});
+
+    assert.isFulfilled(promiseStatus.promise).then(function() {
+      assert.ok(radio.sendCommands.calledWith([
+          ['setvol', 0]
+      ]));
+
+      done();
+    });
+  });
 });
 
