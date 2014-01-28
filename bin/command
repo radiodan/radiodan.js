@@ -12,7 +12,7 @@ if (!radioId) {
 
 var channel;
 
-var command = JSON.stringify( {player: 'random'} );
+var command = JSON.stringify( {command: 'random'} );
 
 waitForConnection.then(function (connection) {
   var waitForChannel = connection.createConfirmChannel();
