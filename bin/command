@@ -14,6 +14,7 @@ program
   .action(function(uuid, action, param){
     radioId = uuid;
     command = JSON.stringify({action: action, value: param});
+    command = JSON.stringify({action: action, diff: 0-param});
   });
 
 program.parse(process.argv);
