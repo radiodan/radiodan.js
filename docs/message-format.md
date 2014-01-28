@@ -22,6 +22,26 @@ Set using an offset of the current volume:
       value: 90
     }
 
+## Play random
+
+### radio.<id>.command
+
+    {
+      action: 'random',
+      directory: 'iTunes'
+    }
+
+## Play
+
+### radio.<id>.command
+
+    {
+      action: 'play',
+      playlist: [
+        '<file-path>',
+        '<url>'
+      ]
+    }
 
 ## Ideas
 
