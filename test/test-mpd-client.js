@@ -35,7 +35,7 @@ describe('mpdClient', function (){
 
   it('formats commands to an mpd-friendly format', function(){
     var client = subject.create(4321, winston);
-    var command = client.formatCommand(['play', ['1']]);
+    var command = client.formatCommand(['play', '1']);
 
     assert.equal('play', command.name);
     assert.deepEqual(['1'], command.args);
@@ -56,7 +56,7 @@ describe('mpdClient', function (){
     // resolve promise sendCommand is reliant on
     client.ready = function() { var d = Q.defer(); d.resolve(); return d.promise;}
 
-    var commandPromise = client.sendCommands([['add', ['1.mp3']]]);
+    var commandPromise = client.sendCommands([['add', '1.mp3']]);
 
     assert.isFulfilled(commandPromise).then(function() {
       assert.ok(commandSpy.calledOnce);
