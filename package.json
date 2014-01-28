@@ -22,7 +22,9 @@
     "winston": "~0.7.2",
     "mustache": "~0.7.2",
     "tmp": "0.0.21",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "amqplib": "~0.1.1",
+    "node-uuid": "~1.4.1"
   },
   "devDependencies": {
     "mocha": "~1.17.0",

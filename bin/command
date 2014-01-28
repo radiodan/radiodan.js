@@ -1,0 +1,47 @@
+#!/usr/bin/env node
+var amqp    = require('amqplib'),
+    program = require('commander');
+
+var waitForConnection = amqp.connect('amqp://localhost'),
+    radioId, command, channel;
+
+program
+  .version('0.0.1');
+
+program
+  .command('radio <uuid> <action> [param]')
+  .description('UUID of radio instance to control')
+  .action(function(uuid, action, param){
+    radioId = uuid;
+    command = JSON.stringify({action: action, value: param});
+    command = JSON.stringify({action: action, diff: 0-param});
+  });
+
+program.parse(process.argv);
+
+if(!radioId) {
+  program.help();
+}
+
+waitForConnection.then(function (connection) {
+  var waitForChannel = connection.createConfirmChannel();
+  waitForChannel.then(function (ch) {
+    channel = ch;
+    var waitForExchange = channel.assertExchange('radiodan', 'topic');
+    waitForExchange.then(function () {
+      channel.publish('radiodan', topicForId(radioId), new Buffer(command), {}, done);
+      console.log('published %o to %o', command, topicForId(radioId));
+    }).fail(function () {
+      console.error('error')
+    });
+  });
+});
+
+function done(err, ok) {
+  console.log('Done');
+  process.exit();
+}
+
+function topicForId(id) {
+  return 'radio.' + id + '.command';
+}

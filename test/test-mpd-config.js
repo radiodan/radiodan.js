@@ -58,6 +58,35 @@ describe('mpdConfig', function (){
     assert.match(mpdContent, /^port (\s+) "6601"$/m);
   });
 
+  it('provides its own HTTP port assignment', function() {
+    subject.resetPortNumber();
+
+    var config = this.configObject;
+    config.httpPort = 7171;
+    config.httpStreaming = true;
+
+    var mpdConfig = subject.create();
+    var mpdContent = mpdConfig.build(config);
+
+    assert.match(mpdContent, /port (\s+) "8000"$/m);
+
+    var mpdConfig = subject.create();
+    var mpdContent = mpdConfig.build(config);
+    assert.match(mpdContent, /port (\s+) "8001"$/m);
+  });
+
+  it('generates a platform-specific boolean key', function() {
+    subject.resetPortNumber();
+
+    var config = this.configObject;
+    config.platform = "coreAudio";
+
+    var mpdConfig = subject.create();
+    var mpdContent = mpdConfig.build(config);
+
+    assert.match(mpdContent, /type "osx"$/m);
+  });
+
   it('generates a temporary file path to write to', function (done) {
     var mpdConfig = subject.create(),
         promise = mpdConfig.fileName();

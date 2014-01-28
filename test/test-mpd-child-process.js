@@ -13,6 +13,15 @@ chai.use(chaiAsPromised);
 
 var subject = require('../lib/mpd-child-process');
 
+
+function createMockLogger() {
+  var logger = sinon.spy();
+  logger.info  = sinon.spy();
+  logger.warn  = sinon.spy();
+  logger.error = sinon.spy();
+  return logger;
+}
+
 describe('mpdProcess', function(){
   describe('locating the mpd binary', function () {
     it('uses POSIX commands to locate binary', function () {
@@ -47,7 +56,7 @@ describe('mpdProcess', function(){
 
     it('spawns using the correct binary', function (done) {
       var spawnMock = sinon.stub(),
-          loggerMock = {info: sinon.stub()},
+          loggerMock = createMockLogger(),
           binPath = this.binaryPath;
 
       subject.processPath = function () {
@@ -116,7 +125,7 @@ describe('mpdProcess', function(){
   describe('logging output from the mpd process', function () {
     it('logs stdout from the child process', function (done) {
       var spawnMock = sinon.stub(),
-          loggerMock = sinon.stub(),
+          loggerMock = createMockLogger(),
           binPath = this.binaryPath;
 
       subject.processPath = function () {
@@ -137,17 +146,17 @@ describe('mpdProcess', function(){
 
       var promise = subject.create(
           'some/config.conf',
-          spawnMock, {info: loggerMock});
+          spawnMock, loggerMock);
 
       assert.isFulfilled(promise).then(function () {
-        assert(loggerMock.calledOnce);
+        assert(loggerMock.info.calledOnce);
         done();
       });
     });
 
     it('logs stderr from the child process', function(done) {
       var spawnMock = sinon.stub(),
-          loggerMock = sinon.stub(),
+          loggerMock = createMockLogger(),
           binPath = this.binaryPath;
 
       var processPromise = Q.defer();
@@ -164,7 +173,7 @@ describe('mpdProcess', function(){
 
       var promise = subject.create(
         'some/config.conf',
-        spawnMock, {warn: loggerMock}
+        spawnMock, loggerMock
         );
 
       // wait for spawn promise to complete...
@@ -173,7 +182,7 @@ describe('mpdProcess', function(){
       });
 
       assert.isFulfilled(promise).then(function () {
-        assert(loggerMock.calledOnce);
+        assert(loggerMock.warn.calledOnce);
         done();
       });
     });
