@@ -15,10 +15,16 @@ chai.use(chaiAsPromised);
 
 var subject = require('../../lib/mpd-client');
 
-// chill winston
-//winston.remove(winston.transports.Console);
-
 describe('mpdClient', function (){
+  before(function() {
+    // chill winston
+    winston.remove(winston.transports.Console);
+  });
+
+  after(function() {
+    winston.add(winston.transports.Console);
+  });
+
   it('connects an mpd instance to the given port', function(done){
     var client = subject.create(4321, winston);
     var mpdMock = new EventEmitter();

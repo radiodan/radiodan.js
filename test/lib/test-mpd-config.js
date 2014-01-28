@@ -15,10 +15,16 @@ chai.use(chaiAsPromised);
 
 var subject = require('../../lib/mpd-config');
 
-// chill winston
-winston.remove(winston.transports.Console);
-
 describe('mpdConfig', function (){
+  before(function() {
+    // chill winston
+    winston.remove(winston.transports.Console);
+  });
+
+  after(function() {
+    winston.add(winston.transports.Console);
+  });
+
   beforeEach(function () {
     this.configObject = {
       music: '~/music',

@@ -31,7 +31,6 @@ describe('mpdProcess', function(){
     });
 
     it('finds the first mpd binary on the system', function (done) {
-
       var exec = function () {
         var dfd = Q.defer(),
             promise = dfd.promise;
@@ -77,6 +76,7 @@ describe('mpdProcess', function(){
 
     it('rejects the promise on spawning error', function(done) {
       var spawnMock = sinon.stub(),
+          loggerMock = createMockLogger(),
           binPath = this.binaryPath;
 
       subject.processPath = function () {
@@ -95,7 +95,7 @@ describe('mpdProcess', function(){
         }
       });
 
-      var promise = subject.create('some/config.conf', spawnMock);
+      var promise = subject.create('some/config.conf', spawnMock, loggerMock);
 
       assert.isRejected(promise).then(function () {
         assert(spawnMock.calledWithExactly(binPath, ['some/config.conf', '--no-daemon']));
