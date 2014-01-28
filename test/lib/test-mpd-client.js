@@ -132,4 +132,13 @@ describe('mpdClient', function (){
 
     mpdMock.emit('error','errorMsg');
   });
+
+  it('formats the status response into an object', function(){
+    var statusString = "volume: 100\nrepeat: 0\nrandom: 0\nsingle: 0\nconsume: 0\nplaylist: 1\nplaylistlength: 0\nxfade: 0\nmixrampdb: 0.000000\nmixrampdelay: nan\nstate: stop\n";
+    var response = subject.create().formatResponse(statusString);
+
+    assert.equal(100, response.volume);
+    assert.equal('stop', response.state);
+    assert.equal('0.000000', response.mixrampdb);
+  });
 });

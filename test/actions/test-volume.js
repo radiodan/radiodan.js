@@ -60,7 +60,7 @@ describe('random volume', function() {
 
     var promiseStatus = Q.defer();
     radio.status = function() {
-      promiseStatus.resolve("volume: 100");
+      promiseStatus.resolve({volume: "100"});
       return promiseStatus.promise;
     };
 
@@ -80,7 +80,7 @@ describe('random volume', function() {
 
     var promiseStatus = Q.defer();
     radio.status = function() {
-      promiseStatus.resolve("volume: 30");
+      promiseStatus.resolve({volume: "30"});
       return promiseStatus.promise;
     };
 
