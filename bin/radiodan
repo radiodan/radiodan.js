@@ -5,11 +5,13 @@ var program = require('commander'),
     amqp    = require('amqplib'),
     Q       = require('q'),
     MessagingClient = require('../lib/messaging-client'),
+    utils   = require('../lib/utils'),
     configFile = 'config.json';
 
 program
   .version(package.version)
   .usage('[options] config_file')
+  .option('--log-level [level]', 'Set the log level to [level]', 'info')
   .parse(process.argv);
 
 switch(true) {
@@ -22,6 +24,10 @@ switch(true) {
   default:
     //No config leaves us with defaults
 }
+
+// Set log level
+utils.logger.level = program.logLevel;
+utils.logger.debug('Set logging to ', utils.logger.level);
 
 process.on('SIGINT', function () {
   process.exit();
