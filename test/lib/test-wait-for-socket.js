@@ -5,7 +5,7 @@ var assert = require('chai').assert,
     sinon  = require('sinon'),
     EventEmitter = require('events').EventEmitter;
 
-var waitForSocket = require('../lib/wait-for-socket');
+var waitForSocket = require('../../lib/wait-for-socket');
 
 describe('waitForSocket', function(){
   before(function () {

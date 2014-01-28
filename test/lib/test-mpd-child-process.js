@@ -11,7 +11,7 @@ var Q = require('q');
 
 chai.use(chaiAsPromised);
 
-var subject = require('../lib/mpd-child-process');
+var subject = require('../../lib/mpd-child-process');
 
 
 function createMockLogger() {

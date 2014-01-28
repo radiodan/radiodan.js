@@ -13,7 +13,7 @@ var Q = require('q');
 
 chai.use(chaiAsPromised);
 
-var subject = require('../lib/mpd-client');
+var subject = require('../../lib/mpd-client');
 
 // chill winston
 //winston.remove(winston.transports.Console);
