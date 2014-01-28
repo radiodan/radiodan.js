@@ -24,7 +24,8 @@
     "tmp": "0.0.21",
     "lodash": "~2.4.1",
     "amqplib": "~0.1.1",
-    "node-uuid": "~1.4.1"
+    "node-uuid": "~1.4.1",
+    "optimist": "~0.6.0"
   },
   "devDependencies": {
     "mocha": "~1.17.0",

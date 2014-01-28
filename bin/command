@@ -1,27 +1,41 @@
 #!/usr/bin/env node
 var amqp    = require('amqplib'),
-    program = require('commander');
+    program = require('optimist');
 
 var waitForConnection = amqp.connect('amqp://localhost'),
-    radioId, command, channel;
+    command,
+    argv,
+    radioId,
+    channel;
 
 program
-  .version('0.0.1');
+  .usage('Usage: $0')
+  .demand('uuid')
+  .describe('uuid', 'UUID of radio instance to control')
+  .describe('random', 'Play random')
+  .describe('volume.value', 'Set to an absolute volume')
+  .describe('volume.diff', 'Set to an offset of current volume (+/-N)');
 
-program
-  .command('radio <uuid> <action> [param]')
-  .description('UUID of radio instance to control')
-  .action(function(uuid, action, param){
-    radioId = uuid;
-    command = JSON.stringify({action: action, value: param});
-    command = JSON.stringify({action: action, diff: 0-param});
-  });
+argv = program.argv;
 
-program.parse(process.argv);
-
-if(!radioId) {
-  program.help();
+if (argv.volume) {
+  command = argv.volume;
+  command.action = 'volume';
+} else if (argv.random) {
+  command = { action: 'random' };
+} else {
+  program.showHelp();
+  process.exit();
 }
+
+radioId = argv.uuid;
+
+if (!radioId) {
+  program.showHelp();
+  process.exit();
+}
+
+command = JSON.stringify(command);
 
 waitForConnection.then(function (connection) {
   var waitForChannel = connection.createConfirmChannel();
@@ -30,7 +44,7 @@ waitForConnection.then(function (connection) {
     var waitForExchange = channel.assertExchange('radiodan', 'topic');
     waitForExchange.then(function () {
       channel.publish('radiodan', topicForId(radioId), new Buffer(command), {}, done);
-      console.log('published %o to %o', command, topicForId(radioId));
+      console.log('published to %s', topicForId(radioId), command);
     }).fail(function () {
       console.error('error')
     });
