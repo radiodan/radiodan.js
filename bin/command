@@ -12,7 +12,7 @@ program
   .usage('Usage: $0')
   .demand('uuid')
   .describe('uuid', 'UUID of radio instance to control')
-  .describe('random', 'Play random')
+  .describe('random.directory', 'Play random tracks from specified directory')
   .describe('volume.value', 'Set to an absolute volume')
   .describe('volume.diff', 'Set to an offset of current volume (+/-N)');
 
@@ -22,7 +22,8 @@ if (argv.volume) {
   command = argv.volume;
   command.action = 'volume';
 } else if (argv.random) {
-  command = { action: 'random' };
+  command = argv.random;
+  command.action = 'random';
 } else {
   program.showHelp();
   process.exit();
