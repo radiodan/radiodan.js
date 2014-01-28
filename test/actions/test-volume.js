@@ -80,11 +80,11 @@ describe('random volume', function() {
 
     var promiseStatus = Q.defer();
     radio.status = function() {
-      promiseStatus.resolve("volume: 100\n");
+      promiseStatus.resolve("volume: 30\n");
       return promiseStatus.promise;
     };
 
-    subject(radio, {diff: -110});
+    subject(radio, {diff: -40});
 
     assert.isFulfilled(promiseStatus.promise).then(function() {
       assert.ok(radio.sendCommands.calledWith([
