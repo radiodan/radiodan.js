@@ -8,16 +8,26 @@ var waitForConnection = amqp.connect('amqp://localhost'),
     radioId,
     channel;
 
-program
-  .usage('Usage: $0')
-  .demand('uuid')
-  .describe('uuid', 'UUID of radio instance to control')
-  .describe('random.directory', 'Play random tracks from specified directory')
-  .describe('play.stream', 'Play an internet stream')
-  .describe('volume.value', 'Set to an absolute volume')
-  .describe('volume.diff', 'Set to an offset of current volume (+/-N)');
+var argv = program
+             .usage('Usage: $0')
+             .demand('id')
+             .describe('id', 'ID of radio instance to control')
+             .describe('random.directory', 'Play random tracks from specified directory')
+             .describe('play.stream', 'Play an internet stream')
+             .describe('volume.value', 'Set to an absolute volume')
+             .describe('volume.diff', 'Set to an offset of current volume (+/-N)')
+             .argv;
 
-argv = program.argv;
+
+if (argv.id && typeof argv.id === 'string') {
+  radioId = argv.id;
+}
+
+if (!radioId) {
+  console.log('Missing required arguments: id');
+  program.showHelp();
+  process.exit();
+}
 
 if (argv.volume) {
   command = argv.volume;
@@ -33,13 +43,7 @@ if (argv.volume) {
   }
 } else {
   program.showHelp();
-  process.exit();
-}
-
-radioId = argv.uuid;
-
-if (!radioId) {
-  program.showHelp();
+  console.log('Error: command option not given - nothing to do\n');
   process.exit();
 }
 
