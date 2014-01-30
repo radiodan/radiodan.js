@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-var amqp    = require('amqplib'),
-    program = require('optimist'),
-    Q       = require('q');
+var amqp     = require('amqplib'),
+    program  = require('optimist'),
+    readline = require('readline'),
+    Q        = require('q');
 
 var queueHost = 'localhost',
     waitForConnection,
@@ -10,6 +11,9 @@ var queueHost = 'localhost',
     radioId,
     channel;
 
+/*
+  Command-line options
+*/
 var argv = program
              .usage('Usage: $0')
              .demand('id')
@@ -19,24 +23,136 @@ var argv = program
              .describe('volume.value', 'Set to an absolute volume')
              .describe('volume.diff', 'Set to an offset of current volume (+/-N)')
              .describe('host', 'Set message queue hostname. Default: localhost')
+             .describe('interactive', 'Set-up interactive command mode')
+             .alias('i', 'interactive')
              .argv;
 
+// Override message queue host
 if (argv.host && typeof argv.host === 'string') {
   queueHost = argv.host;
 }
 
+// Extract required radio id or error
 if (argv.id && typeof argv.id === 'string') {
   radioId = argv.id;
-}
-
-if (!radioId) {
+} else {
   console.log('Missing required arguments: id');
   program.showHelp();
   process.exit();
 }
 
-// Given a parsed command line, return the
-// radiodan command object
+// Extract command from argv
+command = commandForArg(argv);
+
+if (!command && !argv.interactive) {
+  program.showHelp();
+  console.log('Error: command option not given - nothing to do\n');
+  process.exit();
+}
+
+var connectionPromise = connect(amqp.connect('amqp://' + queueHost));
+
+if (argv.interactive) {
+  interactiveCommandPrompt(connectionPromise);
+} else {
+  sendCommand(command, radioId, connectionPromise, doneAndExit);
+}
+
+/*
+  Starts an interactive command prompt
+  for options
+*/
+function interactiveCommandPrompt(connectionPromise) {
+
+  var rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  rl.write('Interactive mode\n');
+  rl.write('Enter commands to send to this radio\n');
+  rl.write('Type exit to quit\n');
+  rl.write('  e.g. --volume.value=10\n');
+  rl.prompt('>');
+
+  // Process input line
+  rl.on('line', function (cmd) {
+    processInputLine(cmd, connectionPromise, function (success) {
+      if (!success) {
+        console.log('Error: Command not found');
+      }
+      rl.prompt('>');
+    });
+  });
+}
+
+/*
+  Process a string of input from readline
+  and execute commands found
+*/
+function processInputLine(cmd, connectionPromise, done) {
+  var args,
+      opts,
+      command;
+
+  if (cmd === 'exit') {
+    console.log('Goodbye.\n');
+    process.exit();
+  }
+
+  // Merge args with those passed into command
+  // to ensure that any required options are supplied
+  args = cmd.split(' ')
+            .concat(process.argv);
+
+  opts    = program.parse(args);
+  command = commandForArg(opts);
+
+  if (command) {
+    sendCommand(command, radioId, connectionPromise, function () {
+      done(true);
+    });
+  } else {
+    done(false);
+  }
+}
+
+/*
+  Connect to message queue
+*/
+function connect(waitForConnection) {
+  var deferred = Q.defer();
+
+  waitForConnection.then(function (connection) {
+    var waitForChannel = connection.createConfirmChannel();
+    waitForChannel.then(function (ch) {
+      channel = ch;
+      var waitForExchange = channel.assertExchange('radiodan', 'topic');
+      waitForExchange.then(function () {
+        deferred.resolve(channel);
+      }, error);
+    }, error);
+  }, error);
+
+  return deferred.promise;
+}
+
+/*
+  Send a command to Rabbit MQ
+*/
+function sendCommand(command, radioId, connectionPromise, done) {
+  command = JSON.stringify(command);
+  connectionPromise.then(function (channel) {
+    channel.publish('radiodan', topicForId(radioId), new Buffer(command), {}, done);
+    console.log('published to %s', topicForId(radioId), command);
+  });
+}
+
+/*
+  Given a Optimist-parsed argv object, return the
+  corresponding radiodan command object or null
+  if no command found.
+*/
 function commandForArg(argv) {
   var command;
 
@@ -56,57 +172,24 @@ function commandForArg(argv) {
   return command;
 }
 
-command = commandForArg(argv);
-
-if (!command) {
-  program.showHelp();
-  console.log('Error: command option not given - nothing to do\n');
-  process.exit();
-}
-
-command = JSON.stringify(command);
-
-waitForConnection = amqp.connect('amqp://' + queueHost);
-
-var connectionPromise = connect();
-sendCommand(command, radioId, connectionPromise);
-
 /*
-  Connect to message queue
+  Return a topic key for a given radio id
 */
-function connect() {
-  var deferred = Q.defer();
-
-  waitForConnection.then(function (connection) {
-    var waitForChannel = connection.createConfirmChannel();
-    waitForChannel.then(function (ch) {
-      channel = ch;
-      var waitForExchange = channel.assertExchange('radiodan', 'topic');
-      waitForExchange.then(function () {
-        deferred.resolve(channel);
-      }, error);
-    }, error);
-  }, error);
-
-  return deferred.promise;
-}
-
-function sendCommand(command, radioId, connectionPromise) {
-  connectionPromise.then(function () {
-    channel.publish('radiodan', topicForId(radioId), new Buffer(command), {}, done);
-    console.log('published to %s', topicForId(radioId), command);
-  });
-}
-
-function done(err, ok) {
-  console.log('Done');
-  process.exit();
-}
-
 function topicForId(id) {
   return 'radio.' + id + '.command';
 }
 
+/*
+  Log an error
+*/
 function error(err) {
-  console.error('Error', err);
+  console.error('Error', err.stack);
+}
+
+/*
+  Log 'done' and then exit
+*/
+function doneAndExit(err, ok) {
+  console.log('Done');
+  process.exit();
 }
