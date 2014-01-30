@@ -69,7 +69,7 @@ describe('mpdProcess', function(){
       var promise = subject.create('some/config.conf', spawnMock, loggerMock);
 
       assert.isFulfilled(promise).then(function () {
-        assert(spawnMock.calledWithExactly(binPath, ['some/config.conf', '--no-daemon']));
+        assert(spawnMock.calledWithExactly(binPath, ['some/config.conf', '--no-daemon', '--verbose']));
         done();
       });
     });
@@ -98,7 +98,7 @@ describe('mpdProcess', function(){
       var promise = subject.create('some/config.conf', spawnMock, loggerMock);
 
       assert.isRejected(promise).then(function () {
-        assert(spawnMock.calledWithExactly(binPath, ['some/config.conf', '--no-daemon']));
+        assert(spawnMock.calledWithExactly(binPath, ['some/config.conf', '--no-daemon', '--verbose']));
         done();
       });
     });
