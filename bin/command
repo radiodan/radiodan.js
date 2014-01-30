@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 var amqp    = require('amqplib'),
-    program = require('optimist');
+    program = require('optimist'),
+    Q       = require('q');
 
-var waitForConnection = amqp.connect('amqp://localhost'),
+var queueHost = 'localhost',
+    waitForConnection,
     command,
     argv,
     radioId,
@@ -16,8 +18,12 @@ var argv = program
              .describe('play.stream', 'Play an internet stream')
              .describe('volume.value', 'Set to an absolute volume')
              .describe('volume.diff', 'Set to an offset of current volume (+/-N)')
+             .describe('host', 'Set message queue hostname. Default: localhost')
              .argv;
 
+if (argv.host && typeof argv.host === 'string') {
+  queueHost = argv.host;
+}
 
 if (argv.id && typeof argv.id === 'string') {
   radioId = argv.id;
@@ -29,19 +35,30 @@ if (!radioId) {
   process.exit();
 }
 
-if (argv.volume) {
-  command = argv.volume;
-  command.action = 'volume';
-} else if (argv.random) {
-  command = argv.random;
-  command.action = 'random';
-} else if (argv.play && argv.play.stream) {
-  command = {
-    action: 'play',
-    playNow: true,
-    playlist: [ argv.play.stream ]
+// Given a parsed command line, return the
+// radiodan command object
+function commandForArg(argv) {
+  var command;
+
+  if (argv.volume) {
+    command = argv.volume;
+    command.action = 'volume';
+  } else if (argv.random) {
+    command = argv.random;
+    command.action = 'random';
+  } else if (argv.play && argv.play.stream) {
+    command = {
+      action: 'play',
+      playNow: true,
+      playlist: [ argv.play.stream ]
+    }
   }
-} else {
+  return command;
+}
+
+command = commandForArg(argv);
+
+if (!command) {
   program.showHelp();
   console.log('Error: command option not given - nothing to do\n');
   process.exit();
@@ -49,19 +66,37 @@ if (argv.volume) {
 
 command = JSON.stringify(command);
 
-waitForConnection.then(function (connection) {
-  var waitForChannel = connection.createConfirmChannel();
-  waitForChannel.then(function (ch) {
-    channel = ch;
-    var waitForExchange = channel.assertExchange('radiodan', 'topic');
-    waitForExchange.then(function () {
-      channel.publish('radiodan', topicForId(radioId), new Buffer(command), {}, done);
-      console.log('published to %s', topicForId(radioId), command);
-    }).fail(function () {
-      console.error('error')
-    });
+waitForConnection = amqp.connect('amqp://' + queueHost);
+
+var connectionPromise = connect();
+sendCommand(command, radioId, connectionPromise);
+
+/*
+  Connect to message queue
+*/
+function connect() {
+  var deferred = Q.defer();
+
+  waitForConnection.then(function (connection) {
+    var waitForChannel = connection.createConfirmChannel();
+    waitForChannel.then(function (ch) {
+      channel = ch;
+      var waitForExchange = channel.assertExchange('radiodan', 'topic');
+      waitForExchange.then(function () {
+        deferred.resolve(channel);
+      }, error);
+    }, error);
+  }, error);
+
+  return deferred.promise;
+}
+
+function sendCommand(command, radioId, connectionPromise) {
+  connectionPromise.then(function () {
+    channel.publish('radiodan', topicForId(radioId), new Buffer(command), {}, done);
+    console.log('published to %s', topicForId(radioId), command);
   });
-});
+}
 
 function done(err, ok) {
   console.log('Done');
@@ -70,4 +105,8 @@ function done(err, ok) {
 
 function topicForId(id) {
   return 'radio.' + id + '.command';
+}
+
+function error(err) {
+  console.error('Error', err);
 }
