@@ -2,8 +2,8 @@ port                    "{{{port}}}"
 music_directory         "{{{music}}}"
 playlist_directory      "{{{playlist}}}"
 db_file                 "{{{db}}}"
-log_file                "syslog"
-zeroconf_name           "radiodan_mpd_{{port}}"
+log_file                "{{{log}}}"
+zeroconf_name           "radiodan_mpd_{{{port}}}"
 
 {{#coreAudio}}
 audio_output {
