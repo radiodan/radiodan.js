@@ -15,7 +15,7 @@ chai.use(chaiAsPromised);
 
 var subject = require('../../lib/actions/volume');
 
-describe('random volume', function() {
+describe('volume action', function() {
   before(function() {
     // chill winston
     winston.remove(winston.transports.Console);
@@ -23,6 +23,17 @@ describe('random volume', function() {
 
   after(function() {
     winston.add(winston.transports.Console);
+  });
+
+  it('rejects unknown volume action types without sending commands', function(done) {
+    var radio = { sendCommands: sinon.spy() };
+
+    var volumePromise = subject(radio, {blah: 31});
+
+    assert.isRejected(volumePromise, Error, "Volume Command not found").then(function() {
+      assert.equal(0, radio.sendCommands.callCount);
+      done();
+    });
   });
 
   it('sends percentage value to mpd', function() {
