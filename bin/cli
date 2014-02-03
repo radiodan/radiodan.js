@@ -1,32 +1,30 @@
 #!/usr/bin/env node
-var amqp     = require('amqplib'),
-    program  = require('optimist'),
-    Q        = require('q'),
+var program  = require('optimist'),
     commandForArg = require('../lib/cli/command-for-arg'),
-    interactivePrompt = require('../lib/cli/interactive-prompt');
+    interactivePrompt = require('../lib/cli/interactive-prompt'),
+    Messaging = require('../lib/cli/messaging');
 
-var queueHost = 'localhost',
-    waitForConnection,
+var queueHost,
     command,
     argv,
-    radioId,
-    channel;
+    messaging,
+    interactive;
 
 /*
   Command-line options
 */
-var argv = program
-             .usage('Usage: $0')
-             .demand('id')
-             .describe('id', 'ID of radio instance to control')
-             .describe('random.directory', 'Play random tracks from specified directory')
-             .describe('play.stream', 'Play an internet stream')
-             .describe('volume.value', 'Set to an absolute volume')
-             .describe('volume.diff', 'Set to an offset of current volume (+/-N)')
-             .describe('host', 'Set message queue hostname. Default: localhost')
-             .describe('interactive', 'Set-up interactive command mode')
-             .alias('i', 'interactive')
-             .argv;
+argv = program
+        .usage('Usage: $0')
+        .demand('id')
+        .describe('id', 'ID of radio instance to control')
+        .describe('random.directory', 'Play random tracks from specified directory')
+        .describe('play.stream', 'Play an internet stream')
+        .describe('volume.value', 'Set to an absolute volume')
+        .describe('volume.diff', 'Set to an offset of current volume (+/-N)')
+        .describe('host', 'Set message queue hostname. Default: localhost')
+        .describe('interactive', 'Set-up interactive command mode')
+        .alias('i', 'interactive')
+        .argv;
 
 // Override message queue host
 if (argv.host && typeof argv.host === 'string') {
@@ -35,7 +33,7 @@ if (argv.host && typeof argv.host === 'string') {
 
 // Extract required radio id or error
 if (argv.id && typeof argv.id === 'string') {
-  radioId = argv.id;
+  messaging = Messaging.create(argv.id);
 } else {
   console.log('Missing required arguments: id');
   program.showHelp();
@@ -51,58 +49,11 @@ if (!command && !argv.interactive) {
   process.exit();
 }
 
-var connectionPromise = connect(amqp.connect('amqp://' + queueHost));
-
 if (argv.interactive) {
-  var interactive = interactivePrompt(program);
-  interactive.on('command', function(command) { sendCommand(command, radioId, connectionPromise, interactive.done) });
+  interactive = interactivePrompt(program);
+  interactive.on('command', function(command) { messaging.sendCommand(command, interactive.done) });
 } else {
-  sendCommand(command, radioId, connectionPromise, doneAndExit);
-}
-
-/*
-  Connect to message queue
-*/
-function connect(waitForConnection) {
-  var deferred = Q.defer();
-
-  waitForConnection.then(function (connection) {
-    var waitForChannel = connection.createConfirmChannel();
-    waitForChannel.then(function (ch) {
-      channel = ch;
-      var waitForExchange = channel.assertExchange('radiodan', 'topic');
-      waitForExchange.then(function () {
-        deferred.resolve(channel);
-      }, error);
-    }, error);
-  }, error);
-
-  return deferred.promise;
-}
-
-/*
-  Send a command to Rabbit MQ
-*/
-function sendCommand(command, radioId, connectionPromise, done) {
-  command = JSON.stringify(command);
-  connectionPromise.then(function (channel) {
-    channel.publish('radiodan', topicForId(radioId), new Buffer(command), {}, done);
-    console.log('published to %s', topicForId(radioId), command);
-  });
-}
-
-/*
-  Return a topic key for a given radio id
-*/
-function topicForId(id) {
-  return 'radio.' + id + '.command';
-}
-
-/*
-  Log an error
-*/
-function error(err) {
-  console.error('Error', err.stack);
+  messaging.sendCommand(command, doneAndExit);
 }
 
 /*
