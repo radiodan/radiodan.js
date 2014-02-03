@@ -1,3 +1,16 @@
+# Message Formats
+
+## Feedback to commands
+
+Every client that issues commands connects to the `radiodan-command-reply`
+exchange.  Replies are sent back through this exchange for each command sent.
+Any errors will be populated with an error object, otherwise `false`.
+
+    {
+      correlation_id: <id of sent message>,
+      error: <false / error object>
+    }
+
 ## Volume
 
 ### radio.<id>.command
