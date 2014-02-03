@@ -4,9 +4,12 @@ var Q    = require('q'),
     http = require('q-io/http');
 
 var url     = 'http://bbcservices.herokuapp.com/services.json',
-    target = process.argv[2] || 'r4';
+    target = process.argv[2] || 'r4',
+    request = http.normalizeRequest(url);
 
-http.request(url).then(function (response) {
+request.headers['Authorization'] = 'Basic ' + new Buffer('radiodan:radiodan').toString('base64');
+
+http.request(request).then(function (response) {
   return response.body.read();
 }).then(function (body) {
   return Q.resolve( JSON.parse(body.toString()).services );
