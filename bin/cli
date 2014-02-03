@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 var amqp     = require('amqplib'),
     program  = require('optimist'),
-    readline = require('readline'),
-    Q        = require('q');
+    Q        = require('q'),
+    commandForArg = require('../lib/cli/command-for-arg'),
+    interactivePrompt = require('../lib/cli/interactive-prompt');
 
 var queueHost = 'localhost',
     waitForConnection,
@@ -53,68 +54,10 @@ if (!command && !argv.interactive) {
 var connectionPromise = connect(amqp.connect('amqp://' + queueHost));
 
 if (argv.interactive) {
-  interactiveCommandPrompt(connectionPromise);
+  var interactive = interactivePrompt(program);
+  interactive.on('command', function(command) { sendCommand(command, radioId, connectionPromise, interactive.done) });
 } else {
   sendCommand(command, radioId, connectionPromise, doneAndExit);
-}
-
-/*
-  Starts an interactive command prompt
-  for options
-*/
-function interactiveCommandPrompt(connectionPromise) {
-
-  var rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-
-  rl.write('Interactive mode\n');
-  rl.write('Enter commands to send to this radio\n');
-  rl.write('Type exit to quit\n');
-  rl.write('  e.g. --volume.value=10\n');
-  rl.prompt('>');
-
-  // Process input line
-  rl.on('line', function (cmd) {
-    processInputLine(cmd, connectionPromise, function (success) {
-      if (!success) {
-        console.log('Error: Command not found');
-      }
-      rl.prompt('>');
-    });
-  });
-}
-
-/*
-  Process a string of input from readline
-  and execute commands found
-*/
-function processInputLine(cmd, connectionPromise, done) {
-  var args,
-      opts,
-      command;
-
-  if (cmd === 'exit') {
-    console.log('Goodbye.\n');
-    process.exit();
-  }
-
-  // Merge args with those passed into command
-  // to ensure that any required options are supplied
-  args = cmd.split(' ')
-            .concat(process.argv);
-
-  opts    = program.parse(args);
-  command = commandForArg(opts);
-
-  if (command) {
-    sendCommand(command, radioId, connectionPromise, function () {
-      done(true);
-    });
-  } else {
-    done(false);
-  }
 }
 
 /*
@@ -146,30 +89,6 @@ function sendCommand(command, radioId, connectionPromise, done) {
     channel.publish('radiodan', topicForId(radioId), new Buffer(command), {}, done);
     console.log('published to %s', topicForId(radioId), command);
   });
-}
-
-/*
-  Given a Optimist-parsed argv object, return the
-  corresponding radiodan command object or null
-  if no command found.
-*/
-function commandForArg(argv) {
-  var command;
-
-  if (argv.volume) {
-    command = argv.volume;
-    command.action = 'volume';
-  } else if (argv.random) {
-    command = argv.random;
-    command.action = 'random';
-  } else if (argv.play && argv.play.stream) {
-    command = {
-      action: 'play',
-      playNow: true,
-      playlist: [ argv.play.stream ]
-    }
-  }
-  return command;
 }
 
 /*
