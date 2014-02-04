@@ -64,7 +64,7 @@ describe('mpdProcess', function(){
         return dfd.promise;
       };
 
-      spawnMock.returns({stdout: {on: function(_,cb){ cb(); }}});
+      spawnMock.returns({stdout: {on: function(_,cb){ cb(''); }}});
 
       var promise = subject.create('some/config.conf', spawnMock, loggerMock);
 
@@ -137,7 +137,7 @@ describe('mpdProcess', function(){
       spawnMock.returns({
         stdout: {on: function(eventName,cb){
           if(eventName === 'data') {
-            cb();
+            cb('');
           }
         }},
         on: function(){},
@@ -178,7 +178,7 @@ describe('mpdProcess', function(){
 
       // wait for spawn promise to complete...
       processPromise.promise.then(function(){
-        spawnEvent.stderr.emit('data');
+        spawnEvent.stderr.emit('data', '');
       });
 
       assert.isFulfilled(promise).then(function () {
