@@ -26,8 +26,8 @@ switch(true) {
 }
 
 // Set log level
-utils.logger.level = program.logLevel;
-utils.logger.debug('Set logging to ', utils.logger.level);
+utils.logger.setLevel(program.logLevel);
+utils.logger.info('Set logging to ', utils.logger.level);
 
 process.on('SIGINT', function () {
   process.exit();
