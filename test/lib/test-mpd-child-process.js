@@ -16,7 +16,7 @@ var subject = require('../../lib/mpd-child-process');
 
 function createMockLogger() {
   var logger = sinon.spy();
-  logger.info  = sinon.spy();
+  logger.debug  = sinon.spy();
   logger.warn  = sinon.spy();
   logger.error = sinon.spy();
   return logger;
@@ -149,7 +149,7 @@ describe('mpdProcess', function(){
           spawnMock, loggerMock);
 
       assert.isFulfilled(promise).then(function () {
-        assert(loggerMock.info.calledOnce);
+        assert(loggerMock.debug.calledOnce);
         done();
       });
     });
@@ -182,7 +182,7 @@ describe('mpdProcess', function(){
       });
 
       assert.isFulfilled(promise).then(function () {
-        assert(loggerMock.warn.calledOnce);
+        assert(loggerMock.debug.calledOnce);
         done();
       });
     });
