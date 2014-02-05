@@ -2,7 +2,8 @@
 var program  = require('optimist'),
     commandForArg = require('../lib/cli/command-for-arg'),
     interactivePrompt = require('../lib/cli/interactive-prompt'),
-    RadiodanClient  = require('radiodan-client');
+    RadiodanClient  = require('radiodan-client'),
+    utils = require('../lib/utils');
 
 var queueHost,
     command,
@@ -24,8 +25,14 @@ argv = program
         .describe('volume.diff', 'Set to an offset of current volume (+/-N)')
         .describe('host', 'Set message queue hostname. Default: localhost')
         .describe('interactive', 'Set-up interactive command mode')
+        .describe('log-level', 'Set the log level. Default: warn')
         .alias('i', 'interactive')
         .argv;
+
+if (argv['log-level'] && typeof argv['log-level'] == 'string') {
+  utils.logger.setLevel(argv['log-level']);
+  RadiodanClient.setLogLevel(argv['log-level']);
+}
 
 // Override message queue host
 if (argv.host && typeof argv.host === 'string') {
