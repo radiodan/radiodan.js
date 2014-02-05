@@ -55,9 +55,13 @@ if (!argv.interactive) {
   promise.then(doneAndExit, showHelpAndExit);
 }
 
-function showHelpAndExit () {
-  program.showHelp();
-  console.log('Error: command option not given or failed\n');
+function showHelpAndExit (error) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('Error: command option not given\n');
+    program.showHelp();
+  }
   process.exit();
 }
 
