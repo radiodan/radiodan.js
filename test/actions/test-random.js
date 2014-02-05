@@ -9,7 +9,7 @@ var chai = require('chai'),
     fs     = require('fs'),
     EventEmitter = require('events').EventEmitter;
 
-var Q = require('q');
+var utils = require('../../lib/utils');
 
 chai.use(chaiAsPromised);
 

@@ -3,11 +3,21 @@
 
 var assert = require('chai').assert,
     sinon  = require('sinon'),
+    winston = require('winston'),
     EventEmitter = require('events').EventEmitter;
 
 var waitForSocket = require('../../lib/wait-for-socket');
 
 describe('waitForSocket', function(){
+  before(function() {
+    // chill winston
+    winston.remove(winston.transports.Console);
+  });
+
+  after(function() {
+    winston.add(winston.transports.Console);
+  });
+
   before(function () {
     this.port = 65535;
   });

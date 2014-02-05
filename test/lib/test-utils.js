@@ -7,7 +7,7 @@ var chai = require('chai'),
     sinon  = require('sinon'),
     winston = require('winston');
 
-var Q = require('q');
+var utils = require('../../lib/utils');
 
 chai.use(chaiAsPromised);
 

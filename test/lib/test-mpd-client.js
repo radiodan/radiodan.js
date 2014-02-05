@@ -9,7 +9,7 @@ var chai = require('chai'),
     fs     = require('fs'),
     EventEmitter = require('events').EventEmitter;
 
-var Q = require('q');
+var utils = require('../../lib/utils');
 
 chai.use(chaiAsPromised);
 
@@ -60,7 +60,7 @@ describe('mpdClient', function (){
 
     client.connect(mpdMock);
     // resolve promise sendCommand is reliant on
-    client.ready = function() { var d = Q.defer(); d.resolve(); return d.promise;}
+    client.ready = function() { var d = utils.promise.defer(); d.resolve(); return d.promise;}
 
     var commandPromise = client.sendCommands([['add', '1.mp3']]);
 

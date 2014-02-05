@@ -7,7 +7,7 @@ var chai = require('chai'),
     sinon  = require('sinon'),
     EventEmitter = require('events').EventEmitter;
 
-var Q = require('q');
+var utils = require('../../lib/utils');
 
 chai.use(chaiAsPromised);
 
@@ -32,7 +32,7 @@ describe('mpdProcess', function(){
 
     it('finds the first mpd binary on the system', function (done) {
       var exec = function () {
-        var dfd = Q.defer(),
+        var dfd = utils.promise.defer(),
             promise = dfd.promise;
 
         dfd.resolve(['/sommat/sommert/mpd']);
@@ -59,7 +59,7 @@ describe('mpdProcess', function(){
           binPath = this.binaryPath;
 
       subject.processPath = function () {
-        var dfd = Q.defer();
+        var dfd = utils.promise.defer();
         dfd.resolve(binPath);
         return dfd.promise;
       };
@@ -80,7 +80,7 @@ describe('mpdProcess', function(){
           binPath = this.binaryPath;
 
       subject.processPath = function () {
-        var dfd = Q.defer();
+        var dfd = utils.promise.defer();
         dfd.resolve(binPath);
         return dfd.promise;
       };
@@ -108,7 +108,7 @@ describe('mpdProcess', function(){
           binPath = this.binaryPath;
 
       subject.processPath = function () {
-        var dfd = Q.defer();
+        var dfd = utils.promise.defer();
         dfd.reject('');
         return dfd.promise;
       };
@@ -129,7 +129,7 @@ describe('mpdProcess', function(){
           binPath = this.binaryPath;
 
       subject.processPath = function () {
-        var dfd = Q.defer();
+        var dfd = utils.promise.defer();
         dfd.resolve();
         return dfd.promise;
       };
@@ -159,7 +159,7 @@ describe('mpdProcess', function(){
           loggerMock = createMockLogger(),
           binPath = this.binaryPath;
 
-      var processPromise = Q.defer();
+      var processPromise = utils.promise.defer();
       subject.processPath = function () {
         processPromise.resolve();
         return processPromise.promise;

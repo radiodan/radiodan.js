@@ -9,7 +9,7 @@ var chai = require('chai'),
     fs     = require('fs'),
     EventEmitter = require('events').EventEmitter;
 
-var Q = require('q');
+var utils = require('../../lib/utils');
 
 chai.use(chaiAsPromised);
 
@@ -69,7 +69,7 @@ describe('volume action', function() {
   it('calculates differential value and sends to mpd', function(done) {
     var radio = { sendCommands: sinon.spy() };
 
-    var promiseStatus = Q.defer();
+    var promiseStatus = utils.promise.defer();
     radio.status = function() {
       promiseStatus.resolve({volume: "100"});
       return promiseStatus.promise;
@@ -89,7 +89,7 @@ describe('volume action', function() {
   it('bounds differential values to percentages', function(done) {
     var radio = { sendCommands: sinon.spy() };
 
-    var promiseStatus = Q.defer();
+    var promiseStatus = utils.promise.defer();
     radio.status = function() {
       promiseStatus.resolve({volume: "30"});
       return promiseStatus.promise;

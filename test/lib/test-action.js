@@ -6,7 +6,7 @@ var chai = require('chai'),
     chaiAsPromised = require('chai-as-promised'),
     sinon  = require('sinon');
 
-var Q = require('q');
+var utils = require('../../lib/utils');
 
 chai.use(chaiAsPromised);
 
