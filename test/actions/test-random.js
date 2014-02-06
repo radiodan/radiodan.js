@@ -16,6 +16,16 @@ chai.use(chaiAsPromised);
 var subject = require('../../lib/actions/random');
 
 describe('random action', function() {
+  it('rejects if directory is not present', function(done){
+    var radio = { sendCommands: sinon.spy() };
+
+    var promise = subject(radio, {LOL: 'podcasts'});
+    assert.isRejected(promise).then(function(){
+      assert.equal(0, radio.sendCommands.callCount);
+      done();
+    });
+  });
+
   it('sends commands to mpd', function() {
     var radio = { sendCommands: sinon.spy() };
 
