@@ -103,14 +103,14 @@ describe('mpdClient', function (){
     });
   });
 
-  it('listens and re-emits mpd events', function(done){
+  it('listens and emits mpd events', function(done){
     var client = subject.create(4321, winston);
     var mpdMock = new EventEmitter();
     var commandSpy = sinon.spy();
 
     client.connect(mpdMock);
 
-    client.on('system', function(name) {
+    client.on('event', function(name) {
       assert.equal('player', name);
       done();
     });
@@ -133,12 +133,12 @@ describe('mpdClient', function (){
     mpdMock.emit('error','errorMsg');
   });
 
-  it('formats the status response into an object', function(){
-    var statusString = "volume: 100\nrepeat: 0\nrandom: 0\nsingle: 0\nconsume: 0\nplaylist: 1\nplaylistlength: 0\nxfade: 0\nmixrampdb: 0.000000\nmixrampdelay: nan\nstate: stop\n";
+  it('formats multiline responses into objects', function(){
+    var statusString = "volume: 100\nrepeat: 1\nstate: stop\n";
     var response = subject.create().formatResponse(statusString);
 
     assert.equal(100, response.volume);
     assert.equal('stop', response.state);
-    assert.equal('0.000000', response.mixrampdb);
+    assert.equal('1', response.repeat);
   });
 });
