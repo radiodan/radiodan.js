@@ -137,8 +137,17 @@ describe('mpdClient', function (){
     var statusString = "volume: 100\nrepeat: 1\nstate: stop\n";
     var response = subject.create().formatResponse(statusString);
 
-    assert.equal(100, response.volume);
+    assert.equal(100,    response.volume);
     assert.equal('stop', response.state);
-    assert.equal('1', response.repeat);
+    assert.equal('1',    response.repeat);
+  });
+
+  it('formats multiline responses into arrays', function(){
+    var statusString = "volume: 100\nrepeat: 1\nstate: stop\n";
+    var response = subject.create().formatResponse(statusString, true);
+
+    assert.deepEqual(['volume', '100'], response[0]);
+    assert.deepEqual(['repeat', '1'],   response[1]);
+    assert.deepEqual(['state', 'stop'], response[2]);
   });
 });
