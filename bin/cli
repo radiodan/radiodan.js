@@ -3,7 +3,7 @@ var program  = require('optimist'),
     commandForArg = require('../lib/cli/command-for-arg'),
     interactivePrompt = require('../lib/cli/interactive-prompt'),
     RadiodanClient  = require('radiodan-client'),
-    utils = require('../lib/utils');
+    utils = RadiodanClient.utils;
 
 var queueHost,
     command,

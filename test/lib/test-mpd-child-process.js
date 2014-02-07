@@ -7,7 +7,7 @@ var chai = require('chai'),
     sinon  = require('sinon'),
     EventEmitter = require('events').EventEmitter;
 
-var utils = require('../../lib/utils');
+var utils = require('radiodan-client').utils;
 
 chai.use(chaiAsPromised);
 

@@ -6,7 +6,7 @@ var chai = require('chai'),
     chaiAsPromised = require('chai-as-promised'),
     sinon  = require('sinon');
 
-var utils = require('../../lib/utils');
+var utils = require('radiodan-client').utils;
 
 chai.use(chaiAsPromised);
 

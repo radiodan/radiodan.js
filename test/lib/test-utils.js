@@ -7,11 +7,11 @@ var chai = require('chai'),
     sinon  = require('sinon'),
     winston = require('winston');
 
-var utils = require('../../lib/utils');
+var utils = require('radiodan-client').utils;
 
 chai.use(chaiAsPromised);
 
-var subject = require('../../lib/utils');
+var subject = require('radiodan-client').utils;
 
 describe('utils', function (){
   before(function() {

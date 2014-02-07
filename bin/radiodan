@@ -5,7 +5,7 @@ var program = require('commander'),
     amqp    = require('amqplib'),
     Q       = require('q'),
     MessagingClient = require('../lib/messaging-client'),
-    utils   = require('../lib/utils'),
+    utils   = require('radiodan-client').utils,
     configFile = 'config.json';
 
 program
