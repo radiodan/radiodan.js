@@ -3,8 +3,7 @@
   "preferGlobal": true,
   "version": "0.1.0",
   "license": "Apache-2",
-  "contributors":
-  [
+  "contributors": [
     "Dan Nuttall <dan.nuttall@bbc.co.uk>",
     "Andrew Nicolaou <andrew.nicolaou@bbc.co.uk>"
   ],
@@ -32,7 +31,8 @@
     "amqplib": "~0.1.1",
     "optimist": "~0.6.0",
     "q-io": "~1.10.8",
-    "radiodan-client": "https://github.com/radiodan/radiodan-client.js/archive/master.tar.gz"
+    "radiodan-client": "https://github.com/radiodan/radiodan-client.js/archive/master.tar.gz",
+    "deep-equal": "~0.2.1"
   },
   "devDependencies": {
     "mocha": "~1.17.0",
