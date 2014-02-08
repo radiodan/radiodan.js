@@ -39,4 +39,3 @@ describe('status action', function() {
     });
   });
 });
-
