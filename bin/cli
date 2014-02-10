@@ -23,6 +23,7 @@ argv = program
         .describe('play.stream', 'Play an internet stream')
         .describe('volume.value', 'Set to an absolute volume')
         .describe('volume.diff', 'Set to an offset of current volume (+/-N)')
+        .describe('database', 'Update the database of tracks using an optional path')
         .describe('host', 'Set message queue hostname. Default: localhost')
         .describe('interactive', 'Set-up interactive command mode')
         .describe('log-level', 'Set the log level. Default: warn')
