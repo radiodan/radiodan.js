@@ -10,15 +10,14 @@ var utils = require('radiodan-client').utils;
 
 chai.use(chaiAsPromised);
 
-var subject = require('../../lib/action');
+var Invoker = require('../../lib/invoker');
 
 describe('action', function (){
   it('executes a matching action', function() {
     var mockActions = { "test": sinon.spy() },
         radio = sinon.spy(),
-        options = sinon.spy();
-
-    subject.actions = mockActions;
+        options = sinon.spy(),
+        subject = Invoker.create(mockActions);
 
     subject.invoke(radio, 'test', options);
     assert.ok(mockActions.test.calledWith(radio, options));
@@ -27,9 +26,8 @@ describe('action', function (){
   it('returns a rejected promise if the action is not found', function() {
     var mockActions = {},
         radio = sinon.spy(),
-        options = sinon.spy();
-
-    subject.actions = mockActions;
+        options = sinon.spy(),
+        subject = Invoker.create(mockActions);
 
     var promise = subject.invoke(radio, 'test', options);
     assert.isRejected(promise, Error);
