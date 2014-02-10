@@ -21,17 +21,7 @@ describe('play action', function() {
     ]));
   });
 
-  it('adds play command if flag is set', function() {
-    var radio = { sendCommands: sinon.spy() };
-
-    subject(radio, {playlist: ['track.mp3'], playNow: true});
-    assert.equal(1, radio.sendCommands.callCount);
-    assert.ok(radio.sendCommands.calledWith([
-      ['clear'], ['add', 'track.mp3'], ['random', '0'], ['play', '0']
-    ]));
-  });
-
-  it('sets play position', function() {
+  it('sets play command and position if flag is set', function() {
     var radio = { sendCommands: sinon.spy() };
 
     subject(radio, {
