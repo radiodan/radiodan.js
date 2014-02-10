@@ -45,28 +45,5 @@ describe('play action', function() {
       ['play', '1']
     ]));
   });
-
-  it('rejects if position is larger that playlist', function(done) {
-    var radio = { sendCommands: sinon.spy() };
-
-    var promise = subject(radio, {
-      playlist: ['track.mp3'], playNow: true, playPosition: '3'
-    });
-
-    assert.isRejected(promise).then(function(){
-      assert.equal(0, radio.sendCommands.callCount);
-      done();
-    });
-  });
-
-  it('rejects if playlist is not empty', function(done){
-    var radio = { sendCommands: sinon.spy() };
-
-    var promise = subject(radio, {playlist: []});
-    assert.isRejected(promise).then(function(){
-      assert.equal(0, radio.sendCommands.callCount);
-      done();
-    });
-  });
 });
 
