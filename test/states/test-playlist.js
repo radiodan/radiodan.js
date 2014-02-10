@@ -8,7 +8,7 @@ var chai = require('chai'),
 
 chai.use(chaiAsPromised);
 
-var subject = require('../../lib/actions/playlist');
+var subject = require('../../lib/states/playlist');
 
 describe('playlist action', function() {
   it('requests current playlist', function() {

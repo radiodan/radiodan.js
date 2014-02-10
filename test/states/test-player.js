@@ -8,7 +8,7 @@ var chai = require('chai'),
 
 chai.use(chaiAsPromised);
 
-var subject = require('../../lib/actions/status');
+var subject = require('../../lib/states/player');
 
 describe('status action', function() {
   it('requests current status', function() {

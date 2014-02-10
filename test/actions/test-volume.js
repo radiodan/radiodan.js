@@ -67,37 +67,33 @@ describe('volume action', function() {
   });
 
   it('calculates differential value and sends to mpd', function(done) {
-    var radio = { sendCommands: sinon.spy() };
+    var radio = { sendCommands: sinon.spy() },
+        volumePromise = utils.promise.resolve({volume: "100"}),
+        invoker = { invoke: sinon.stub().returns(volumePromise) },
+        promise;
 
-    var promiseStatus = utils.promise.defer();
-    radio.status = function() {
-      promiseStatus.resolve({volume: "100"});
-      return promiseStatus.promise;
-    };
+    promise = subject(radio, {diff: -30, state: invoker});
 
-    subject(radio, {diff: -30});
-
-    assert.isFulfilled(promiseStatus.promise).then(function() {
+    assert.isFulfilled(promise).then(function() {
       assert.ok(radio.sendCommands.calledWith([
           ['setvol', 70]
       ]));
+
+      assert.ok(invoker.invoke.calledWith(radio, 'player'));
 
       done();
     });
   });
 
   it('bounds differential values to percentages', function(done) {
-    var radio = { sendCommands: sinon.spy() };
+    var radio = { sendCommands: sinon.spy() },
+        volumePromise = utils.promise.resolve({volume: "30"}),
+        invoker = { invoke: sinon.stub().returns(volumePromise) },
+        promise;
 
-    var promiseStatus = utils.promise.defer();
-    radio.status = function() {
-      promiseStatus.resolve({volume: "30"});
-      return promiseStatus.promise;
-    };
+    promise = subject(radio, {diff: -40, state: invoker});
 
-    subject(radio, {diff: -40});
-
-    assert.isFulfilled(promiseStatus.promise).then(function() {
+    assert.isFulfilled(promise).then(function() {
       assert.ok(radio.sendCommands.calledWith([
           ['setvol', 0]
       ]));
