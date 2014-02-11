@@ -13,6 +13,19 @@ Any errors will be populated with an error object, otherwise `false`.
 
 # Player
 
+## Play
+
+### radio.<id>.command
+
+Start playing the current playlist
+
+    {
+      action: 'player.play',
+      position: <integer>
+    }
+
+`position` is an optional argument of the position in the playlist to start playing.
+
 ## Volume
 
 ### radio.<id>.command
