@@ -8,9 +8,9 @@ var chai = require('chai'),
 
 chai.use(chaiAsPromised);
 
-var subject = require('../../../../lib/validators/actions/player/repeat');
+var subject = require('../../../lib/validators/actions/toggle');
 
-describe('validate player.repeat action', function() {
+describe('validate toggle action', function() {
   it('rejects if value not supplied', function(done) {
     var promise = subject({});
 

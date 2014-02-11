@@ -13,17 +13,17 @@ var utils = require('radiodan-client').utils;
 
 chai.use(chaiAsPromised);
 
-var subject = require('../../../lib/actions/player/random');
+var subject = require('../../lib/actions/toggle-command');
 
-describe('player.random action', function() {
+describe('toggle command meta-action', function() {
 
-  it('sends the random command', function() {
+  it('sends the given command with a value', function() {
     var radio = { sendCommands: sinon.spy() };
 
-    subject(radio, { value: 1 });
+    subject('mycommand')(radio, { value: 0 });
 
     assert.ok(radio.sendCommands.calledWith([
-      ['random', 1]
+      ['mycommand', 0]
     ]));
   });
 
