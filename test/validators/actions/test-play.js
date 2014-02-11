@@ -25,7 +25,7 @@ describe('validate play action', function() {
       playlist: ['track.mp3'], playNow: true
     });
 
-    assert.becomes(promise, { playlist: ['track.mp3'], playNow: true, position: '0'})
+    assert.becomes(promise, { playlist: ['track.mp3'], playNow: true, playPosition: '0'})
           .notify(done);
   });
 
@@ -36,7 +36,7 @@ describe('validate play action', function() {
 
     assert.isRejected(promise, Error).notify(done);
   });
-  
+
   it('rejects if playlist is not empty', function(){
     var promise = subject({playlist: []});
     assert.isRejected(promise, Error);
