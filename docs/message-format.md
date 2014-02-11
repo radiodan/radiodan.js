@@ -48,8 +48,11 @@ Set using an offset of the current volume:
       playlist: [
         '<file-path>',
         '<url>'
-      ]
+      ],
+      clear: <true|false>
     }
+
+`clear`: clear the existing playlist
 
 # Database
 
