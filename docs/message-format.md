@@ -42,6 +42,14 @@ Start playing the current playlist
       action: 'player.previous'
     }
 
+## Stop
+
+### radio.<id>.command
+
+    {
+      action: 'player.stop'
+    }
+
 ## Volume
 
 ### radio.<id>.command
@@ -66,6 +74,15 @@ Set using an offset of the current volume:
       value: 90
     }
 
+## Repeat
+
+### radio.<id>.command
+
+    {
+      action: 'player.repeat',
+      value: <true|false>
+    }
+
 # Playlist
 
 ## Add
@@ -82,6 +99,14 @@ Set using an offset of the current volume:
     }
 
 `clear`: clear the existing playlist
+
+## Clear
+
+### radio.<id>.command
+
+    {
+      action: 'playlist.clear'
+    }
 
 # Database
 
