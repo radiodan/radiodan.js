@@ -13,7 +13,7 @@ var utils = require('radiodan-client').utils;
 
 chai.use(chaiAsPromised);
 
-var subject = require('../../../lib/validators/actions/volume');
+var subject = require('../../../../lib/validators/actions/player/volume');
 
 describe('volume validator', function() {
 

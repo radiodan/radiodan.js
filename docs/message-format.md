@@ -11,6 +11,8 @@ Any errors will be populated with an error object, otherwise `false`.
       error: <false / error object>
     }
 
+# Player
+
 ## Volume
 
 ### radio.<id>.command
@@ -18,14 +20,14 @@ Any errors will be populated with an error object, otherwise `false`.
 Set to an absolute value:
 
     {
-      action: 'volume',
+      action: 'player.volume',
       value:  90
     }
 
 Set using an offset of the current volume:
 
     {
-      action: 'volume',
+      action: 'player.volume',
       diff:  -10
     }
 
@@ -35,12 +37,14 @@ Set using an offset of the current volume:
       value: 90
     }
 
-## Play
+# Playlist
+
+## Add
 
 ### radio.<id>.command
 
     {
-      action: 'play',
+      action: 'playlist.add',
       playlist: [
         '<file-path>',
         '<url>'
