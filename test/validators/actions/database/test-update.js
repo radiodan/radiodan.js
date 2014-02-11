@@ -8,7 +8,7 @@ var chai = require('chai'),
 
 chai.use(chaiAsPromised);
 
-var subject = require('../../../lib/validators/actions/database');
+var subject = require('../../../../lib/validators/actions/database/update');
 
 describe('validate database action', function() {
   it('resolves with force defaulted to false', function(done) {

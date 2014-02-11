@@ -51,6 +51,20 @@ Set using an offset of the current volume:
       ]
     }
 
+# Database
+
+## Update
+
+### radio.<id>.command
+
+    {
+      action: 'database.update',
+      force: <true|false>, 
+      path: '<file-path>'
+    }
+
+`force` checks all files for ID3 tag updates, otherwise new/modified files are checked.
+
 ## Ideas
 
 radio.<id>.playlist.info

@@ -13,7 +13,7 @@ var utils = require('radiodan-client').utils;
 
 chai.use(chaiAsPromised);
 
-var subject = require('../../lib/actions/database');
+var subject = require('../../../lib/actions/database/update');
 
 describe('database action', function() {
   before(function() {
