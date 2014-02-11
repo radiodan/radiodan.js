@@ -25,8 +25,19 @@ describe('validate play action', function() {
       playlist: ['track.mp3'], playNow: true
     });
 
-    assert.becomes(promise, { playlist: ['track.mp3'], playNow: true, playPosition: '0'})
-          .notify(done);
+    assert.becomes(promise, {
+      playlist: ['track.mp3'], playNow: true, playPosition: '0'
+    }).notify(done);
+  });
+
+  it('resolves with a given position if play now flag is set', function(done) {
+    var promise = subject({
+      playlist: ['track.mp3', 'track2.mp3'], playNow: true, playPosition: '1'
+    });
+
+    assert.becomes(promise, {
+      playlist: ['track.mp3', 'track2.mp3'], playNow: true, playPosition: '1'
+    }).notify(done);
   });
 
   it('rejects if position is larger that playlist', function(done) {
