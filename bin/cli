@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 var program  = require('optimist'),
-    commandForArg = require('../lib/cli/command-for-arg'),
+    sendCommand = require('../lib/cli/send-command'),
     interactivePrompt = require('../lib/cli/interactive-prompt'),
     RadiodanClient  = require('radiodan-client'),
     utils = RadiodanClient.utils;
@@ -19,10 +19,8 @@ argv = program
         .usage('Usage: $0')
         .demand('id')
         .describe('id', 'ID of radio instance to control')
-        .describe('play.stream', 'Play an internet stream')
-        .describe('volume.value', 'Set to an absolute volume')
-        .describe('volume.diff', 'Set to an offset of current volume (+/-N)')
-        .describe('database', 'Update the database of tracks using an optional path')
+        .describe('action', 'Command action')
+        .describe('options', 'Action options as JSON object')
         .describe('host', 'Set message queue hostname. Default: localhost')
         .describe('interactive', 'Set-up interactive command mode')
         .describe('log-level', 'Set the log level. Default: warn')
@@ -49,7 +47,7 @@ if (argv.id && typeof argv.id === 'string') {
 }
 
 // Extract command from argv
-promise = commandForArg(argv, radio);
+promise = sendCommand(radio, argv.action, argv.options);
 
 if (!argv.interactive) {
   promise.then(doneAndExit, showHelpAndExit);
