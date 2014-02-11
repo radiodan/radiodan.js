@@ -34,6 +34,14 @@ Start playing the current playlist
       action: 'player.next'
     }
 
+## Previous
+
+### radio.<id>.command
+
+    {
+      action: 'player.previous'
+    }
+
 ## Volume
 
 ### radio.<id>.command
