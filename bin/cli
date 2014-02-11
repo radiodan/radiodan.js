@@ -19,7 +19,6 @@ argv = program
         .usage('Usage: $0')
         .demand('id')
         .describe('id', 'ID of radio instance to control')
-        .describe('random.directory', 'Play random tracks from specified directory')
         .describe('play.stream', 'Play an internet stream')
         .describe('volume.value', 'Set to an absolute volume')
         .describe('volume.diff', 'Set to an offset of current volume (+/-N)')
