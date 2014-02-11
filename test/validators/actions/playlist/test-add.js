@@ -20,6 +20,15 @@ describe('validate play action', function() {
           .notify(done);
   });
 
+  it('wraps a single playlist item in an array', function(done) {
+    var promise = subject({
+      playlist: 'track.mp3'
+    });
+
+    assert.becomes(promise, { playlist: ['track.mp3'], clear: false })
+          .notify(done);
+  });
+
   it('rejects if playlist is not empty', function(){
     var promise = subject({playlist: []});
     assert.isRejected(promise, Error);

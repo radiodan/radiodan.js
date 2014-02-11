@@ -26,6 +26,14 @@ Start playing the current playlist
 
 `position` is an optional argument of the position in the playlist to start playing.
 
+## Next
+
+### radio.<id>.command
+
+    {
+      action: 'player.next'
+    }
+
 ## Volume
 
 ### radio.<id>.command
