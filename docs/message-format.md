@@ -64,34 +64,3 @@ radio.<id>.playlist.info
     ...
   ]
 }
-
-radio.<id>.command
-
-[
-	{
-  	action: new-playlist,
-  	tracks: [
-    	{ <object> },
-    	..
-  	]
-	},
-	{
-		action: play,
-  	seekTime: 3
-	}
-]
-
-{
-	action: add-track-to-playlist,
-	position: 5,
-  tracks: [
-		<TRACK IDENTIFIER>,
-  ]
-}
-
-radio.<id>.command
-
-{
-  action: skip,
-	postion: 2
-}
