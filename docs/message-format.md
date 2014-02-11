@@ -83,6 +83,24 @@ Set using an offset of the current volume:
       value: <true|false>
     }
 
+## Random
+
+### radio.<id>.command
+
+    {
+      action: 'player.random',
+      value: <true|false>
+    }
+
+## Pause
+
+### radio.<id>.command
+
+    {
+      action: 'player.pause',
+      value: <true|false>
+    }
+
 # Playlist
 
 ## Add
