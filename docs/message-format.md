@@ -43,6 +43,20 @@ playing.
       action: 'player.previous'
     }
 
+## Seek
+
+### radio.<id>.command
+
+    {
+      action: 'player.seek',
+      time: <integer/offset>,
+      position: <integer>
+    }
+
+Position is optional, or else will seek to current track.
+Time can be an absolute value to seek to.
+Time can be an offset (starts with +/-) if seeking on current track.
+
 ## Stop
 
 ### radio.<id>.command
