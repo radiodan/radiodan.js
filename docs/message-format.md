@@ -24,7 +24,8 @@ Start playing the current playlist
       position: <integer>
     }
 
-`position` is an optional argument of the position in the playlist to start playing.
+`position` is an optional argument of the position in the playlist to start
+playing.
 
 ## Next
 
@@ -134,22 +135,23 @@ Set using an offset of the current volume:
 
     {
       action: 'database.update',
-      force: <true|false>, 
+      force: <true|false>,
       path: '<file-path>'
     }
 
-`force` checks all files for ID3 tag updates, otherwise new/modified files are checked.
+`force` checks all files for ID3 tag updates, otherwise new/modified files are
+checked.
 
 ## Ideas
 
 radio.<id>.playlist.info
 
 {
-	type: playlist,
+  type: playlist,
   position: 529,
-	seekTime: 56,
+  seekTime: 56,
   tracks: [
-		{ <object> },
+    { <object> },
     ...
   ]
 }
