@@ -3,27 +3,27 @@
 var program = require('commander'),
     path = require('path'),
     package = require('../package.json'),
-    amqp = require('amqplib'),
     Q = require('q'),
     MessagingClient = require('radiodan-client').MessagingClient,
     utils = require('radiodan-client').utils,
-    configFile = 'config.json';
+    config, configFile;
 
 program
-    .version(package.version)
-    .usage('[options] config_file')
-    .option('--log-level [level]', 'Set the log level to [level]', 'info')
-    .parse(process.argv);
+  .version(package.version)
+  .usage('[options] config_file')
+  .option('--log-level [level]', 'Set the log level to [level]', 'info')
+  .parse(process.argv);
 
 switch (true) {
-    case program.args.length == 1:
-        configFile = program.args[0];
-        break;
-    case program.args.length > 1:
-        program.help();
-        break;
-    default:
-        //No config leaves us with defaults
+  case program.args.length == 1:
+    configFile = program.args[0];
+    break;
+  case program.args.length > 1:
+    program.help();
+    break;
+  default:
+    //No config leaves us with defaults
+    configFile = 'config.json';
 }
 
 // Set log level
@@ -32,12 +32,12 @@ var logger = utils.logger(__filename);
 logger.info('Set logging to', logger.level);
 
 process.on('SIGINT', function() {
-    process.exit();
+  process.exit();
 });
 
 process.on('uncaughtException', function(e) {
-    console.error(e.stack);
-    process.exit();
+  console.error(e.stack);
+  process.exit();
 });
 
 var Radiodan = require(__dirname + '/../lib/radiodan'),
@@ -45,31 +45,30 @@ var Radiodan = require(__dirname + '/../lib/radiodan'),
     radios = [];
 
 try {
-    var config = require(path.relative(__dirname, configFile));
+  config = require(path.relative(__dirname, configFile));
 } catch (err) {
-    program.help();
-    process.exit(1);
+  program.help();
+  process.exit(1);
 }
 
-
 var radios = config.radios.map(function(radio, i) {
-    var client = MessagingClient.create(),
-        mergedConfig = mergeObjects(config.defaults, radio);
+  var client = MessagingClient.create(),
+      mergedConfig = mergeObjects(config.defaults, radio);
 
-    // TODO: Change this name
-    var radiodan = Radiodan.create(mergedConfig).start();
-    var controller = RadioController.create(radiodan, client);
+  // TODO: Change this name
+  var radiodan = Radiodan.create(mergedConfig).start();
+  var controller = RadioController.create(radiodan, client);
 
-    return radiodan;
+  return radiodan;
 });
 
 function mergeObjects(defaultObj, specificObj) {
-    var obj = JSON.parse(JSON.stringify(defaultObj)),
-        cleanSpecificObj = JSON.parse(JSON.stringify(specificObj));
+  var obj = JSON.parse(JSON.stringify(defaultObj)),
+      cleanSpecificObj = JSON.parse(JSON.stringify(specificObj));
 
-    Object.keys(cleanSpecificObj).forEach(function(key) {
-        obj[key] = cleanSpecificObj[key];
-    });
+  Object.keys(cleanSpecificObj).forEach(function(key) {
+      obj[key] = cleanSpecificObj[key];
+      });
 
-    return obj;
+  return obj;
 }
