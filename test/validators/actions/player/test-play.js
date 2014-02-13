@@ -32,9 +32,9 @@ describe('validate player.play action', function() {
           .notify(done);
   });
 
-  it('rejects if position is not a number', function(){
+  it('rejects if position is not a number', function(done){
     var promise = subject({ position: {} });
-    assert.isRejected(promise, Error);
+    assert.isRejected(promise, Error).then(done, done);
   });
 });
 
