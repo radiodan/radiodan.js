@@ -25,6 +25,14 @@ describe('validate player.seek action', function() {
           .notify(done);
   });
 
+  it('resolves with offset seek time if there is no position',
+    function(done) {
+    var promise = subject({ time: "+42" });
+
+    assert.becomes(promise, { time: "+42" })
+          .notify(done);
+  });
+
   it('resolves with negative seek time if there is no position',
     function(done) {
     var promise = subject({ time: -31 });
