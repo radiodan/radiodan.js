@@ -6,7 +6,7 @@ Player actions:
 ✓ stop
 ✓ play / change position in playlist
 ✓ pause
-- seek <time>
+✓ seek <time>
 ✓ repeat (toggle mode)
 ✓ random (toggle mode)
 ✗ shuffle
