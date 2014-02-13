@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+var RadiodanClient  = require('radiodan-client'),
+    MessagingClient = RadiodanClient.MessagingClient,
+    utils = RadiodanClient.utils;
+
+var client = MessagingClient.create()
+
+client.createAndBindToExchange({
+  queueName: 'testqueue',
+  exchangeName: 'radiodan',
+  topicsKey:    '#'
+});
+
+client.on('message', function(data) {
+  console.log('key', data.fields.routingKey);
+  console.log('content', data.content);
+  console.log("\n");
+});
+
+console.log("Radiodan Monitor");
