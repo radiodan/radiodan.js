@@ -11,7 +11,7 @@ var utils = require('radiodan-client').utils;
 
 chai.use(chaiAsPromised);
 
-var subject = require('../../lib/mpd-child-process');
+var subject = require('../../lib/mpd/mpd-child-process');
 
 
 function createMockLogger() {

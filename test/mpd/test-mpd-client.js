@@ -13,7 +13,7 @@ var utils = require('radiodan-client').utils;
 
 chai.use(chaiAsPromised);
 
-var subject = require('../../lib/mpd-client');
+var subject = require('../../lib/mpd/mpd-client');
 
 describe('mpdClient', function (){
   before(function() {
