@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
 var program = require('commander'),
-    path = require('path'),
+    path    = require('path'),
     package = require('../package.json'),
-    Q = require('q'),
-    MessagingClient = require('radiodan-client').MessagingClient,
     utils = require('radiodan-client').utils,
-    config, configFile;
+    bootstrap = require('../lib/bootstrap'),
+    configFile = 'config.json',
+    config;
 
 program
   .version(package.version)
@@ -23,7 +23,6 @@ switch (true) {
     break;
   default:
     //No config leaves us with defaults
-    configFile = 'config.json';
 }
 
 // Set log level
@@ -40,9 +39,6 @@ process.on('uncaughtException', function(e) {
   process.exit();
 });
 
-var Radiodan = require(__dirname + '/../lib/radiodan'),
-    RadioController = require(__dirname + '/../lib/radio-controller'),
-    radios = [];
 
 try {
   config = require(path.relative(__dirname, configFile));
@@ -51,24 +47,6 @@ try {
   process.exit(1);
 }
 
-var radios = config.radios.map(function(radio, i) {
-  var client = MessagingClient.create(),
-      mergedConfig = mergeObjects(config.defaults, radio);
-
-  // TODO: Change this name
-  var radiodan = Radiodan.create(mergedConfig).start();
-  var controller = RadioController.create(radiodan, client);
-
-  return radiodan;
+bootstrap.generateRadios(config).then(function(radios){
+  // radio clients are here!!
 });
-
-function mergeObjects(defaultObj, specificObj) {
-  var obj = JSON.parse(JSON.stringify(defaultObj)),
-      cleanSpecificObj = JSON.parse(JSON.stringify(specificObj));
-
-  Object.keys(cleanSpecificObj).forEach(function(key) {
-      obj[key] = cleanSpecificObj[key];
-      });
-
-  return obj;
-}
