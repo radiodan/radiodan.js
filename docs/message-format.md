@@ -143,6 +143,19 @@ Set using an offset of the current volume:
 
 # Database
 
+## Search
+
+    {
+      action" 'database.search',
+      <term>: <value>
+    }
+
+Any number of valid search terms with string values are accepted.
+
+Valid search terms:
+    artist album title track name genre date
+    composer performer comment disc filename any
+
 ## Update
 
 ### radio.<id>.command
