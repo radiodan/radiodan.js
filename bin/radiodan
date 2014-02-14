@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-var program = require('commander'),
-    path    = require('path'),
-    package = require('../package.json'),
-    utils = require('radiodan-client').utils,
-    bootstrap = require('../lib/bootstrap'),
+var program    = require('commander'),
+    path       = require('path'),
+    utils      = require('radiodan-client').utils,
+    bootstrap  = require('../lib/bootstrap'),
+    package    = require('../package.json'),
     configFile = 'config.json',
     config;
 
@@ -35,10 +35,9 @@ process.on('SIGINT', function() {
 });
 
 process.on('uncaughtException', function(e) {
-  console.error(e.stack);
+  logger.error(e.stack);
   process.exit();
 });
-
 
 try {
   config = require(path.relative(__dirname, configFile));
