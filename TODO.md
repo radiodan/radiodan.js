@@ -14,7 +14,7 @@ Player actions:
 Playlist actions:
 ✓ add track(s)
 - move track
-- remove track(s)
+✓ delete track(s)
 ✓ clear
 
 Database actions:

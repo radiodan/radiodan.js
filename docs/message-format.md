@@ -8,14 +8,17 @@ Any errors will be populated with an error object, otherwise `false`.
 
     {
       correlation_id: <id of sent message>,
-      error: <false / error object>
+      error: <false / error object>,
+      response: <response object>
     }
+
+Response is only set if error is false.
 
 # Player
 
 ## Play
 
-### radio.<id>.command
+### radio.`<id>`.command
 
 Start playing the current playlist
 
@@ -29,7 +32,7 @@ playing.
 
 ## Next
 
-### radio.<id>.command
+### radio.`<id>`.command
 
     {
       action: 'player.next'
@@ -37,7 +40,7 @@ playing.
 
 ## Previous
 
-### radio.<id>.command
+### radio.`<id>`.command
 
     {
       action: 'player.previous'
@@ -45,7 +48,7 @@ playing.
 
 ## Seek
 
-### radio.<id>.command
+### radio.`<id>`.command
 
     {
       action: 'player.seek',
@@ -59,7 +62,7 @@ Time can be an offset (starts with +/-) if seeking on current track.
 
 ## Stop
 
-### radio.<id>.command
+### radio.`<id>`.command
 
     {
       action: 'player.stop'
@@ -67,7 +70,7 @@ Time can be an offset (starts with +/-) if seeking on current track.
 
 ## Volume
 
-### radio.<id>.command
+### radio.`<id>`.command
 
 Set to an absolute value:
 
@@ -83,7 +86,7 @@ Set using an offset of the current volume:
       diff:  -10
     }
 
-### radio.<id>.volume
+### radio.`<id>`.volume
 
     {
       value: 90
@@ -91,7 +94,7 @@ Set using an offset of the current volume:
 
 ## Repeat
 
-### radio.<id>.command
+### radio.`<id>`.command
 
     {
       action: 'player.repeat',
@@ -100,7 +103,7 @@ Set using an offset of the current volume:
 
 ## Random
 
-### radio.<id>.command
+### radio.`<id>`.command
 
     {
       action: 'player.random',
@@ -109,7 +112,7 @@ Set using an offset of the current volume:
 
 ## Pause
 
-### radio.<id>.command
+### radio.`<id>`.command
 
     {
       action: 'player.pause',
@@ -120,7 +123,7 @@ Set using an offset of the current volume:
 
 ## Add
 
-### radio.<id>.command
+### radio.`<id>`.command
 
     {
       action: 'playlist.add',
@@ -135,11 +138,24 @@ Set using an offset of the current volume:
 
 ## Clear
 
-### radio.<id>.command
+### radio.`<id>`.command
 
     {
       action: 'playlist.clear'
     }
+
+## Delete
+
+### radio.`<id>`.command
+
+    {
+      action: 'playlist.delete',
+      position: <integer>,
+      start: <integer>,
+      end: <integer>
+    }
+
+Must specify *either* a range or position.
 
 # Database
 
@@ -158,7 +174,7 @@ Valid search terms:
 
 ## Update
 
-### radio.<id>.command
+### radio.`<id>`.command
 
     {
       action: 'database.update',
@@ -171,7 +187,7 @@ checked.
 
 ## Ideas
 
-radio.<id>.playlist.info
+radio.`<id>`.playlist.info
 
 {
   type: playlist,
