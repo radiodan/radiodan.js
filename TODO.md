@@ -18,5 +18,5 @@ Playlist actions:
 ✓ clear
 
 Database actions:
-- search
+✓ search
 ✓ update
