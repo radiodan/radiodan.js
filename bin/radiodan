@@ -43,7 +43,7 @@ process.on('uncaughtException', function(e) {
 try {
   config = require(path.relative(__dirname, configFile));
 } catch (err) {
-  program.help();
+  logger.error("Could not parse config file "+configFile);
   process.exit(1);
 }
 
