@@ -13,7 +13,7 @@ Player actions:
 
 Playlist actions:
 ✓ add track(s)
-- move track
+✓ move track
 ✓ delete track(s)
 ✓ clear
 
