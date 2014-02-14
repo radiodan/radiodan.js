@@ -155,7 +155,22 @@ Set using an offset of the current volume:
       end: <integer>
     }
 
-Must specify *either* a range or position.
+Must specify *either* a range (start & end) or position.
+
+## Move
+
+### radio.`<id>`.command
+
+    {
+      action: 'playlist.delete',
+      from: <integer>,
+      start: <integer>,
+      end: <integer>
+      to: <integer>
+    }
+
+Moves track(s) to specificed destination.
+Must specify *either* a range (start & end) or position.
 
 # Database
 
