@@ -169,6 +169,7 @@ Must specify *either* a range or position.
 Any number of valid search terms with string values are accepted.
 
 Valid search terms:
+
     artist album title track name genre date
     composer performer comment disc filename any
 
