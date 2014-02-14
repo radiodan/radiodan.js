@@ -38,7 +38,7 @@ if (argv.host && typeof argv.host === 'string') {
 }
 
 // Extract required radio id or error
-if (argv.id && typeof argv.id === 'string') {
+if (argv.id) {
   radio = RadiodanClient.create({host:queueHost}).get(argv.id);
 } else {
   console.log('Missing required arguments: id');
