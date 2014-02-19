@@ -1,18 +1,12 @@
 {
-  "defaults": {
-    "music": "~/Music",
-    "playlist": "~/Music",
-    "log": "syslog",
-    "db": "~/.mpd/mpd.db",
-    "platform": "coreAudio",
-    "httpStreaming": false
-  },
   "radios": [
     {
-      "name": "My radio"
+      "name": "My radio",
+      "id": 1
     },
     {
-      "name": "another one"
+      "name": "another one",
+      "id": 2
     }
   ]
 }
