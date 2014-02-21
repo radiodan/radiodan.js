@@ -13,7 +13,8 @@
     "url": "https://github.com/radiodan/radiodan.js.git"
   },
   "bin": {
-    "radiodan": "./bin/radiodan"
+    "radiodan-server": "./bin/server",
+    "radiodan-cli": "./bin/cli"
   },
   "scripts": {
     "test": "node_modules/mocha/bin/mocha --recursive",
