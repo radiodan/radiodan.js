@@ -39,51 +39,41 @@ describe('mpdConfig', function (){
     var mpdContent = mpdConfig.build(this.configObject);
 
     // music
-    assert.match(mpdContent, /^music_directory (\s+) "~\/music"$/m);
+    assert.match(mpdContent,
+      /^music_directory (\s+) "~\/music"$/m);
     // playlist
-    assert.match(mpdContent, /^playlist_directory (\s+) "~\/music\/playlists"$/m);
+    assert.match(mpdContent,
+      /^playlist_directory (\s+) "~\/music\/playlists"$/m);
     // db
-    assert.match(mpdContent, /^db_file (\s+) "~\/music\/mpd\.db"$/m);
+    assert.match(mpdContent,
+      /^db_file (\s+) "~\/music\/mpd\.db"$/m);
     // log
-    assert.match(mpdContent, /^log_file (\s+) "\/var\/log\/mpd\.log"$/m);
+    assert.match(mpdContent,
+      /^log_file (\s+) "\/var\/log\/mpd\.log"$/m);
   });
 
-  it('provides its own port assignment', function() {
-    subject.resetPortNumber();
-
-    var portConfig = this.configObject;
-    portConfig.port = 7171;
-
+  it('assigns ports', function() {
     var mpdConfig = subject.create();
-    var mpdContent = mpdConfig.build(this.configObject);
+    var mpdContent = mpdConfig.build(this.configObject, [6600]);
 
     assert.match(mpdContent, /^port (\s+) "6600"$/m);
 
     var mpdConfig = subject.create();
-    var mpdContent = mpdConfig.build(this.configObject);
+    var mpdContent = mpdConfig.build(this.configObject, [6601]);
     assert.match(mpdContent, /^port (\s+) "6601"$/m);
   });
 
-  it('provides its own HTTP port assignment', function() {
-    subject.resetPortNumber();
-
+  it('assigns HTTP port', function() {
     var config = this.configObject;
-    config.httpPort = 7171;
     config.httpStreaming = true;
 
     var mpdConfig = subject.create();
-    var mpdContent = mpdConfig.build(config);
+    var mpdContent = mpdConfig.build(config, [null, 8000]);
 
     assert.match(mpdContent, /port (\s+) "8000"$/m);
-
-    var mpdConfig = subject.create();
-    var mpdContent = mpdConfig.build(config);
-    assert.match(mpdContent, /port (\s+) "8001"$/m);
   });
 
   it('generates a platform-specific boolean key', function() {
-    subject.resetPortNumber();
-
     var config = this.configObject;
     config.platform = "coreAudio";
 
@@ -107,9 +97,9 @@ describe('mpdConfig', function (){
     var mpdConfig = subject.create(),
         promise = mpdConfig.write(this.configObject);
 
-    assert.isFulfilled(promise).then(function (filePath) {
+    assert.isFulfilled(promise).then(function (args) {
+      var filePath = args[0];
       assert(fs.existsSync(filePath));
-      done();
-    });
+    }).then(done, done);
   });
 });
