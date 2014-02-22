@@ -5,7 +5,7 @@ var program    = require('commander'),
     utils      = require('radiodan-client').utils,
     bootstrap  = require('../lib/bootstrap'),
     package    = require('../package.json'),
-    configFile = 'config.json',
+    configFile,
     config;
 
 program
@@ -19,10 +19,8 @@ switch (true) {
     configFile = program.args[0];
     break;
   case program.args.length > 1:
-    program.help();
-    break;
   default:
-    //No config leaves us with defaults
+    program.help();
 }
 
 // Set log level
@@ -48,4 +46,7 @@ try {
 
 bootstrap.generateRadios(config).then(function(radios){
   // radio clients are here!!
+  if(false) {
+    websocketRelay.create(radios[1]);
+  }
 });
