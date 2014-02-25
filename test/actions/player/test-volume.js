@@ -44,6 +44,12 @@ describe('volume action', function() {
     assert.ok(radio.sendCommands.calledWith([
         ['setvol', 30]
     ]));
+
+    subject(radio, {value: 0});
+
+    assert.ok(radio.sendCommands.calledWith([
+        ['setvol', 0]
+    ]), 'volume couldn\'t be set to 0');
   });
 
   it('bounds percentage high values to 100', function() {
