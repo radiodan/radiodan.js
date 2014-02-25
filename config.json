@@ -1,5 +1,5 @@
 {
-  "dataPath": "/Users/dan/.radiodan",
+  "dataPath": "/tmp/.radiodan",
   "radios": [
     {
       "name": "My radio",
