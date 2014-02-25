@@ -1,5 +1,30 @@
 # Message Formats
 
+## Available Subcriptions
+
+Clients can subscribe to these subcription channels to recieve the latest data,
+on change.
+
+### radio.`<id>`.playlist
+
+Returns the contents of the current playlist.
+
+### radio.`<id>`.player
+
+Returns the state of the player
+(random, play state, which song is being played)
+
+### radio.`<id>`.volume
+
+Returns the volume of the player.
+Note that this is not the volume of the physical device, each player has it's
+own volume level.
+
+### radio.`<id>`.database
+
+Returns statistics on the contents of the music database. Typically triggered
+by a `database.update` command.
+
 ## Feedback to commands
 
 Every client that issues commands connects to the `radiodan-command-reply`
