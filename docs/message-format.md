@@ -5,6 +5,10 @@
 Clients can subscribe to these subcription channels to recieve the latest data,
 on change.
 
+### system.volume
+
+Returns the master volume of the audio device.
+
 ### radio.`<id>`.playlist
 
 Returns the contents of the current playlist.
@@ -39,11 +43,29 @@ Any errors will be populated with an error object, otherwise `false`.
 
 Response is only set if error is false.
 
+# System
+
+## Volume
+
+### command.system.volume
+
+Set to an absolute value:
+
+    {
+      value:  90
+    }
+
+Set using an offset of the current volume:
+
+    {
+      diff:  -10
+    }
+
 # Player
 
 ## Play
 
-### radio.`<id>`.command
+### command.radio.`<id>`
 
 Start playing the current playlist
 
@@ -57,7 +79,7 @@ playing.
 
 ## Next
 
-### radio.`<id>`.command
+### command.radio.`<id>`
 
     {
       action: 'player.next'
@@ -65,7 +87,7 @@ playing.
 
 ## Previous
 
-### radio.`<id>`.command
+### command.radio.`<id>`
 
     {
       action: 'player.previous'
@@ -73,7 +95,7 @@ playing.
 
 ## Seek
 
-### radio.`<id>`.command
+### command.radio.`<id>`
 
     {
       action: 'player.seek',
@@ -87,7 +109,7 @@ Time can be an offset (starts with +/-) if seeking on current track.
 
 ## Stop
 
-### radio.`<id>`.command
+### command.radio.`<id>`
 
     {
       action: 'player.stop'
@@ -95,7 +117,7 @@ Time can be an offset (starts with +/-) if seeking on current track.
 
 ## Volume
 
-### radio.`<id>`.command
+### command.radio.`<id>`
 
 Set to an absolute value:
 
@@ -119,7 +141,7 @@ Set using an offset of the current volume:
 
 ## Repeat
 
-### radio.`<id>`.command
+### command.radio.`<id>`
 
     {
       action: 'player.repeat',
@@ -128,7 +150,7 @@ Set using an offset of the current volume:
 
 ## Random
 
-### radio.`<id>`.command
+### command.radio.`<id>`
 
     {
       action: 'player.random',
@@ -137,7 +159,7 @@ Set using an offset of the current volume:
 
 ## Pause
 
-### radio.`<id>`.command
+### command.radio.`<id>`
 
     {
       action: 'player.pause',
@@ -148,7 +170,7 @@ Set using an offset of the current volume:
 
 ## Add
 
-### radio.`<id>`.command
+### command.radio.`<id>`
 
     {
       action: 'playlist.add',
@@ -163,7 +185,7 @@ Set using an offset of the current volume:
 
 ## Clear
 
-### radio.`<id>`.command
+### command.radio.`<id>`
 
     {
       action: 'playlist.clear'
@@ -171,7 +193,7 @@ Set using an offset of the current volume:
 
 ## Delete
 
-### radio.`<id>`.command
+### command.radio.`<id>`
 
     {
       action: 'playlist.delete',
@@ -184,7 +206,7 @@ Must specify *either* a range (start & end) or position.
 
 ## Move
 
-### radio.`<id>`.command
+### command.radio.`<id>`
 
     {
       action: 'playlist.delete',
@@ -215,7 +237,7 @@ Valid search terms:
 
 ## Update
 
-### radio.`<id>`.command
+### command.radio.`<id>`
 
     {
       action: 'database.update',

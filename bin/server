@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
-var program    = require('commander'),
-    path       = require('path'),
-    utils      = require('radiodan-client').utils,
-    bootstrap  = require('../lib/bootstrap'),
-    package    = require('../package.json'),
+var program      = require('commander'),
+    path         = require('path'),
+    utils        = require('radiodan-client').utils,
+    bootstrap    = require('../lib/bootstrap'),
+    systemVolume = require('../lib/system/volume'),
+    package      = require('../package.json'),
     configFile,
     config;
 
@@ -44,9 +45,5 @@ try {
   process.exit(1);
 }
 
-bootstrap.generateRadios(config).then(function(radios){
-  // radio clients are here!!
-  if(false) {
-    websocketRelay.create(radios[1]);
-  }
-});
+bootstrap.generateRadios(config);
+systemVolume.listen();
