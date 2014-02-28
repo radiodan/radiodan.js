@@ -102,13 +102,13 @@ describe('system volume', function(){
       assert.isFulfilled(self.execPromise.promise).then(function(){
         assert.equal(3, execSpy.callCount);
         assert.deepEqual(
-          ["amixer sget Master | grep -o -m 1 '[[:digit:]]*%' | tr -d '%'"],
+          ["amixer sget $(amixer | grep -o -m 1 \"'[^']*'\" | tr -d \"'\") | grep -o -m 1 '[[:digit:]]*%' | tr -d '%'"],
           execSpy.firstCall.args);
         assert.deepEqual(
-          ["amixer set Master 88%"],
+          ["amixer set $(amixer | grep -o -m 1 \"'[^']*'\" | tr -d \"'\") 88%"],
           execSpy.secondCall.args);
         assert.deepEqual(
-          ["amixer sget Master | grep -o -m 1 '[[:digit:]]*%' | tr -d '%'"],
+          ["amixer sget $(amixer | grep -o -m 1 \"'[^']*'\" | tr -d \"'\") | grep -o -m 1 '[[:digit:]]*%' | tr -d '%'"],
           execSpy.firstCall.args);
       }).then(done, done);
     });
