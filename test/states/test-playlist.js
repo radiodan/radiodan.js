@@ -50,5 +50,21 @@ describe('playlist action', function() {
       done();
     });
   });
+
+  it('returns empty array for empty playlist', function(done) {
+    var playlistArray = [],
+        statusPromise = utils.promise.resolve(),
+        radio = {
+          sendCommands: sinon.stub().returns(statusPromise),
+          formatResponse: sinon.stub().returns(playlistArray)
+        };
+
+    var promise = subject(radio);
+
+    assert.isFulfilled(promise).then(function(response) {
+      assert.equal(radio.formatResponse.callCount, 1);
+      assert.equal(response.length, 0);
+    }).then(done, done);
+  });
 });
 
