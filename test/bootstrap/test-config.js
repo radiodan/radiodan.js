@@ -69,7 +69,7 @@ describe('bootstrap config', function (){
 
     var parsedConfigs = subject(config);
     assert.equal(1, parsedConfigs.length);
-    assert.deepEqual({ "id": "x", "music": "~/Music", "log": "/var/log/" }, parsedConfigs[0]);
+    assert.deepEqual({ "id": "x", "name": "radiodan_x", "music": "~/Music", "log": "/var/log/" }, parsedConfigs[0]);
   });
 
   it('ids in defaults are ignored', function () {
@@ -84,7 +84,7 @@ describe('bootstrap config', function (){
 
     var parsedConfigs = subject(config, this.idStub);
     assert.equal(1, parsedConfigs.length);
-    assert.deepEqual({ "id": "genIdx", "music": "~/Music", "log": "/var/log/" }, parsedConfigs[0]);
+    assert.deepEqual({ "id": "genIdx", "name": "radiodan_genIdx", "music": "~/Music", "log": "/var/log/" }, parsedConfigs[0]);
   });
 
   it('creates an id if missing from radio config', function () {
@@ -101,8 +101,8 @@ describe('bootstrap config', function (){
 
     var parsedConfigs = subject(config, idStub);
     assert.equal(2, parsedConfigs.length);
-    assert.deepEqual({ "id": "genId1", "music": "~/Music", "log": "/var/log/" }, parsedConfigs[0]);
-    assert.deepEqual({ "id": "genId2", "music": "~/Music", "log": "/var/log/" }, parsedConfigs[1]);
+    assert.deepEqual({ "id": "genId1", "name": "radiodan_genId1", "music": "~/Music", "log": "/var/log/" }, parsedConfigs[0]);
+    assert.deepEqual({ "id": "genId2", "name": "radiodan_genId2", "music": "~/Music", "log": "/var/log/" }, parsedConfigs[1]);
   });
 
   it('throws on invalid ids', function () {
