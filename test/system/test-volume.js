@@ -105,7 +105,7 @@ describe('system volume', function(){
           ["amixer sget $(amixer | grep -o -m 1 \"'[^']*'\" | tr -d \"'\") | grep -o -m 1 '[[:digit:]]*%' | tr -d '%'"],
           execSpy.firstCall.args);
         assert.deepEqual(
-          ["amixer set $(amixer | grep -o -m 1 \"'[^']*'\" | tr -d \"'\") 88%"],
+          ["amixer set $(amixer | grep -o -m 1 \"'[^']*'\" | tr -d \"'\") 88% unmute"],
           execSpy.secondCall.args);
         assert.deepEqual(
           ["amixer sget $(amixer | grep -o -m 1 \"'[^']*'\" | tr -d \"'\") | grep -o -m 1 '[[:digit:]]*%' | tr -d '%'"],
