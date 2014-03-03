@@ -18,6 +18,11 @@ zeroconf_enabled        "yes"
 
 metadata_to_use         "artist,album,title,track,name,genre,date,disc"
 
+decoder {
+  plugin "mp4ff"
+  enabled "no"
+}
+
 {{#coreAudio}}
 audio_output {
     type "osx"
