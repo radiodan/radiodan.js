@@ -5,7 +5,7 @@
 Clients can subscribe to these subcription channels to recieve the latest data,
 on change.
 
-### audio.`<id>`.volume
+### audio.`<id>`
 
 Returns the master volume of the audio device.
 
@@ -47,7 +47,7 @@ Response is only set if error is false.
 
 ## Volume
 
-### command.audio.`<id>`.volume
+### command.audio.`<id>`
 
 Set to an absolute value:
 
