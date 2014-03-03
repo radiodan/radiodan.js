@@ -4,7 +4,7 @@ var program      = require('commander'),
     path         = require('path'),
     utils        = require('radiodan-client').utils,
     bootstrap    = require('../lib/bootstrap'),
-    systemVolume = require('../lib/system/volume'),
+    audioDevice  = require('../lib/system/audio'),
     package      = require('../package.json'),
     configFile,
     config;
@@ -46,4 +46,4 @@ try {
 }
 
 bootstrap.generateRadios(config);
-systemVolume.listen();
+audioDevice.create('default').listen();

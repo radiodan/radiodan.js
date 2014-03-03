@@ -13,11 +13,11 @@ var utils = require('radiodan-client').utils;
 
 chai.use(chaiAsPromised);
 
-var volume = require('../../lib/system/volume');
+var audio = require('../../lib/system/audio');
 
 chai.use(chaiAsPromised);
 
-describe('system volume', function(){
+describe('system audio', function(){
   before(function() {
     // chill winston
     winston.remove(winston.transports.Console);
@@ -55,9 +55,9 @@ describe('system volume', function(){
         }
       };
 
-      volume.listen(self.msgMock, 'darwin', self.execMock, winston);
+      audio.create('test-device').listen(self.msgMock, 'darwin', self.execMock, winston);
 
-      self.msgMock.emit('command.system.volume', data);
+      self.msgMock.emit('command.audio.test-device', data);
 
       assert.isFulfilled(self.execPromise.promise).then(function(){
         assert.equal(1, data.ack.callCount);
@@ -78,7 +78,7 @@ describe('system volume', function(){
       var self = this,
           data = { ack: sinon.spy(), content: { value: 88 }};
 
-      self.msgMock.emit('command.system.volume', data);
+      self.msgMock.emit('command.audio.test-device', data);
 
       var execSpy = sinon.stub();
       execSpy.onCall(0).returns(1);
@@ -95,9 +95,9 @@ describe('system volume', function(){
         }
       };
 
-      volume.listen(self.msgMock, 'linux', self.execMock, winston);
+      audio.create('test-device').listen(self.msgMock, 'linux', self.execMock, winston);
 
-      self.msgMock.emit('command.system.volume', data);
+      self.msgMock.emit('command.audio.test-device', data);
 
       assert.isFulfilled(self.execPromise.promise).then(function(){
         assert.equal(3, execSpy.callCount);
@@ -119,11 +119,11 @@ describe('system volume', function(){
 
       self.execMock = sinon.spy();
 
-      volume.listen(
+      audio.create('test-device').listen(
         self.msgMock, 'win32', self.execMock, winston
       );
 
-      self.msgMock.emit('command.system.volume', data);
+      self.msgMock.emit('command.audio.test-device', data);
 
       assert.equal(0, self.execMock.callCount);
       done();
@@ -133,7 +133,7 @@ describe('system volume', function(){
       var self = this;
       self.execMock = sinon.spy();
 
-      volume.listen(self.msgMock, 'darwin', self.execMock);
+      audio.create('test-device').listen(self.msgMock, 'darwin', self.execMock);
 
       self.msgMock.emit('command.radio.volume', 88);
 
