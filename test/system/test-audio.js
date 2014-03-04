@@ -57,7 +57,7 @@ describe('system audio', function(){
 
       audio.create('test-device').listen(self.msgMock, 'darwin', self.execMock, winston);
 
-      self.msgMock.emit('command.audio.test-device.volume', data);
+      self.msgMock.emit('command.audio.test-device', data);
 
       assert.isFulfilled(self.execPromise.promise).then(function(){
         assert.equal(1, data.ack.callCount);
@@ -78,7 +78,7 @@ describe('system audio', function(){
       var self = this,
           data = { ack: sinon.spy(), content: { value: 88 }};
 
-      self.msgMock.emit('command.audio.test-device.volume', data);
+      self.msgMock.emit('command.audio.test-device', data);
 
       var execSpy = sinon.stub();
       execSpy.onCall(0).returns(1);
@@ -97,7 +97,7 @@ describe('system audio', function(){
 
       audio.create('test-device').listen(self.msgMock, 'linux', self.execMock, winston);
 
-      self.msgMock.emit('command.audio.test-device.volume', data);
+      self.msgMock.emit('command.audio.test-device', data);
 
       assert.isFulfilled(self.execPromise.promise).then(function(){
         assert.equal(3, execSpy.callCount);
@@ -123,7 +123,7 @@ describe('system audio', function(){
         self.msgMock, 'win32', self.execMock, winston
       );
 
-      self.msgMock.emit('command.audio.test-device.volume', data);
+      self.msgMock.emit('command.audio.test-device', data);
 
       assert.equal(0, self.execMock.callCount);
       done();
