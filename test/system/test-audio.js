@@ -38,7 +38,7 @@ describe('system audio', function(){
 
     it('execs command for osx', function(done) {
       var self = this,
-          data = { ack: sinon.spy(), content: { value: 71 }};
+          data = { ack: sinon.spy(), content: { action: "volume", value: 71 }};
 
       var execSpy = sinon.stub();
       execSpy.onCall(0).returns(1);
@@ -55,7 +55,9 @@ describe('system audio', function(){
         }
       };
 
-      audio.create('test-device').listen(self.msgMock, 'darwin', self.execMock, winston);
+      audio.create('test-device').listen(
+        self.msgMock, 'darwin', self.execMock, winston
+      );
 
       self.msgMock.emit('command.audio.test-device', data);
 
@@ -76,7 +78,7 @@ describe('system audio', function(){
 
     it('execs command for linux', function(done){
       var self = this,
-          data = { ack: sinon.spy(), content: { value: 88 }};
+          data = { ack: sinon.spy(), content: { action: "volume", value: 88 }};
 
       self.msgMock.emit('command.audio.test-device', data);
 
