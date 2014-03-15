@@ -1,6 +1,6 @@
 {
   "dataPath": "/tmp/.radiodan",
-  "radios": [
+  "players": [
     {
       "name": "My radio",
       "id": 1

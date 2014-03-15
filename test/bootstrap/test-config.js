@@ -23,7 +23,7 @@ describe('bootstrap config', function (){
         "music": "~/Music",
         "log"  : "/var/log/"
       },
-      "radios": [
+      "players": [
         { "id": "x", "name": "My radio", "music" : "/var/data/music" },
         { "id": "x", "name": "another one" }
       ]
@@ -43,13 +43,13 @@ describe('bootstrap config', function (){
     assert.equal(0, parsedConfigs.length);
   });
 
-  it('returns an empty array if no radios', function () {
+  it('returns an empty array if no players', function () {
     var config = {
       "defaults": {
         "music": "~/Music",
         "log"  : "/var/log/"
       },
-      "radios": []
+      "players": []
     };
 
     var parsedConfigs = subject(config);
@@ -58,7 +58,7 @@ describe('bootstrap config', function (){
 
   it('defaults are optional', function () {
     var config = {
-      "radios": [
+      "players": [
         {
           "id"   : "x",
           "music": "~/Music",
@@ -77,7 +77,7 @@ describe('bootstrap config', function (){
       "defaults": {
         "id" : "my-radio-id"
       },
-      "radios": [
+      "players": [
         { "music": "~/Music", "log": "/var/log/" }
       ]
     };
@@ -89,7 +89,7 @@ describe('bootstrap config', function (){
 
   it('creates an id if missing from radio config', function () {
     var config = {
-          "radios": [
+          "players": [
             { "music": "~/Music", "log": "/var/log/" },
             { "music": "~/Music", "log": "/var/log/" }
           ]
@@ -107,7 +107,7 @@ describe('bootstrap config', function (){
 
   it('throws on invalid ids', function () {
     var config = {
-          "radios": [
+          "players": [
             { "id": "my-invalid*id", "music": "~/Music", "log": "/var/log/" }
           ]
         };
