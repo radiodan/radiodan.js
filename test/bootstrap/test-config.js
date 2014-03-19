@@ -38,12 +38,11 @@ describe('bootstrap config', function (){
     assert.deepEqual({ "id": "x", "name": "another one", "music": "~/Music", "log": "/var/log/" }, parsedConfigs[1]);
   });
 
-  it('returns an empty array if no config', function () {
-    var parsedConfigs = subject();
-    assert.equal(0, parsedConfigs.length);
+  it('throws error if no config', function () {
+    assert.throw(subject, "No players found");
   });
 
-  it('returns an empty array if no players', function () {
+  it('throws error if no players', function () {
     var config = {
       "defaults": {
         "music": "~/Music",
@@ -52,8 +51,7 @@ describe('bootstrap config', function (){
       "players": []
     };
 
-    var parsedConfigs = subject(config);
-    assert.equal(0, parsedConfigs.length);
+    assert.throw(function() { subject(config) }, "No players found");
   });
 
   it('defaults are optional', function () {
