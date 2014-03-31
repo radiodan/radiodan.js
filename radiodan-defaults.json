@@ -1,0 +1,6 @@
+{
+  "log": "syslog",
+  "httpStreaming": false,
+  "audioOutput": "stereo"
+}
+

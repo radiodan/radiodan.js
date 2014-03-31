@@ -25,19 +25,20 @@ decoder {
 
 {{#coreAudio}}
 audio_output {
-    type "osx"
-    name "CoreAudio"
+    type       "osx"
+    name       "CoreAudio"
     mixer_type "software"
+    format     "{{format}}"
 }
 {{/coreAudio}}
 
 {{#alsa}}
 audio_output {
-    type            "alsa"
-    name            "Speakers"
-    device          "hw:0,0"
-    format          "44100:16:2"
-    mixer_type      "software"
+    type       "alsa"
+    name       "Speakers"
+    device     "hw:0,0"
+    format     "{{format}}"
+    mixer_type "software"
 }
 {{/alsa}}
 
@@ -49,7 +50,7 @@ audio_output {
     port            "{{{httpPort}}}"
     bind_to_address "0.0.0.0"
     bitrate         "128"
-    format          "44100:16:1"
+    format          "{{format}}"
     max_clients     "0"
     always_on       "yes"
 }
