@@ -17,7 +17,7 @@ program
 
 switch (true) {
   case program.args.length == 1:
-    configFile = program.args[0];
+    configFile = path.relative(__dirname, program.args[0]);
     break;
   case program.args.length > 1:
   default:
@@ -39,11 +39,11 @@ process.on('uncaughtException', function(e) {
 });
 
 try {
-  config = require(path.relative(__dirname, configFile));
+  config = require(configFile);
 } catch (err) {
   logger.error("Could not parse config file "+configFile);
   process.exit(1);
 }
 
-bootstrap.generateRadios(config);
+bootstrap.generateRadios(config, configFile);
 audioDevice.create('default').listen();
