@@ -17,7 +17,7 @@ program
 
 switch (true) {
   case program.args.length == 1:
-    configFile = path.relative(__dirname, program.args[0]);
+    configFile = path.resolve(__dirname+'/..', program.args[0]);
     break;
   case program.args.length > 1:
   default:
