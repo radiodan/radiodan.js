@@ -5,26 +5,26 @@
 Clients can subscribe to these subcription channels to recieve the latest data,
 on change.
 
-### audio.`<id>`
+### event.audio.`<id>`
 
 Returns the master volume of the audio device.
 
-### radio.`<id>`.playlist
+### event.radio.`<id>`.playlist
 
 Returns the contents of the current playlist.
 
-### radio.`<id>`.player
+### event.radio.`<id>`.player
 
 Returns the state of the player
 (random, play state, which song is being played)
 
-### radio.`<id>`.volume
+### event.radio.`<id>`.volume
 
 Returns the volume of the player.
 Note that this is not the volume of the physical device, each player has it's
 own volume level.
 
-### radio.`<id>`.database
+### event.radio.`<id>`.database
 
 Returns statistics on the contents of the music database. Typically triggered
 by a `database.update` command.
@@ -133,7 +133,7 @@ Set using an offset of the current volume:
       diff:  -10
     }
 
-### radio.`<id>`.volume
+### event.radio.`<id>`.volume
 
     {
       value: 90
