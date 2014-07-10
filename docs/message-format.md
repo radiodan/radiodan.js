@@ -43,6 +43,23 @@ Any errors will be populated with an error object, otherwise `false`.
 
 Response is only set if error is false.
 
+# Discovery
+
+### command.discover.`<type>`
+
+This command allows introspection within the current server.
+
+Available types:
+
+* player
+
+    [
+      {
+        "name": "First player",
+        "id":   "player1"
+      }
+    ]
+
 # Audio
 
 ## Volume
