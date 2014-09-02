@@ -29,6 +29,7 @@ describe('bootstrap add system defaults', function (){
     assert.equal('/var/lib/radiodan/radios/123/mpd.db', config.db);
     assert.equal('syslog', config.log);
     assert.equal(false, config.httpStreaming);
+    assert.equal('mpd', config.player);
 
     // this is dependent on o/s running tests
     assert.ok(['coreAudio', 'alsa'].indexOf(config.platform) > -1);
