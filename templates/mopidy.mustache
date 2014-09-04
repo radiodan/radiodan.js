@@ -24,7 +24,12 @@
 [audio]
 #mixer = software
 #mixer_volume =
-#output = autoaudiosink
+{{#linux}}
+output = alsasink
+{{/linux}}
+{{^linux}}
+output = autoaudiosink
+{{/linux}}
 #visualizer =
 
 [proxy]
