@@ -1,17 +1,8 @@
 var subject = require('../../lib/player/mpd/client');
 
 describe('mpdClient', function (){
-  before(function() {
-    // chill winston
-    winston.remove(winston.transports.Console);
-  });
-
-  after(function() {
-    winston.add(winston.transports.Console);
-  });
-
   it('connects an mpd instance to the given port', function(done){
-    var client = subject.create(4321, winston);
+    var client = subject.create(4321);
     var mpdMock = new EventEmitter();
     var connectPromise = client.connect(mpdMock);
     mpdMock.emit('ready');
@@ -20,12 +11,12 @@ describe('mpdClient', function (){
   });
 
   it('fails when it cannot connect to mpd at a given port', function(done){
-    var client = subject.create(4321, winston);
+    var client = subject.create(4321);
     assert.isRejected(client.connect()).notify(done);
   });
 
   it('formats commands to an mpd-friendly format', function(){
-    var client = subject.create(4321, winston);
+    var client = subject.create(4321);
     var command = client.formatCommand(['play', '1']);
 
     assert.equal('play', command.name);
@@ -38,7 +29,7 @@ describe('mpdClient', function (){
   });
 
   it('sends formatted commands to the mpd instance', function(done){
-    var client = subject.create(4321, winston);
+    var client = subject.create(4321);
     var mpdMock = new EventEmitter();
     var commandSpy = sinon.spy();
     mpdMock.sendCommands = function(commands,cb){ commandSpy(commands); cb(); }
@@ -61,7 +52,7 @@ describe('mpdClient', function (){
   });
 
   it('will not send commands unless mpd instance is ready', function(done){
-    var client = subject.create(4321, winston);
+    var client = subject.create(4321);
     var mpdMock = new EventEmitter();
     var connectPromise = client.connect(mpdMock);
     mpdMock.emit('error');
@@ -75,7 +66,7 @@ describe('mpdClient', function (){
   });
 
   it('will send commands when mpd instance is ready', function(done) {
-    var client = subject.create(4321, winston);
+    var client = subject.create(4321);
     var mpdMock = new EventEmitter();
     var connectPromise = client.connect(mpdMock);
     mpdMock.emit('ready');
@@ -89,7 +80,7 @@ describe('mpdClient', function (){
   });
 
   it('listens and emits mpd events', function(done){
-    var client = subject.create(4321, winston);
+    var client = subject.create(4321);
     var mpdMock = new EventEmitter();
     var commandSpy = sinon.spy();
 
@@ -104,7 +95,7 @@ describe('mpdClient', function (){
   });
 
   it('emits errors from mpd instance', function(done){
-    var client = subject.create(4321, winston);
+    var client = subject.create(4321);
     var mpdMock = new EventEmitter();
     var commandSpy = sinon.spy();
 
