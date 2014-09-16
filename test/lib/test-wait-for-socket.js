@@ -1,15 +1,6 @@
 var waitForSocket = require('../../lib/wait-for-socket');
 
 describe('waitForSocket', function(){
-  before(function() {
-    // chill winston
-    winston.remove(winston.transports.Console);
-  });
-
-  after(function() {
-    winston.add(winston.transports.Console);
-  });
-
   before(function () {
     this.port = 65535;
   });
@@ -43,10 +34,9 @@ describe('waitForSocket', function(){
       assert(this.mockSocket.setTimeout.calledWith(2500));
     });
 
-
     it('tries again on failure', function () {
       var clock = sinon.useFakeTimers(),
-          timeout = 10;
+          timeout = 1000;
 
       var waitFor = waitForSocket.create(this.port, this.mockSocket);
       var promise = waitFor.connect();
