@@ -1,16 +1,6 @@
-/* globals describe, it, before */
-'use strict';
-
-var chai = require('chai'),
-    assert = chai.assert,
-    chaiAsPromised = require('chai-as-promised'),
-    sinon  = require('sinon');
-
-chai.use(chaiAsPromised);
-
 var subject = require('../../lib/bootstrap/add-system-defaults');
 
-describe('bootstrap add system defaults', function (){
+describe('bootstrap: add system defaults', function (){
   it('Adds mpd paths to root', function () {
     var defaults = subject.create('/tmp/radiodan/'),
         config   = defaults.add({id: 123});
@@ -30,9 +20,18 @@ describe('bootstrap add system defaults', function (){
     assert.equal('syslog', config.log);
     assert.equal(false, config.httpStreaming);
     assert.equal('mpd', config.player);
+  });
 
-    // this is dependent on o/s running tests
-    assert.ok(['coreAudio', 'alsa'].indexOf(config.platform) > -1);
+  it('adds values from operating system', function() {
+    var config      = { id: 123 },
+        osxConfig   = subject.create(null, 'darwin').add(config),
+        linuxConfig = subject.create(null, 'linux').add(config);
+
+    assert.isUndefined(osxConfig.linux);
+    assert.isTrue(osxConfig.osx);
+
+    assert.isTrue(linuxConfig.linux);
+    assert.isUndefined(linuxConfig.osx);
   });
 
   it('leaves config settings alone', function() {
