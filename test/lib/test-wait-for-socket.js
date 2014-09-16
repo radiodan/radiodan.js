@@ -1,11 +1,3 @@
-/* globals describe, it, before, beforeEach */
-'use strict';
-
-var assert = require('chai').assert,
-    sinon  = require('sinon'),
-    winston = require('winston'),
-    EventEmitter = require('events').EventEmitter;
-
 var waitForSocket = require('../../lib/wait-for-socket');
 
 describe('waitForSocket', function(){

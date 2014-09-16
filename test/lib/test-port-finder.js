@@ -1,13 +1,4 @@
-/* globals describe, it, before */
-'use strict';
-
-var chai = require('chai'),
-    assert = chai.assert,
-    chaiAsPromised = require('chai-as-promised'),
-    utils = require('radiodan-client').utils,
-    PortFinder = require('../../lib/port-finder');
-
-chai.use(chaiAsPromised);
+var PortFinder = require('../../lib/port-finder');
 
 describe('PortFinder', function (){
   it('finds a single port', function(next) {

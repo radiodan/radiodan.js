@@ -1,18 +1,4 @@
-/* globals describe, it, before */
-'use strict';
-
-var chai = require('chai'),
-    assert = chai.assert,
-    chaiAsPromised = require('chai-as-promised'),
-    sinon  = require('sinon'),
-    EventEmitter = require('events').EventEmitter;
-
-var utils = require('radiodan-client').utils;
-
-chai.use(chaiAsPromised);
-
-var subject = require('../../lib/mpd/mpd-child-process');
-
+var subject = require('../../lib/child-process');
 
 function createMockLogger() {
   var logger = sinon.spy();
