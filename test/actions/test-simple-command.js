@@ -1,8 +1,6 @@
 var subject = require('../../lib/actions/simple-command');
 
 describe('simple-command action wrapper', function() {
-
-
   it('sends a single command only', function() {
     var radio = { sendCommands: sinon.spy() },
         command = 'myCommand';

@@ -1,21 +1,4 @@
-
-/* globals describe, it, before, beforeEach */
-'use strict';
-
-var chai = require('chai'),
-    assert = chai.assert,
-    chaiAsPromised = require('chai-as-promised'),
-    sinon  = require('sinon'),
-    winston = require('winston'),
-    EventEmitter = require('events').EventEmitter;
-
-var utils = require('radiodan-client').utils;
-
-chai.use(chaiAsPromised);
-
 var audio = require('../../lib/system/audio');
-
-chai.use(chaiAsPromised);
 
 describe('system audio', function(){
   before(function() {

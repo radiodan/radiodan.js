@@ -1,74 +1,39 @@
 var subject = require('../../lib/child-process');
 
-function createMockLogger() {
-  var logger = sinon.spy();
-  logger.debug  = sinon.spy();
-  logger.warn  = sinon.spy();
-  logger.error = sinon.spy();
-  return logger;
-}
+describe('Child Process', function(){
+  beforeEach(function() {
+    // stub out process to prevent attempted removal of child process
+    process.on = sinon.stub();
+  });
 
-describe('mpdProcess', function(){
-  describe('locating the mpd binary', function () {
-    it('uses POSIX commands to locate binary', function () {
-      var exec = sinon.stub().returns({ done: function () {} });
-      subject.processPath(exec);
-      assert(exec.calledWith('command -v mpd'), 'wrong command');
+  describe('locating full path of command', function () {
+    it('uses POSIX commands to locate path', function () {
+      var exec = sinon.stub().returns(utils.promise.resolve(''));
+
+      subject.processPath('mopidy', exec);
+      assert(exec.calledWith('command -v mopidy'), 'wrong command called');
     });
 
-    it('finds the first mpd binary on the system', function (done) {
-      var exec = function () {
-        var dfd = utils.promise.defer(),
-            promise = dfd.promise;
+    it('returns the first path if multiple matches are found', function (done) {
+      var exec = sinon.stub().returns(
+            utils.promise.resolve(
+              ['/first/path/to/mpd', '/second/path/to/mpd']
+            )
+          ),
+          processPromise = subject.processPath('mpd', exec);
 
-        dfd.resolve(['/sommat/sommert/mpd']);
-        return promise;
-      };
-
-      subject.processPath(exec);
-
-      assert.becomes(subject.processPath(exec), '/sommat/sommert/mpd')
-            .notify(done);
+      assert.becomes(
+        processPromise, '/first/path/to/mpd'
+      ).then(done, done);
     });
   });
 
-  describe('spawning a child mpd process', function () {
-
-    before(function () {
-      this.binaryPath = '/sommat/mpd';
-    });
-
-
-    it('spawns using the correct binary', function (done) {
-      var spawnMock = sinon.stub(),
-          loggerMock = createMockLogger(),
-          binPath = this.binaryPath;
+  describe('spawning the process', function () {
+    it('rejects on error', function(done) {
+      var spawnMock = sinon.stub();
 
       subject.processPath = function () {
-        var dfd = utils.promise.defer();
-        dfd.resolve(binPath);
-        return dfd.promise;
-      };
-
-      spawnMock.returns({stdout: {on: function(_,cb){ cb(''); }}});
-
-      var promise = subject.create('some/config.conf', spawnMock, loggerMock);
-
-      assert.isFulfilled(promise).then(function () {
-        assert(spawnMock.calledWithExactly(binPath, ['some/config.conf', '--no-daemon', '--verbose']));
-        done();
-      });
-    });
-
-    it('rejects the promise on spawning error', function(done) {
-      var spawnMock = sinon.stub(),
-          loggerMock = createMockLogger(),
-          binPath = this.binaryPath;
-
-      subject.processPath = function () {
-        var dfd = utils.promise.defer();
-        dfd.resolve(binPath);
-        return dfd.promise;
+        return utils.promise.resolve('cmd');
       };
 
       spawnMock.returns({
@@ -81,12 +46,13 @@ describe('mpdProcess', function(){
         }
       });
 
-      var promise = subject.create('some/config.conf', spawnMock, loggerMock);
+      var promise = subject.spawnProcess('cmd', ['args'], spawnMock);
 
-      assert.isRejected(promise).then(function () {
-        assert(spawnMock.calledWithExactly(binPath, ['some/config.conf', '--no-daemon', '--verbose']));
-        done();
-      });
+      assert.isRejected(promise)
+        .then(function () {
+          assert(spawnMock.calledWithExactly('cmd', ['args']), 'called with unexpected arguments');
+        })
+        .then(done, done);
     });
 
     it('rejects the promise if no mpd binary is found', function(done) {
@@ -101,76 +67,63 @@ describe('mpdProcess', function(){
 
       var promise = subject.create('some/config.conf', spawnMock);
 
-      assert.isRejected(promise).then(function () {
-        assert.equal(0, spawnMock.callCount);
-        done();
-      });
+      assert.isRejected(promise)
+        .then(function () {
+          assert.equal(0, spawnMock.callCount);
+        })
+        .then(done, done);
     });
-  });
 
-  describe('logging output from the mpd process', function () {
     it('logs stdout from the child process', function (done) {
       var spawnMock = sinon.stub(),
-          loggerMock = createMockLogger(),
-          binPath = this.binaryPath;
+          loggerMock = {};
 
-      subject.processPath = function () {
-        var dfd = utils.promise.defer();
-        dfd.resolve();
-        return dfd.promise;
-      };
+      loggerMock.debug = sinon.stub();
 
       spawnMock.returns({
         stdout: {on: function(eventName,cb){
           if(eventName === 'data') {
-            cb('');
+            cb('LOG ME');
           }
         }},
         on: function(){},
         stderr: {on: function(){}},
       });
 
-      var promise = subject.create(
-          'some/config.conf',
-          spawnMock, loggerMock);
+      var promise = subject.spawnProcess(
+        'command', ['args'], spawnMock, loggerMock
+      );
 
-      assert.isFulfilled(promise).then(function () {
-        assert(loggerMock.debug.calledOnce);
-        done();
-      });
+      assert.isFulfilled(promise)
+        .then(function () {
+          assert(loggerMock.debug.calledWith('LOG ME'));
+        })
+        .then(done,done);
     });
 
     it('logs stderr from the child process', function(done) {
       var spawnMock = sinon.stub(),
-          loggerMock = createMockLogger(),
-          binPath = this.binaryPath;
-
-      var processPromise = utils.promise.defer();
-      subject.processPath = function () {
-        processPromise.resolve();
-        return processPromise.promise;
-      };
-
-      var spawnEvent = new EventEmitter();
-      spawnEvent.stdout = new EventEmitter();
-      spawnEvent.stderr = new EventEmitter();
+          loggerMock = {},
+          spawnEvent = new EventEmitter();
+          spawnEvent.stdout = new EventEmitter();
+          spawnEvent.stderr = new EventEmitter();
+          spawnEvent.debug = new EventEmitter();
+          loggerMock.debug = sinon.stub();
 
       spawnMock.returns(spawnEvent);
 
-      var promise = subject.create(
-        'some/config.conf',
-        spawnMock, loggerMock
-        );
+      var spawnPromise = subject.spawnProcess(
+        'cmd', ['args'], spawnMock, loggerMock
+      );
 
-      // wait for spawn promise to complete...
-      processPromise.promise.then(function(){
-        spawnEvent.stderr.emit('data', '');
-      });
+      spawnEvent.stderr.emit('data', 'ERROR:');
 
-      assert.isFulfilled(promise).then(function () {
-        assert(loggerMock.debug.calledOnce);
-        done();
-      });
+      assert.isFulfilled(spawnPromise)
+        .then(function () {
+          assert(loggerMock.debug.calledOnce);
+          assert(loggerMock.debug.calledWith('ERROR:'));
+        })
+        .then(done,done);
     });
   });
 });
