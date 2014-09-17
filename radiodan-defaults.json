@@ -1,6 +1,7 @@
 {
   "log": "syslog",
   "httpStreaming": false,
-  "audioOutput": "stereo"
+  "audioOutput": "stereo",
+  "player": "mpd"
 }
 

@@ -23,24 +23,24 @@ decoder {
   enabled "no"
 }
 
-{{#coreAudio}}
 audio_output {
-    type       "osx"
-    name       "CoreAudio"
-    mixer_type "software"
-    format     "{{format}}"
-}
-{{/coreAudio}}
-
-{{#alsa}}
-audio_output {
+  {{#linux}}
     type       "alsa"
     name       "Speakers"
     device     "hw:0,0"
-    format     "{{format}}"
+  {{/linux}}
+  {{#osx}}
+    type       "osx"
+    name       "CoreAudio"
+  {{/osx}}
+  {{#outputFormat}}
+    format     "{{outputFormat}}"
+  {{/outputFormat}}
+  {{^outputFormat}}
+    format     "44100:16:2"
+  {{/outputFormat}}
     mixer_type "software"
 }
-{{/alsa}}
 
 {{#httpStreaming}}
 audio_output {
@@ -50,7 +50,7 @@ audio_output {
     port            "{{{httpPort}}}"
     bind_to_address "0.0.0.0"
     bitrate         "128"
-    format          "{{format}}"
+    format          "44100:16:2"
     max_clients     "0"
     always_on       "yes"
 }

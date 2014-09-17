@@ -3,11 +3,13 @@
   "players": [
     {
       "name": "My radio",
-      "id": 1
+      "id": 1,
+      "player": "mpd"
     },
     {
       "name": "another one",
-      "id": 2
+      "id": 2,
+      "player": "mpd"
     }
   ]
 }

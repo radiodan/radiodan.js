@@ -1,42 +1,21 @@
-/* globals describe, it, before */
-'use strict';
+var subject = require('../../lib/player/config');
 
-var chai = require('chai'),
-    assert = chai.assert,
-    chaiAsPromised = require('chai-as-promised'),
-    sinon  = require('sinon'),
-    winston = require('winston'),
-    fs     = require('fs'),
-    EventEmitter = require('events').EventEmitter;
-
-var utils = require('radiodan-client').utils;
-
-chai.use(chaiAsPromised);
-
-var subject = require('../../lib/mpd/mpd-config');
-
+//TODO: split into MPD config, mopidy config, generic features
 describe('mpdConfig', function (){
-  before(function() {
-    // chill winston
-    winston.remove(winston.transports.Console);
-  });
-
-  after(function() {
-    winston.add(winston.transports.Console);
-  });
-
   beforeEach(function () {
     this.configObject = {
       music: '~/music',
       playlist: '~/music/playlists',
       db: '~/music/mpd.db',
-      log: '/var/log/mpd.log'
+      log: '/var/log/mpd.log',
+      player: 'mpd'
     };
   });
 
   it('generates a config file populated by supplied object', function (done) {
-    var mpdConfig = subject.create();
-    var built = mpdConfig.build(this.configObject);
+    var portsPromise = utils.promise.resolve([6600, 6601]);
+    var mpdConfig = subject.create(this.configObject, portsPromise);
+    var built = mpdConfig.build();
 
     assert.isFulfilled(built).then(function(mpdContent) {
       // music
@@ -55,10 +34,10 @@ describe('mpdConfig', function (){
   });
 
   it('assigns ports', function(done) {
-    var firstConfig  = subject.create(),
-        secondConfig = subject.create(),
-        firstBuild   = firstConfig.build({}, [6600]),
-        secondBuild  = secondConfig.build({}, [6601]);
+    var firstConfig  = subject.create({player: 'mpd'}, utils.promise.resolve([6600])),
+        secondConfig = subject.create({player: 'mpd'}, utils.promise.resolve([6601])),
+        firstBuild   = firstConfig.build(),
+        secondBuild  = secondConfig.build();
 
     assert.isFulfilled(firstBuild).then(function(mpdContent) {
       return assert.match(mpdContent, /^port (\s+) "6600"$/m);
@@ -73,8 +52,8 @@ describe('mpdConfig', function (){
     var config = this.configObject;
     config.httpStreaming = true;
 
-    var mpdConfig = subject.create(),
-        built = mpdConfig.build(config, [null, 8000]);
+    var mpdConfig = subject.create(config, utils.promise.resolve([null, 8000])),
+        built = mpdConfig.build();
 
     assert.isFulfilled(built).then(function(mpdContent) {
       assert.match(mpdContent, /port (\s+) "8000"$/m);
@@ -82,8 +61,9 @@ describe('mpdConfig', function (){
   });
 
   it('sets audio output format', function(done) {
-    var mpdConfig = subject.create(),
-        built = mpdConfig.build({platform: "coreAudio", audioOutput: 'mono'}, []);
+    var config = {player: 'mpd', osx: true, outputFormat: '44100:16:1'},
+        mpdConfig = subject.create(config, utils.promise.resolve([])),
+        built = mpdConfig.build();
 
     assert.isFulfilled(built).then(function(mpdContent) {
       assert.match(mpdContent, /format (\s+) "44100:16:1"$/m);
@@ -92,29 +72,19 @@ describe('mpdConfig', function (){
 
   it('generates a platform-specific boolean key', function(done) {
     var config = this.configObject;
-    config.platform = "coreAudio";
+    config.osx = true;
 
-    var mpdConfig = subject.create();
-    var built = mpdConfig.build(config);
+    var mpdConfig = subject.create(config, utils.promise.resolve([]));
+    var built = mpdConfig.build();
 
     assert.isFulfilled(built).then(function(mpdContent) {
       assert.match(mpdContent, /type\s* "osx"$/m);
     }).then(done,done);
   });
 
-  it('generates a temporary file path to write to', function (done) {
-    var mpdConfig = subject.create(),
-        promise = mpdConfig.fileName();
-
-    assert.isFulfilled(promise).then(function (filePath) {
-      assert.notOk(fs.existsSync(filePath));
-      done();
-    });
-  });
-
-  it('writes config to a file', function (done) {
-    var mpdConfig = subject.create(),
-        promise = mpdConfig.write(this.configObject);
+  it('writes config to a generated path', function (done) {
+    var mpdConfig = subject.create(this.configObject, utils.promise.resolve([0,1])),
+        promise = mpdConfig.write();
 
     assert.isFulfilled(promise).then(function (args) {
       var filePath = args[0];

@@ -1,0 +1,143 @@
+# For further information about options in this file see:
+#   http://docs.mopidy.com/
+#
+# The initial commented out values reflect the defaults as of:
+#   Mopidy 0.19.1
+#   Mopidy-HTTP 0.19.1
+#   Mopidy-Local 0.19.1
+#   Mopidy-MPD 0.19.1
+#   Mopidy-SoftwareMixer 0.19.1
+#   Mopidy-Spotify 1.2.0
+#   Mopidy-Stream 0.19.1
+#
+# Available options and defaults might have changed since then,
+# run `mopidy config` to see the current effective config and
+# `mopidy --version` to check the current version.
+
+[logging]
+#color = true
+#console_format = %(levelname)-8s %(message)s
+#debug_format = %(levelname)-8s %(asctime)s [%(process)d:%(threadName)s] %(name)s\n  %(message)s
+#debug_file = mopidy.log
+#config_file =
+
+[audio]
+#mixer = software
+#mixer_volume =
+{{#linux}}
+output = alsasink
+{{/linux}}
+{{^linux}}
+output = autoaudiosink
+{{/linux}}
+#visualizer =
+
+[proxy]
+#scheme =
+#hostname =
+#port =
+#username =
+#password =
+
+{{#httpStreaming}}
+[http]
+enabled = true
+hostname = 127.0.0.1
+port = {{{httpPort}}}
+#static_dir =
+zeroconf = Mopidy HTTP: {{{name}}}
+{{/httpStreaming}}
+
+{{^httpStreaming}}
+[http]
+enabled = false
+{{/httpStreaming}}
+
+[mpd]
+enabled = true
+hostname = 127.0.0.1
+port = {{{port}}}
+#password =
+max_connections = 20
+connection_timeout = 60
+zeroconf = Mopidy MPD: {{name}}
+
+[softwaremixer]
+enabled = true
+
+[local]
+enabled = true
+#library = json
+media_dir = {{{music}}}
+data_dir = {{{db}}}
+playlists_dir = {{{playlist}}}
+scan_timeout = 1000
+scan_flush_threshold = 1000
+excluded_file_extensions =
+  .directory
+  .html
+  .jpeg
+  .jpg
+  .log
+  .nfo
+  .png
+  .txt
+
+[stream]
+enabled = true
+protocols =
+  file
+  http
+  https
+  mms
+  rtmp
+  rtmps
+  rtsp
+metadata_blacklist =
+timeout = 5000
+
+[spotify]
+#enabled = true
+#username =
+#password =
+#bitrate = 160
+#timeout = 10
+#cache_dir = $XDG_CACHE_DIR/mopidy/spotify
+#settings_dir = $XDG_CONFIG_DIR/mopidy/spotify
+#toplist_countries =
+#  AD
+#  AR
+#  AU
+#  AT
+#  BE
+#  CO
+#  CY
+#  DK
+#  EE
+#  FI
+#  FR
+#  DE
+#  GR
+#  HK
+#  IS
+#  IE
+#  IT
+#  LV
+#  LI
+#  LT
+#  LU
+#  MY
+#  MX
+#  MC
+#  NL
+#  NZ
+#  NO
+#  PT
+#  ES
+#  SG
+#  SE
+#  CH
+#  TW
+#  TR
+#  GB
+#  US

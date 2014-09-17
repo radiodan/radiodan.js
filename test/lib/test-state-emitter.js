@@ -1,16 +1,3 @@
-/* globals describe, it, before */
-'use strict';
-
-var chai = require('chai'),
-    assert = chai.assert,
-    chaiAsPromised = require('chai-as-promised'),
-    winston = require('winston'),
-    sinon  = require('sinon');
-
-var utils = require('radiodan-client').utils;
-
-chai.use(chaiAsPromised);
-
 describe('state-emitter', function (){
   beforeEach(function(){
     this.subject = require('../../lib/state-emitter');
