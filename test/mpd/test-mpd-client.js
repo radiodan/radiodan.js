@@ -12,7 +12,13 @@ describe('mpdClient', function (){
 
   it('fails when it cannot connect to mpd at a given port', function(done){
     var client = subject.create(4321);
-    assert.isRejected(client.connect()).notify(done);
+    var mpdMock = new EventEmitter();
+    var connectPromise = client.connect(mpdMock);
+
+    mpdMock.emit('error');
+
+
+    assert.isRejected(connectPromise).notify(done);
   });
 
   it('formats commands to an mpd-friendly format', function(){
