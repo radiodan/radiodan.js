@@ -6,9 +6,10 @@ describe('playlist.move action', function() {
 
     subject(radio, {from: '2', to: '44'});
     assert.equal(1, radio.sendCommands.callCount);
-    assert.ok(radio.sendCommands.calledWith([
-      ['move', '2', '44']
-    ]));
+    assert.deepEqual(
+      [['move', '2', '44']],
+      radio.sendCommands.firstCall.args[0]
+    );
   });
 });
 
