@@ -1,4 +1,4 @@
-var subject = require('../../lib/states/database');
+var subject = require(libDir + 'states/database');
 
 describe('database state', function() {
   it('extracts useful status info', function(done) {

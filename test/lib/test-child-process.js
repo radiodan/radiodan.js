@@ -1,4 +1,4 @@
-var subject = require('../../lib/child-process');
+var subject = require(libDir + 'child-process');
 
 describe('Child Process', function(){
   beforeEach(function() {

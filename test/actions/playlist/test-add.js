@@ -1,14 +1,4 @@
-/* globals describe, it, before */
-'use strict';
-
-var chai = require('chai'),
-    assert = chai.assert,
-    chaiAsPromised = require('chai-as-promised'),
-    sinon  = require('sinon');
-
-chai.use(chaiAsPromised);
-
-var subject = require('../../../lib/actions/playlist/add');
+var subject = require(libDir + 'actions/playlist/add');
 
 describe('playlist.add action', function() {
   it('adds given tracks to current playlist', function() {

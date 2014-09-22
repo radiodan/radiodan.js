@@ -1,4 +1,4 @@
-var subject = require('../../lib/states/volume');
+var subject = require(libDir + 'states/volume');
 
 describe('volume state', function() {
   it('requests current volume', function(done) {

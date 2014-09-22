@@ -1,4 +1,4 @@
-var subject = require('../../lib/actions/toggle-command');
+var subject = require(libDir + '/actions/toggle-command');
 
 describe('toggle command meta-action', function() {
 

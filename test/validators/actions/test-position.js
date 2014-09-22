@@ -1,14 +1,4 @@
-/* globals describe, it, before */
-'use strict';
-
-var chai = require('chai'),
-    assert = chai.assert,
-    chaiAsPromised = require('chai-as-promised'),
-    sinon  = require('sinon');
-
-chai.use(chaiAsPromised);
-
-var subject = require('../../../lib/validators/actions/position');
+var subject = require(libDir + 'validators/actions/position');
 
 describe('validate position action', function() {
   it('accepts an absolute position', function(done) {

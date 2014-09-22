@@ -1,4 +1,4 @@
-var audio = require('../../lib/system/audio');
+var audio = require(libDir + 'system/audio');
 
 describe('system audio', function(){
   before(function() {

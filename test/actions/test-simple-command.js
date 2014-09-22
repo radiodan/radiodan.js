@@ -1,4 +1,4 @@
-var subject = require('../../lib/actions/simple-command');
+var subject = require(libDir + 'actions/simple-command');
 
 describe('simple-command action wrapper', function() {
   it('sends a single command only', function() {

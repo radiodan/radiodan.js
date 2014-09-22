@@ -1,4 +1,4 @@
-var subject = require('../../lib/states/player');
+var subject = require(libDir + 'states/player');
 
 describe('status action', function() {
   it('requests current status', function() {

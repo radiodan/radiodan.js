@@ -1,4 +1,4 @@
-var Invoker = require('../../lib/invoker');
+var Invoker = require(libDir + '/invoker');
 
 describe('action', function (){
   it('executes a matching action', function() {

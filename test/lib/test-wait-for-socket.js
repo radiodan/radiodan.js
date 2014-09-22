@@ -1,4 +1,4 @@
-var waitForSocket = require('../../lib/wait-for-socket');
+var waitForSocket = require(libDir + 'wait-for-socket');
 
 describe('waitForSocket', function(){
   before(function () {

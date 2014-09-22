@@ -1,4 +1,4 @@
-var PortFinder = require('../../lib/port-finder');
+var PortFinder = require(libDir + 'port-finder');
 
 describe('PortFinder', function (){
   beforeEach(function() {

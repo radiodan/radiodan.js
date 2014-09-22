@@ -12,6 +12,7 @@ global.utils        = require('radiodan-client').utils;
 global.EventEmitter = require('events').EventEmitter;
 global.winston      = require('winston');
 global.assert       = chai.assert;
+global.libDir       = __dirname + '/../lib/';
 
 chai.use(cap);
 

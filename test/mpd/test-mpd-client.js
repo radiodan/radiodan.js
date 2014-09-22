@@ -1,4 +1,4 @@
-var subject = require('../../lib/player/mpd/client');
+var subject = require(libDir + 'player/mpd/client');
 
 describe('mpdClient', function (){
   it('connects an mpd instance to the given port', function(done){

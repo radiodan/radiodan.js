@@ -1,6 +1,6 @@
 describe('state-emitter', function (){
   beforeEach(function(){
-    this.subject = require('../../lib/state-emitter');
+    this.subject = require(libDir + 'state-emitter');
   });
 
   it('returns a object per non-matching key', function(done) {

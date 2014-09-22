@@ -1,4 +1,4 @@
-var subject = require('../../lib/bootstrap/config');
+var subject = require(libDir + 'bootstrap/config');
 
 describe('bootstrap config', function (){
   beforeEach(function () {

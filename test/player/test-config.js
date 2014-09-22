@@ -1,4 +1,4 @@
-var subject = require('../../lib/player/config');
+var subject = require(libDir + '/player/config');
 
 //TODO: split into MPD config, mopidy config, generic features
 describe('mpdConfig', function (){

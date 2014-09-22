@@ -1,4 +1,4 @@
-var subject = require('../../lib/states/playlist');
+var subject = require(libDir + 'states/playlist');
 
 describe('playlist action', function() {
   it('requests current playlist', function() {
