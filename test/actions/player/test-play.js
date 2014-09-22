@@ -1,7 +1,6 @@
 var subject = require(libDir + '/actions/player/play');
 
 describe('player.play action', function() {
-
   it('sends the play command', function() {
     var radio = { sendCommands: sinon.spy() };
 
