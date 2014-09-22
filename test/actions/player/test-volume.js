@@ -1,15 +1,6 @@
 var subject = require(libDir + 'actions/player/volume');
 
 describe('volume action', function() {
-  before(function() {
-    // chill winston
-    winston.remove(winston.transports.Console);
-  });
-
-  after(function() {
-    winston.add(winston.transports.Console);
-  });
-
   it('rejects unknown volume action types without sending commands', function(done) {
     var radio = { sendCommands: sinon.spy() };
 

@@ -1,15 +1,6 @@
 var subject = require(libDir + '/actions/database/update');
 
 describe('database action', function() {
-  before(function() {
-    // chill winston
-    winston.remove(winston.transports.Console);
-  });
-
-  after(function() {
-    winston.add(winston.transports.Console);
-  });
-
   beforeEach(function() {
     this.radio = { sendCommands: sinon.spy() };
   });

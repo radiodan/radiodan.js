@@ -1,15 +1,6 @@
 var audio = require(libDir + 'system/audio');
 
 describe('system audio', function(){
-  before(function() {
-    // chill winston
-    winston.remove(winston.transports.Console);
-  });
-
-  after(function() {
-    winston.add(winston.transports.Console);
-  });
-
   describe('when volume is valid', function() {
     beforeEach(function(){
       var execPromise = utils.promise.defer();
@@ -39,7 +30,7 @@ describe('system audio', function(){
       };
 
       audio.create('test-device').listen(
-        self.msgMock, 'darwin', self.execMock, winston
+        self.msgMock, 'darwin', self.execMock
       );
 
       self.msgMock.emit('command.audio.test-device', data);
@@ -80,7 +71,7 @@ describe('system audio', function(){
         }
       };
 
-      audio.create('test-device').listen(self.msgMock, 'linux', self.execMock, winston);
+      audio.create('test-device').listen(self.msgMock, 'linux', self.execMock);
 
       self.msgMock.emit('command.audio.test-device', data);
 
@@ -105,7 +96,7 @@ describe('system audio', function(){
       self.execMock = sinon.spy();
 
       audio.create('test-device').listen(
-        self.msgMock, 'win32', self.execMock, winston
+        self.msgMock, 'win32', self.execMock
       );
 
       self.msgMock.emit('command.audio.test-device', data);
