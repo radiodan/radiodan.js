@@ -17,8 +17,8 @@
     "radiodan-cli": "./bin/cli"
   },
   "scripts": {
-    "test": "LOG_LEVEL=fatal node_modules/mocha/bin/mocha --recursive",
-    "coverage": "LOG_LEVEL=fatal node_modules/istanbul/lib/cli.js cover _mocha -- --recursive --ui bdd -R spec -t 5000",
+    "test": "LOG_LEVEL=fatal node_modules/mocha/bin/mocha --recursive --require test/helper",
+    "coverage": "LOG_LEVEL=fatal node_modules/istanbul/lib/cli.js cover _mocha -- --require test/helper --recursive --ui bdd -R spec -t 5000",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "dependencies": {
