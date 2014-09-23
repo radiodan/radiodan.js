@@ -17,7 +17,6 @@ describe('mpdClient', function (){
 
     mpdMock.emit('error');
 
-
     assert.isRejected(connectPromise).notify(done);
   });
 
