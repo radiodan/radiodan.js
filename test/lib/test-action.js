@@ -3,6 +3,10 @@ describe('action', function() {
     this.subject = require(libDir + 'action');
   });
 
+  it('is an invoker', function() {
+    assert.isFunction(this.subject.invoke);
+  });
+
   it('has a list of available methods', function() {
     var methodNames = Object.keys(this.subject.methods);
 
