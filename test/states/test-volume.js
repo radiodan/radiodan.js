@@ -12,8 +12,6 @@ describe('volume state', function() {
     assert.isFulfilled(promise).then(function(obj) {
       assert.equal(100, obj.volume);
       assert.ok(invoker.invoke.calledWith(radio, 'player'));
-
-      done();
-    });
+    }).then(done,done);
   });
 });

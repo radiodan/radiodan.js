@@ -25,7 +25,6 @@ describe('status action', function() {
 
     assert.isFulfilled(promise).then(function(response) {
       assert.ok(radio.formatResponse.calledWith(statusString));
-      done();
-    });
+    }).then(done,done);
   });
 });
