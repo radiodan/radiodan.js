@@ -1,14 +1,4 @@
-/* globals describe, it, before */
-'use strict';
-
-var chai = require('chai'),
-    assert = chai.assert,
-    chaiAsPromised = require('chai-as-promised'),
-    sinon  = require('sinon');
-
-chai.use(chaiAsPromised);
-
-var subject = require('../../../../lib/validators/actions/database/update');
+var subject = require(libDir + 'validators/actions/database/update');
 
 describe('validate database action', function() {
   it('resolves with force defaulted to false', function(done) {

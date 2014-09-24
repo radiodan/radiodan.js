@@ -1,14 +1,4 @@
-/* globals describe, it, before */
-'use strict';
-
-var chai = require('chai'),
-    assert = chai.assert,
-    chaiAsPromised = require('chai-as-promised'),
-    sinon  = require('sinon');
-
-chai.use(chaiAsPromised);
-
-var subject = require('../../../../lib/validators/actions/playlist/move');
+var subject = require(libDir + '/validators/actions/playlist/move');
 
 describe('validate move action', function() {
   it('resolves with absolute options', function(done) {
@@ -47,4 +37,3 @@ describe('validate move action', function() {
     assert.isRejected(promise, Error);
   });
 });
-

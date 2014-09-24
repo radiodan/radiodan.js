@@ -1,14 +1,4 @@
-/* globals describe, it, before */
-'use strict';
-
-var chai = require('chai'),
-    assert = chai.assert,
-    chaiAsPromised = require('chai-as-promised'),
-    sinon  = require('sinon');
-
-chai.use(chaiAsPromised);
-
-var subject = require('../../../../lib/validators/actions/player/seek');
+var subject = require(libDir + 'validators/actions/player/seek');
 
 describe('validate player.seek action', function() {
   it('resolves with position and seek time', function(done) {
@@ -65,4 +55,3 @@ describe('validate player.seek action', function() {
     assert.isRejected(promise, Error).then(done, done);
   });
 });
-

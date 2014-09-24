@@ -1,14 +1,4 @@
-/* globals describe, it, before */
-'use strict';
-
-var chai = require('chai'),
-    assert = chai.assert,
-    chaiAsPromised = require('chai-as-promised'),
-    sinon  = require('sinon');
-
-chai.use(chaiAsPromised);
-
-var subject = require('../../../../lib/validators/actions/database/search');
+var subject = require(libDir + '/validators/actions/database/search');
 
 describe('validate database search', function() {
   it('accepts valid search pairs', function(done) {
