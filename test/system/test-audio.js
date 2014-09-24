@@ -89,7 +89,7 @@ describe('system audio', function(){
       }).then(done, done);
     });
 
-    it('execs nothing for unknown platforms', function(done){
+    it('execs nothing for unknown platforms', function(){
       var self = this,
           data = { ack: sinon.spy(), content: { value: 32 }};
 
@@ -102,10 +102,9 @@ describe('system audio', function(){
       self.msgMock.emit('command.audio.test-device', data);
 
       assert.equal(0, self.execMock.callCount);
-      done();
     });
 
-    it('execs nothing for unknown event emission', function(done){
+    it('execs nothing for unknown event emission', function(){
       var self = this;
       self.execMock = sinon.spy();
 
@@ -114,7 +113,6 @@ describe('system audio', function(){
       self.msgMock.emit('command.radio.volume', 88);
 
       assert.equal(0, self.execMock.callCount);
-      done();
     });
   });
 });
