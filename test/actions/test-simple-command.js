@@ -1,4 +1,4 @@
-var subject = require('../../lib/actions/simple-command');
+var subject = require(libDir + 'actions/simple-command');
 
 describe('simple-command action wrapper', function() {
   it('sends a single command only', function() {
@@ -7,19 +7,20 @@ describe('simple-command action wrapper', function() {
 
     subject(command)(radio, {});
 
-    assert.ok(radio.sendCommands.calledWith([
-        ['myCommand']
-    ]));
+    assert.deepEqual(
+      [['myCommand']],
+      radio.sendCommands.firstCall.args[0]
+    );
   });
 
   it('doesn\'t do anything with options', function() {
     var radio = { sendCommands: sinon.spy() };
 
-    subject('mycommand')(radio, {value: 999999});
+    subject('anotherCommand')(radio, {value: 999999});
 
-    assert.ok(radio.sendCommands.calledWith([
-        ['mycommand']
-    ]));
+    assert.deepEqual(
+      [['anotherCommand']],
+      radio.sendCommands.firstCall.args[0]
+    );
   });
 });
-

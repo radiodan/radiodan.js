@@ -1,4 +1,4 @@
-var subject = require('../../lib/states/player');
+var subject = require(libDir + 'states/player');
 
 describe('status action', function() {
   it('requests current status', function() {
@@ -25,7 +25,6 @@ describe('status action', function() {
 
     assert.isFulfilled(promise).then(function(response) {
       assert.ok(radio.formatResponse.calledWith(statusString));
-      done();
-    });
+    }).then(done,done);
   });
 });

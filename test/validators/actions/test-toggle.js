@@ -1,14 +1,4 @@
-/* globals describe, it, before */
-'use strict';
-
-var chai = require('chai'),
-    assert = chai.assert,
-    chaiAsPromised = require('chai-as-promised'),
-    sinon  = require('sinon');
-
-chai.use(chaiAsPromised);
-
-var subject = require('../../../lib/validators/actions/toggle');
+var subject = require(libDir + 'validators/actions/toggle');
 
 describe('validate toggle action', function() {
   it('rejects if value not supplied', function(done) {

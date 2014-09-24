@@ -1,4 +1,4 @@
-var subject = require('../../lib/states/playlist');
+var subject = require(libDir + 'states/playlist');
 
 describe('playlist action', function() {
   it('requests current playlist', function() {
@@ -37,8 +37,7 @@ describe('playlist action', function() {
       assert.deepEqual(
         {'file': '2.mp3', 'Track': 'Track2', 'Artist': 'Artist2'},
         response[1]);
-      done();
-    });
+    }).then(done,done);
   });
 
   it('returns empty array for empty playlist', function(done) {

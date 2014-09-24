@@ -1,14 +1,4 @@
-/* globals describe, it, before */
-'use strict';
-
-var chai = require('chai'),
-    assert = chai.assert,
-    chaiAsPromised = require('chai-as-promised'),
-    sinon  = require('sinon');
-
-chai.use(chaiAsPromised);
-
-var subject = require('../../../../lib/validators/actions/player/play');
+var subject = require(libDir + 'validators/actions/player/play');
 
 describe('validate player.play action', function() {
   it('resolves with correct options', function(done) {

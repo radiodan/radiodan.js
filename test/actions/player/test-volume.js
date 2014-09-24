@@ -1,39 +1,17 @@
-/* globals describe, it, before */
-'use strict';
-
-var chai = require('chai'),
-    assert = chai.assert,
-    chaiAsPromised = require('chai-as-promised'),
-    sinon  = require('sinon'),
-    winston = require('winston'),
-    fs     = require('fs'),
-    EventEmitter = require('events').EventEmitter;
-
-var utils = require('radiodan-client').utils;
-
-chai.use(chaiAsPromised);
-
-var subject = require('../../../lib/actions/player/volume');
+var subject = require(libDir + 'actions/player/volume');
 
 describe('volume action', function() {
-  before(function() {
-    // chill winston
-    winston.remove(winston.transports.Console);
-  });
+  it('rejects unknown volume action types without sending commands',
+    function(done) {
+      var radio = { sendCommands: sinon.spy() };
 
-  after(function() {
-    winston.add(winston.transports.Console);
-  });
+      var volumePromise = subject(radio, {blah: 31});
 
-  it('rejects unknown volume action types without sending commands', function(done) {
-    var radio = { sendCommands: sinon.spy() };
-
-    var volumePromise = subject(radio, {blah: 31});
-
-    assert.isRejected(volumePromise, Error, "Volume Command not found").then(function() {
-      assert.equal(0, radio.sendCommands.callCount);
-      done();
-    });
+      assert.isRejected(volumePromise, Error, "Volume Command not found")
+        .then(function() {
+          assert.equal(0, radio.sendCommands.callCount);
+        })
+        .then(done, done);
   });
 
   it('sends percentage value to mpd', function() {
@@ -81,6 +59,7 @@ describe('volume action', function() {
     promise = subject(radio, {diff: -30, state: invoker});
 
     assert.isFulfilled(promise).then(function() {
+      // initial volume = 100, -30 = 70%
       assert.ok(radio.sendCommands.calledWith([
           ['setvol', 70]
       ]));
@@ -91,7 +70,7 @@ describe('volume action', function() {
     });
   });
 
-  it('bounds differential values to percentages', function(done) {
+  it('bounds differential values to range of 0-100', function(done) {
     var radio = { sendCommands: sinon.spy() },
         volumePromise = utils.promise.resolve({volume: "30"}),
         invoker = { invoke: sinon.stub().returns(volumePromise) },
@@ -99,13 +78,13 @@ describe('volume action', function() {
 
     promise = subject(radio, {diff: -40, state: invoker});
 
-    assert.isFulfilled(promise).then(function() {
-      assert.ok(radio.sendCommands.calledWith([
-          ['setvol', 0]
-      ]));
-
-      done();
-    });
+    assert.isFulfilled(promise)
+      .then(function() {
+        assert.ok(radio.sendCommands.calledWith([
+            ['setvol', 0]
+        ]));
+      })
+      .then(done, done);
   });
 });
 

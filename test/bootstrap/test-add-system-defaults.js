@@ -1,4 +1,4 @@
-var subject = require('../../lib/bootstrap/add-system-defaults');
+var subject = require(libDir + '/bootstrap/add-system-defaults');
 
 describe('bootstrap: add system defaults', function (){
   it('Adds mpd paths to root', function () {

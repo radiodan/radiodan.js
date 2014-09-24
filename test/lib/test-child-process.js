@@ -1,4 +1,4 @@
-var subject = require('../../lib/child-process');
+var subject = require(libDir + 'child-process');
 
 describe('Child Process', function(){
   beforeEach(function() {
@@ -50,7 +50,10 @@ describe('Child Process', function(){
 
       assert.isRejected(promise)
         .then(function () {
-          assert(spawnMock.calledWithExactly('cmd', ['args']), 'called with unexpected arguments');
+          assert(
+            spawnMock.calledWithExactly('cmd', ['args']),
+            'called with unexpected arguments'
+          );
         })
         .then(done, done);
     });
@@ -60,9 +63,7 @@ describe('Child Process', function(){
           binPath = this.binaryPath;
 
       subject.processPath = function () {
-        var dfd = utils.promise.defer();
-        dfd.reject('');
-        return dfd.promise;
+        return utils.promise.reject();
       };
 
       var promise = subject.create('some/config.conf', spawnMock);

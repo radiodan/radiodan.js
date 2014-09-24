@@ -1,14 +1,4 @@
-/* globals describe, it, before */
-'use strict';
-
-var chai = require('chai'),
-    assert = chai.assert,
-    chaiAsPromised = require('chai-as-promised'),
-    sinon  = require('sinon');
-
-chai.use(chaiAsPromised);
-
-var subject = require('../../../lib/actions/playlist/add');
+var subject = require(libDir + 'actions/playlist/add');
 
 describe('playlist.add action', function() {
   it('adds given tracks to current playlist', function() {
@@ -16,9 +6,10 @@ describe('playlist.add action', function() {
 
     subject(radio, {playlist: ['track.mp3']});
     assert.equal(1, radio.sendCommands.callCount);
-    assert.ok(radio.sendCommands.calledWith([
-      ['add', 'track.mp3']
-    ]));
+    assert.deepEqual(
+      [['add', 'track.mp3']],
+      radio.sendCommands.firstCall.args[0]
+    );
   });
 
   it('clears current playlist if clear flag is set', function() {
@@ -30,9 +21,8 @@ describe('playlist.add action', function() {
     });
 
     assert.equal(1, radio.sendCommands.callCount);
-    assert.ok(radio.sendCommands.calledWith([
+    assert.deepEqual([
       ['clear'], ['add', 'track0.mp3'], ['add', 'track1.mp3']
-    ]));
+    ], radio.sendCommands.firstCall.args[0]);
   });
 });
-

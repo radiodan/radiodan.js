@@ -1,16 +1,4 @@
-/* globals describe, it, before */
-'use strict';
-
-var chai = require('chai'),
-    assert = chai.assert,
-    chaiAsPromised = require('chai-as-promised'),
-    sinon  = require('sinon');
-
-var utils = require('radiodan-client').utils;
-
-chai.use(chaiAsPromised);
-
-var subject = require('../../../lib/actions/database/search');
+var subject = require(libDir + 'actions/database/search');
 
 describe('search action', function() {
   beforeEach(function() {
