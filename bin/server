@@ -25,7 +25,7 @@ switch (true) {
 }
 
 // Set log level
-utils.logger.setLevel(program.logLevel);
+utils.logger.setLevel(process.env.LOG_LEVEL || program.logLevel);
 var logger = utils.logger(__filename);
 logger.info('Set logging to', logger.level);
 
