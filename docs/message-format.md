@@ -265,6 +265,19 @@ Valid search terms:
 `force` checks all files for ID3 tag updates, otherwise new/modified files are
 checked.
 
+# Device
+
+## Shutdown
+
+### command.device.shutdown
+    {
+      action: '<shutdown|restart>'
+    }
+
+Shutsdown the `radiodan` device, if the
+[`Cease`](https://github.com/radiodan/cease/) service is running with
+sufficient permissions. The `restart` action will restart the device.
+
 ## Ideas
 
 radio.`<id>`.playlist.info
