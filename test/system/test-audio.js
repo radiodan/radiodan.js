@@ -15,18 +15,11 @@ describe('system audio', function(){
           data = { ack: sinon.spy(), content: { action: "volume", value: 71 }};
 
       var execSpy = sinon.stub();
-      execSpy.onCall(0).returns(1);
-      execSpy.onCall(1).returns(2);
-      execSpy.onCall(2).returns(3);
 
       self.execMock = function(cmd) {
         var stdout = execSpy(cmd);
-        if(stdout === 3) {
-          self.execPromise.resolve(stdout);
-          return self.execPromise.promise;
-        } else {
-          return utils.promise.resolve(stdout);
-        }
+        self.execPromise.resolve(stdout);
+        return self.execPromise.promise;
       };
 
       audio.create('test-device').listen(
@@ -37,54 +30,34 @@ describe('system audio', function(){
 
       assert.isFulfilled(self.execPromise.promise).then(function(){
         assert.equal(1, data.ack.callCount);
-        assert.equal(3, execSpy.callCount);
+        assert.equal(1, execSpy.callCount);
         assert.deepEqual(
-          ["osascript -e 'output volume of (get volume settings)'"],
-          execSpy.firstCall.args);
-        assert.deepEqual(
-          ["osascript -e 'set volume output volume 71'"],
-          execSpy.secondCall.args);
-        assert.deepEqual(
-          ["osascript -e 'output volume of (get volume settings)'"],
+          ["osascript -e 'set volume output volume 71'; osascript -e 'output volume of (get volume settings)'"],
           execSpy.firstCall.args);
       }).then(done, done);
     });
 
     it('execs command for linux', function(done){
       var self = this,
-          data = { ack: sinon.spy(), content: { action: "volume", value: 88 }};
-
-      self.msgMock.emit('command.audio.test-device', data);
+          data = { ack: sinon.spy(), content: { action: "volume", value: 71 }};
 
       var execSpy = sinon.stub();
-      execSpy.onCall(0).returns(1);
-      execSpy.onCall(1).returns(2);
-      execSpy.onCall(2).returns(3);
 
       self.execMock = function(cmd) {
         var stdout = execSpy(cmd);
-        if(stdout === 3) {
-          self.execPromise.resolve(stdout);
-          return self.execPromise.promise;
-        } else {
-          return utils.promise.resolve(stdout);
-        }
+        self.execPromise.resolve(stdout);
+        return self.execPromise.promise;
       };
 
-      audio.create('test-device').listen(self.msgMock, 'linux', self.execMock);
+      audio.create('test-device').listen(
+        self.msgMock, 'linux', self.execMock
+      );
 
       self.msgMock.emit('command.audio.test-device', data);
 
       assert.isFulfilled(self.execPromise.promise).then(function(){
-        assert.equal(3, execSpy.callCount);
         assert.deepEqual(
-          ["amixer -M sget $(amixer | grep -o -m 1 \"'[^']*'\" | tr -d \"'\") | grep -o -m 1 '[[:digit:]]*%' | tr -d '%'"],
-          execSpy.firstCall.args);
-        assert.deepEqual(
-          ["amixer -M set $(amixer | grep -o -m 1 \"'[^']*'\" | tr -d \"'\") 88% unmute"],
-          execSpy.secondCall.args);
-        assert.deepEqual(
-          ["amixer -M sget $(amixer | grep -o -m 1 \"'[^']*'\" | tr -d \"'\") | grep -o -m 1 '[[:digit:]]*%' | tr -d '%'"],
+          ["amixer -M set $(amixer | grep -o -m 1 \"'[^']*'\" | tr -d \"'\") 71% unmute | grep -o -m 1 '[[:digit:]]*%' | tr -d '%'"],
           execSpy.firstCall.args);
       }).then(done, done);
     });
