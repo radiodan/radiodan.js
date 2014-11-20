@@ -200,6 +200,23 @@ Set using an offset of the current volume:
 
 `clear`: clear the existing playlist
 
+## Load
+
+Appends the content of the given playlist to the player's current playlist
+
+### command.radio.`<id>`
+
+    {
+      action: 'playlist.load',
+      playlist: [
+        '<file-path>',
+        '<url>'
+      ],
+      clear: <true|false>
+    }
+
+`clear`: clear the existing playlist before loading
+
 ## Clear
 
 ### command.radio.`<id>`
