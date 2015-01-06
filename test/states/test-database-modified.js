@@ -1,6 +1,4 @@
-'use strict';
-
-var subject = require(libDir + 'states/database');
+var subject = require(libDir + 'states/database-modified');
 
 describe('database state', function() {
   it('extracts useful status info', function(done) {

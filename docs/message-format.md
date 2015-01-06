@@ -24,10 +24,19 @@ Returns the volume of the player.
 Note that this is not the volume of the physical device, each player has it's
 own volume level.
 
-### event.radio.`<id>`.database
+### event.radio.`<id>`.database.modified
 
-Returns statistics on the contents of the music database. Typically triggered
-by a `database.update` command.
+Returns statistics on the contents of the music database, if the database has
+been modified. Typically triggered by a `database.update` command.
+
+### event.radio.`<id>`.database.update.start
+
+The database has started to be refreshed.
+
+### event.radio.`<id>`.database.update.end
+
+The database has finished updating. If new data has been found, the
+`database.modified` event will also be triggered.
 
 ## Feedback to commands
 
