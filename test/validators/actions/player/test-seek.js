@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + 'validators/actions/player/seek');
 
 describe('validate player.seek action', function() {

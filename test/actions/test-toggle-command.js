@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + '/actions/toggle-command');
 
 describe('toggle command meta-action', function() {

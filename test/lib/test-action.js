@@ -1,3 +1,5 @@
+'use strict';
+
 describe('action', function() {
   beforeEach(function() {
     this.subject = require(libDir + 'action');

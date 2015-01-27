@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + 'child-process');
 
 describe('Child Process', function(){

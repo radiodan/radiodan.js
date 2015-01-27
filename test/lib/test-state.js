@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + 'state');
 
 describe('state', function() {

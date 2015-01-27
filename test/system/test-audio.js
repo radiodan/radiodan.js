@@ -1,3 +1,5 @@
+'use strict';
+
 var audio = require(libDir + 'system/audio');
 
 describe('system audio', function(){

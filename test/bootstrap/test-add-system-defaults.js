@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + '/bootstrap/add-system-defaults');
 
 describe('bootstrap: add system defaults', function (){

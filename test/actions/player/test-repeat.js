@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + 'actions/player/repeat');
 
 describe('player.repeat action', function() {

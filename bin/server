@@ -1,16 +1,18 @@
 #!/usr/bin/env node
 
+'use strict';
+
 var program      = require('commander'),
     path         = require('path'),
     utils        = require('radiodan-client').utils,
     bootstrap    = require('../lib/bootstrap'),
     audioDevice  = require('../lib/system/audio'),
-    package      = require('../package.json'),
+    pkg          = require('../package.json'),
     configFile,
     config;
 
 program
-  .version(package.version)
+  .version(pkg.version)
   .usage('[options] config_file')
   .option('--log-level [level]', 'Set the log level to [level]', 'info')
   .parse(process.argv);

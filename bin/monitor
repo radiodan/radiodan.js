@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+
+'use strict';
+
 var RadiodanClient  = require('radiodan-client'),
     MessagingClient = RadiodanClient.MessagingClient,
     utils = RadiodanClient.utils;

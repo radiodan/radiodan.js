@@ -1,4 +1,6 @@
-var EventEmitter   = require('events').EventEmitter;
+'use strict';
+
+var EventEmitter   = require('events').EventEmitter,
     RadioDiscovery = require(libDir + '/radio-discovery');
 
 describe('radio discovery', function() {

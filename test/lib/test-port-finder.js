@@ -1,3 +1,5 @@
+'use strict';
+
 var PortFinder = require(libDir + 'port-finder');
 
 describe('PortFinder', function (){

@@ -1,3 +1,5 @@
+'use strict';
+
 var path = require('path'),
     subject = require(libDir + 'bootstrap/create-paths');
 

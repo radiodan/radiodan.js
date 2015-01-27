@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + 'actions/simple-command');
 
 describe('simple-command action wrapper', function() {

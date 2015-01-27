@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + 'player/mpd/client');
 
 describe('mpdClient', function (){

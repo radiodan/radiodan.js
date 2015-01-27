@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + '/player/config');
 
 //TODO: split into MPD config, mopidy config, generic features

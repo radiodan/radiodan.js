@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + 'validators/actions/toggle');
 
 describe('validate toggle action', function() {
