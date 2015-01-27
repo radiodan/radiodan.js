@@ -38,7 +38,7 @@ describe('bootstrap config', function (){
       'players': null
     };
 
-    assert.throw(function() { subject(config) }, 'No players found');
+    assert.throw(function() { subject(config); }, 'No players found');
   });
 
   it('populates using player data, even without defaults', function () {

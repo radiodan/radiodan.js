@@ -5,7 +5,7 @@ describe('system audio', function(){
     beforeEach(function(){
       var execPromise = utils.promise.defer();
 
-      this.msgMock = new EventEmitter;
+      this.msgMock = new EventEmitter();
       this.msgMock.createAndBindToExchange = sinon.spy();
       this.execPromise = execPromise;
     });

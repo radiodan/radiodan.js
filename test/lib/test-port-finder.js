@@ -6,7 +6,7 @@ describe('PortFinder', function (){
         portFinder.basePort = 49152;
         portFinder.nextPortPromise = function() {
           return utils.promise.resolve(portFinder.basePort++);
-        }
+        };
 
    this.portFinder = portFinder;
   });

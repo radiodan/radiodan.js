@@ -12,7 +12,7 @@ describe('radio discovery', function() {
 
   it('listens for discovery topics via the messaging client', function(done) {
     var messageClientMock = this.messageClientMock,
-        exchangeMock      = messageClientMock.createAndBindToExchange
+        exchangeMock      = messageClientMock.createAndBindToExchange;
 
     RadioDiscovery.create([this.radio], messageClientMock);
 

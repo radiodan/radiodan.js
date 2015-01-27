@@ -47,7 +47,6 @@ describe('validate player.seek action', function() {
   it('rejects if position is not a number', function(done){
     var promise = subject({ position: {}, time: 31 });
     assert.isRejected(promise, Error).then(done, done);
-;
   });
 
   it('rejects if time is not a number', function(done){

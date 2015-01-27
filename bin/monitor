@@ -3,7 +3,7 @@ var RadiodanClient  = require('radiodan-client'),
     MessagingClient = RadiodanClient.MessagingClient,
     utils = RadiodanClient.utils;
 
-var client = MessagingClient.create()
+var client = MessagingClient.create();
 
 client.createAndBindToExchange({
   queueName: 'testqueue',

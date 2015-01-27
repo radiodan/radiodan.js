@@ -16,7 +16,7 @@ describe('state', function() {
   it('has validators in the form {topic}.{event}', function() {
     var allowedTopics = ['database', 'player', 'playlist'],
         actionFormat = new RegExp(
-          '^(' + allowedTopics.join('|') + '){1}\.\\w+$'
+          '^(' + allowedTopics.join('|') + '){1}\\.\\w+$'
         ),
         methodNames = Object.keys(subject.methods);
 

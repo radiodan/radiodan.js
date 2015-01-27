@@ -15,13 +15,10 @@ program
   .option('--log-level [level]', 'Set the log level to [level]', 'info')
   .parse(process.argv);
 
-switch (true) {
-  case program.args.length == 1:
-    configFile = path.resolve(__dirname+'/..', program.args[0]);
-    break;
-  case program.args.length > 1:
-  default:
-    program.help();
+if (program.args.length === 1) {
+  configFile = path.resolve(__dirname+'/..', program.args[0]);
+} else {
+  program.help();
 }
 
 // Set log level

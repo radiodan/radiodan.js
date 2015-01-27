@@ -44,7 +44,7 @@ describe('mpdConfig', function (){
     }).then(function(){
       return assert.isFulfilled(secondBuild).then(function(mpdContent) {
         assert.match(mpdContent, /^port (\s+) "6601"$/m);
-      })
+      });
     }).then(done,done);
   });
 

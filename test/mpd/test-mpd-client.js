@@ -27,7 +27,7 @@ describe('mpdClient', function (){
     assert.equal('play', command.name);
     assert.deepEqual(['1'], command.args);
 
-    var command = client.formatCommand(['play']);
+    command = client.formatCommand(['play']);
 
     assert.equal('play', command.name);
     assert.deepEqual([], command.args);
@@ -37,11 +37,11 @@ describe('mpdClient', function (){
     var client = subject.create(4321);
     var mpdMock = new EventEmitter();
     var commandSpy = sinon.spy();
-    mpdMock.sendCommands = function(commands,cb){ commandSpy(commands); cb(); }
+    mpdMock.sendCommands = function(commands,cb){ commandSpy(commands); cb(); };
 
     client.connect(mpdMock);
     // resolve promise sendCommand is reliant on
-    client.ready = function() { var d = utils.promise.defer(); d.resolve(); return d.promise;}
+    client.ready = function() { var d = utils.promise.defer(); d.resolve(); return d.promise; };
 
     var commandPromise = client.sendCommands([['add', '1.mp3']]);
 
@@ -62,7 +62,7 @@ describe('mpdClient', function (){
     var connectPromise = client.connect(mpdMock);
     mpdMock.emit('error');
 
-    mpdMock.sendCommands = function(commands,cb){ cb(); }
+    mpdMock.sendCommands = function(commands,cb){ cb(); };
     var commandPromise = client.sendCommands([['add', ['1.mp3']]]);
 
     assert.isRejected(connectPromise).then(function() {
@@ -77,7 +77,7 @@ describe('mpdClient', function (){
     mpdMock.emit('ready');
 
     var commandPromise = client.sendCommands([['add', ['1.mp3']]]);
-    mpdMock.sendCommands = function(commands,cb){ cb(); }
+    mpdMock.sendCommands = function(commands,cb){ cb(); };
 
     assert.isFulfilled(connectPromise).then(function() {
       assert.isFulfilled(commandPromise).notify(done);
