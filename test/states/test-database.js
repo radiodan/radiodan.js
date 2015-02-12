@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + 'states/database');
 
 describe('database state', function() {

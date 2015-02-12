@@ -1,3 +1,5 @@
+'use strict';
+
 describe('action', function() {
   beforeEach(function() {
     this.subject = require(libDir + 'action');
@@ -16,7 +18,7 @@ describe('action', function() {
   it('has actions in the form {topic}.{event}', function() {
     var allowedTopics = ['database', 'player', 'playlist'],
         actionFormat = new RegExp(
-          '^(' + allowedTopics.join('|') + '){1}\.\\w+$'
+          '^(' + allowedTopics.join('|') + '){1}\\.\\w+$'
         ),
         subject = this.subject,
         methodNames = Object.keys(subject.methods);

@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + '/actions/player/seek');
 
 describe('player.seek action', function() {

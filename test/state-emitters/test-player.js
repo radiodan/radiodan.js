@@ -1,3 +1,5 @@
+'use strict';
+
 describe('state-emitter/player', function (){
   beforeEach(function(){
     this.subject = require(libDir + 'state-emitters/player');

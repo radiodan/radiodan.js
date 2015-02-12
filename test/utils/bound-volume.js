@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + 'utils/bound-volume');
 
 describe('boundVolume', function(){

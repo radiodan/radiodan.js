@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + 'validators/actions/position');
 
 describe('validate position action', function() {

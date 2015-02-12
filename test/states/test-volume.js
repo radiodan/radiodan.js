@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + 'states/volume');
 
 describe('volume state', function() {

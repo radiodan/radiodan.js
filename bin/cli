@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+
+'use strict';
+
 var program  = require('optimist'),
     sendCommand = require('../lib/cli/send-command'),
     interactivePrompt = require('../lib/cli/interactive-prompt'),
@@ -10,7 +13,8 @@ var queueHost,
     argv,
     messaging,
     radio,
-    interactive;
+    interactive,
+    promise;
 
 /*
   Command-line options

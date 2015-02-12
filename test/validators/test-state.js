@@ -1,3 +1,5 @@
+'use strict';
+
 describe('validators state', function() {
   beforeEach(function() {
     this.subject = require(libDir + 'validators/state');

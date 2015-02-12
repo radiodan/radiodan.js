@@ -1,3 +1,5 @@
+'use strict';
+
 var playerProcess = require( libDir + '/player/player-process');
 
 describe('playerProcess', function() {

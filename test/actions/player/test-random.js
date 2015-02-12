@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + 'actions/player/random');
 
 describe('player.random action', function() {

@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + 'actions/database/search');
 
 describe('search action', function() {

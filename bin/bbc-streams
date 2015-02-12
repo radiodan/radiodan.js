@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+'use strict';
+
 var Q    = require('q'),
     http = require('q-io/http');
 
@@ -7,14 +9,14 @@ var url     = 'http://bbcservices.herokuapp.com/services.json',
     target = process.argv[2] || 'r4',
     request = http.normalizeRequest(url);
 
-request.headers['Authorization'] = 'Basic ' + new Buffer('radiodan:radiodan').toString('base64');
+request.headers.Authorization = 'Basic ' + new Buffer('radiodan:radiodan').toString('base64');
 
 http.request(request).then(function (response) {
   return response.body.read();
 }).then(function (body) {
   return Q.resolve( JSON.parse(body.toString()).services );
 }).then(function (services) {
-  var found = services.filter(function (service) { return service.stream_id == target });
+  var found = services.filter(function (service) { return service.stream_id == target; });
   return Q.resolve(found[0]);
 }).then(function (service){
   console.log(service.streams[0].url);

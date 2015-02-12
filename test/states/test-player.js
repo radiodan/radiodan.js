@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + 'states/player');
 
 describe('status action', function() {

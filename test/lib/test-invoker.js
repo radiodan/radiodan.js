@@ -1,3 +1,5 @@
+'use strict';
+
 var Invoker = require(libDir + '/invoker');
 
 describe('action', function (){

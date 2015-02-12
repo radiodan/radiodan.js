@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + '/validators/actions/playlist/add');
 
 describe('validate play action', function() {

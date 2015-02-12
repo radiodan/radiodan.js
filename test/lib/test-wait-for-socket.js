@@ -1,3 +1,5 @@
+'use strict';
+
 var waitForSocket = require(libDir + 'wait-for-socket');
 
 describe('waitForSocket', function(){

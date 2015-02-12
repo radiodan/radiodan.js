@@ -1,3 +1,5 @@
+'use strict';
+
 var subject = require(libDir + 'actions/playlist/add');
 
 describe('playlist.add action', function() {

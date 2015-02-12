@@ -1,4 +1,6 @@
-var EventEmitter   = require('events').EventEmitter;
+'use strict';
+
+var EventEmitter   = require('events').EventEmitter,
     RadioDiscovery = require(libDir + '/radio-discovery');
 
 describe('radio discovery', function() {
@@ -12,7 +14,7 @@ describe('radio discovery', function() {
 
   it('listens for discovery topics via the messaging client', function(done) {
     var messageClientMock = this.messageClientMock,
-        exchangeMock      = messageClientMock.createAndBindToExchange
+        exchangeMock      = messageClientMock.createAndBindToExchange;
 
     RadioDiscovery.create([this.radio], messageClientMock);
 
