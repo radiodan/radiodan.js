@@ -20,5 +20,14 @@ describe('player.seek action', function() {
       ['seek', 2, 33]
     ]));
   });
-});
 
+  it('sends the seek command with playlist position 0 and seek time', function() {
+    var radio = { sendCommands: sinon.spy() };
+
+    subject(radio, {position: 0, time: 33});
+
+    assert.ok(radio.sendCommands.calledWith([
+      ['seek', 0, 33]
+    ]));
+  });
+});

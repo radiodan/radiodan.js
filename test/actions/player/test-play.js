@@ -20,5 +20,14 @@ describe('player.play action', function() {
         ['play', 10]
     ]));
   });
-});
 
+  it('sends the play command with position 0', function() {
+    var radio = { sendCommands: sinon.spy() };
+
+    subject(radio, {position: 0});
+
+    assert.ok(radio.sendCommands.calledWith([
+        ['play', 0]
+    ]));
+  });
+});
