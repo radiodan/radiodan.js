@@ -1,0 +1,6 @@
+site_name: Radiodan Server
+theme: readthedocs
+pages:
+  - ["index.md", "Index"]
+  - ["usage.md", "Usage Guide"]
+  - ["message-format.md", "Message Format"]

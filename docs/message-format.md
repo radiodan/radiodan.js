@@ -1,4 +1,4 @@
-# Message Formats
+# Message Format
 
 ## Available Subcriptions
 
@@ -20,9 +20,8 @@ Returns the state of the player
 
 ### event.radio.`<id>`.volume
 
-Returns the volume of the player.
-Note that this is not the volume of the physical device, each player has it's
-own volume level.
+Returns the volume of the player. Note that this is not the volume of the
+physical device, each player has it's own volume level.
 
 ### event.radio.`<id>`.database.modified
 
@@ -44,11 +43,13 @@ Every client that issues commands connects to the `radiodan-command-reply`
 exchange.  Replies are sent back through this exchange for each command sent.
 Any errors will be populated with an error object, otherwise `false`.
 
-    {
-      correlation_id: <id of sent message>,
-      error: <false / error object>,
-      response: <response object>
-    }
+```json
+{
+  "correlation_id": <id of sent message>,
+  "error": <false / error object>,
+  "response": <response object>
+}
+```
 
 Response is only set if error is false.
 
@@ -62,13 +63,14 @@ Available types:
 
 * player
 
-    [
-      {
-        "name": "First player",
-        "id":   "player1"
-      }
-    ]
-
+```json
+[
+  {
+    "name": "First player",
+    "id":   "player1"
+  }
+]
+```
 # Audio
 
 ## Volume
@@ -77,15 +79,18 @@ Available types:
 
 Set to an absolute value:
 
-    {
-      value:  90
-    }
-
+```json
+{
+  "value":  90
+}
+```
 Set using an offset of the current volume:
 
-    {
-      diff:  -10
-    }
+```json
+{
+  "diff":  -10
+}
+```
 
 # Player
 
@@ -95,10 +100,12 @@ Set using an offset of the current volume:
 
 Start playing the current playlist
 
-    {
-      action: 'player.play',
-      position: <integer>
-    }
+```json
+{
+  "action": 'player.play',
+  "position": <integer>
+}
+```
 
 `position` is an optional argument of the position in the playlist to start
 playing.
@@ -107,27 +114,33 @@ playing.
 
 ### command.radio.`<id>`
 
-    {
-      action: 'player.next'
-    }
+```json
+{
+  "action": "player.next"
+}
+```
 
 ## Previous
 
 ### command.radio.`<id>`
 
-    {
-      action: 'player.previous'
-    }
+```json
+{
+  "action": "player.previous"
+}
+```
 
 ## Seek
 
 ### command.radio.`<id>`
 
-    {
-      action: 'player.seek',
-      time: <integer/offset>,
-      position: <integer>
-    }
+```json
+{
+  "action": "player.seek",
+  "time": <integer/offset>,
+  "position": <integer>
+}
+```
 
 Position is optional, or else will seek to current track.
 Time can be an absolute value to seek to.
@@ -137,9 +150,11 @@ Time can be an offset (starts with +/-) if seeking on current track.
 
 ### command.radio.`<id>`
 
-    {
-      action: 'player.stop'
-    }
+```json
+{
+  "action": "player.stop"
+}
+```
 
 ## Volume
 
@@ -147,50 +162,61 @@ Time can be an offset (starts with +/-) if seeking on current track.
 
 Set to an absolute value:
 
-    {
-      action: 'player.volume',
-      value:  90
-    }
+```json
+{
+  "action": "player.volume",
+  "value":  90
+}
+```
 
 Set using an offset of the current volume:
 
-    {
-      action: 'player.volume',
-      diff:  -10
-    }
+```json
+{
+  "action": "player.volume",
+  "diff":  -10
+}
+```
 
 ### event.radio.`<id>`.volume
 
-    {
-      value: 90
-    }
+```json
+{
+  "value": 90
+}
+```
 
 ## Repeat
 
 ### command.radio.`<id>`
 
-    {
-      action: 'player.repeat',
-      value: <true|false>
-    }
+```json
+{
+  "action": "player.repeat",
+  "value": <true|false>
+}
+```
 
 ## Random
 
 ### command.radio.`<id>`
 
-    {
-      action: 'player.random',
-      value: <true|false>
-    }
+```json
+{
+  "action": "player.random",
+  "value": <true|false>
+}
+```
 
 ## Pause
 
 ### command.radio.`<id>`
 
-    {
-      action: 'player.pause',
-      value: <true|false>
-    }
+```json
+{
+  "action": "player.pause",
+  "value": <true|false>
+}
 
 # Playlist
 
@@ -198,14 +224,16 @@ Set using an offset of the current volume:
 
 ### command.radio.`<id>`
 
-    {
-      action: 'playlist.add',
-      playlist: [
-        '<file-path>',
-        '<url>'
-      ],
-      clear: <true|false>
-    }
+```json
+{
+  "action": "playlist.add",
+  "playlist": [
+    "<file-path>",
+    "<url>"
+  ],
+  "clear": <true|false>
+}
+```
 
 `clear`: clear the existing playlist
 
@@ -215,14 +243,16 @@ Appends the content of the given playlist to the player's current playlist
 
 ### command.radio.`<id>`
 
-    {
-      action: 'playlist.load',
-      playlist: [
-        '<file-path>',
-        '<url>'
-      ],
-      clear: <true|false>
-    }
+```json
+{
+  "action": "playlist.load",
+  "playlist": [
+    "<file-path>",
+    "<url>"
+  ],
+  "clear": <true|false>
+}
+```
 
 `clear`: clear the existing playlist before loading
 
@@ -230,20 +260,24 @@ Appends the content of the given playlist to the player's current playlist
 
 ### command.radio.`<id>`
 
-    {
-      action: 'playlist.clear'
-    }
+```json
+{
+  "action": "playlist.clear"
+}
+```
 
 ## Delete
 
 ### command.radio.`<id>`
 
-    {
-      action: 'playlist.delete',
-      position: <integer>,
-      start: <integer>,
-      end: <integer>
-    }
+```json
+{
+  "action": "playlist.delete",
+  "position": <integer>,
+  "start": <integer>,
+  "end": <integer>
+}
+```
 
 Must specify *either* a range (start & end) or position.
 
@@ -251,13 +285,15 @@ Must specify *either* a range (start & end) or position.
 
 ### command.radio.`<id>`
 
-    {
-      action: 'playlist.delete',
-      from: <integer>,
-      start: <integer>,
-      end: <integer>
-      to: <integer>
-    }
+```json
+{
+  "action": "playlist.delete",
+  "from": <integer>,
+  "start": <integer>,
+  "end": <integer>
+  "to": <integer>
+}
+```
 
 Moves track(s) to specificed destination.
 Must specify *either* a range (start & end) or position.
@@ -266,27 +302,33 @@ Must specify *either* a range (start & end) or position.
 
 ## Search
 
-    {
-      action" 'database.search',
-      <term>: <value>
-    }
+```json
+{
+  "action" "database.search",
+  <term>: <value>
+}
+```
 
 Any number of valid search terms with string values are accepted.
 
 Valid search terms:
 
-    artist album title track name genre date
-    composer performer comment disc filename any
+```ruby
+artist album title track name genre date
+composer performer comment disc filename any
+```
 
 ## Update
 
 ### command.radio.`<id>`
 
-    {
-      action: 'database.update',
-      force: <true|false>,
-      path: '<file-path>'
-    }
+```json
+{
+  "action": "database.update",
+  "force": <true|false>,
+  "path": "<file-path>"
+}
+```
 
 `force` checks all files for ID3 tag updates, otherwise new/modified files are
 checked.
@@ -296,24 +338,29 @@ checked.
 ## Shutdown
 
 ### command.device.shutdown
-    {
-      action: '<shutdown|restart>'
-    }
+
+```json
+{
+  "action": "<shutdown|restart>"
+}
+```
 
 Shutsdown the `radiodan` device, if the
 [`Cease`](https://github.com/radiodan/cease/) service is running with
 sufficient permissions. The `restart` action will restart the device.
 
-## Ideas
+## Ideas (TBA)
 
 radio.`<id>`.playlist.info
 
+```json
 {
-  type: playlist,
-  position: 529,
-  seekTime: 56,
-  tracks: [
+  "type": playlist,
+  "position": 529,
+  "seekTime": 56,
+  "tracks": [
     { <object> },
     ...
   ]
 }
+```
