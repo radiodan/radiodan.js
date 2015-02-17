@@ -2,9 +2,13 @@
 
 ## What is the radiodan server for?
 
-The radiodan server manages the audio playout system. Once configured, you
-communicate with this server using an application written with the [radiodan
-client library][1].
+The radiodan server manages the audio playout system. It starts player
+processes, listens for and executes commands, and communicates changes in the
+system. A full set of commands and events are listed in the [Message Format
+guide](message-format.md).
+
+Once the server is started, you communicate with this server using an
+application written with the [radiodan client library][1].
 
 ## Installation
 
@@ -62,7 +66,8 @@ Path to the music files the player can access.
 
 ### players
 
-An array of player objects. Player objects can have any of the above attributes as well as these required keys:
+An array of player objects. Player objects can have any of the above attributes
+as well as these required keys:
 
 ### name
 
