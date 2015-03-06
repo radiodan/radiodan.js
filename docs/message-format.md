@@ -11,31 +11,92 @@ Returns the master volume of the audio device.
 
 ### event.radio.`<id>`.playlist
 
-Returns the contents of the current playlist.
+Returns the contents of the current playlist with associated metadata. This metadata may differ depending on the item type (e.g. IP streams and local files).
+
+```json
+[
+  {
+    "file": "The Field/01 Is This Power.mp3",
+    "Last-Modified": "2011-10-06T15:51:42Z",
+    "Time": "517",
+    "Artist": "The Field",
+    "Album": "Looping State of Mind",
+    "Title": "Is This Power",
+    "Track": "01/07",
+    "Pos": "0",
+    "Id": "12"
+  },
+  {
+    "file": "http://media.ic.example.com/stream/media_stream",
+    "Title": "No Title",
+    "Pos": "1",
+    "Id": "13"
+  }
+]
+```
 
 ### event.radio.`<id>`.player
 
 Returns the state of the player
 (random, play state, which song is being played)
 
+```json
+{
+  "volume": "100",
+  "repeat": "0",
+  "random": "0",
+  "single": "0",
+  "consume": "0",
+  "playlist": "30",
+  "playlistlength": "2",
+  "mixrampdb": "0.000000",
+  "state": "play",
+  "song": "0",
+  "songid": "16",
+  "time": "1:560",
+  "elapsed": "0.976",
+  "bitrate": "192",
+  "audio": "44100:16:2",
+  "nextsong": "1",
+  "nextsongid": "17"
+}
+```
+
 ### event.radio.`<id>`.volume
 
 Returns the volume of the player. Note that this is not the volume of the
 physical device, each player has it's own volume level.
 
+```json
+{
+  "volume": "20"
+}
+```
+
 ### event.radio.`<id>`.database.modified
 
-Returns statistics on the contents of the music database, if the database has
-been modified. Typically triggered by a `database.update` command.
+Triggers when the database has been updated and the update has resulted in modifications. Typically triggered by a `database.update` command.
+
+```json
+{}
+```
 
 ### event.radio.`<id>`.database.update.start
 
 The database has started to be refreshed.
 
+```json
+{}
+```
+
 ### event.radio.`<id>`.database.update.end
 
 The database has finished updating. If new data has been found, the
 `database.modified` event will also be triggered.
+
+```json
+{}
+``
 
 ## Feedback to commands
 
@@ -182,7 +243,7 @@ Set using an offset of the current volume:
 
 ```json
 {
-  "value": 90
+  "volume": 90
 }
 ```
 
