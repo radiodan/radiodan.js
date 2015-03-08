@@ -9,7 +9,7 @@ on change.
 
 Returns the master volume of the audio device.
 
-### event.radio.`<id>`.playlist
+### event.player.`<id>`.playlist
 
 Returns the contents of the current playlist with associated metadata. This metadata may differ depending on the item type (e.g. IP streams and local files).
 
@@ -35,7 +35,7 @@ Returns the contents of the current playlist with associated metadata. This meta
 ]
 ```
 
-### event.radio.`<id>`.player
+### event.player.`<id>`.player
 
 Returns the state of the player
 (random, play state, which song is being played)
@@ -62,7 +62,7 @@ Returns the state of the player
 }
 ```
 
-### event.radio.`<id>`.volume
+### event.player.`<id>`.volume
 
 Returns the volume of the player. Note that this is not the volume of the
 physical device, each player has it's own volume level.
@@ -73,7 +73,7 @@ physical device, each player has it's own volume level.
 }
 ```
 
-### event.radio.`<id>`.database.modified
+### event.player.`<id>`.database.modified
 
 Triggers when the database has been updated and the update has resulted in modifications. Typically triggered by a `database.update` command.
 
@@ -81,7 +81,7 @@ Triggers when the database has been updated and the update has resulted in modif
 {}
 ```
 
-### event.radio.`<id>`.database.update.start
+### event.player.`<id>`.database.update.start
 
 The database has started to be refreshed.
 
@@ -89,7 +89,7 @@ The database has started to be refreshed.
 {}
 ```
 
-### event.radio.`<id>`.database.update.end
+### event.player.`<id>`.database.update.end
 
 The database has finished updating. If new data has been found, the
 `database.modified` event will also be triggered.
@@ -157,7 +157,7 @@ Set using an offset of the current volume:
 
 ## Play
 
-### command.radio.`<id>`
+### command.player.`<id>`
 
 Start playing the current playlist
 
@@ -173,7 +173,7 @@ playing.
 
 ## Next
 
-### command.radio.`<id>`
+### command.player.`<id>`
 
 ```json
 {
@@ -183,7 +183,7 @@ playing.
 
 ## Previous
 
-### command.radio.`<id>`
+### command.player.`<id>`
 
 ```json
 {
@@ -193,7 +193,7 @@ playing.
 
 ## Seek
 
-### command.radio.`<id>`
+### command.player.`<id>`
 
 ```json
 {
@@ -209,7 +209,7 @@ Time can be an offset (starts with +/-) if seeking on current track.
 
 ## Stop
 
-### command.radio.`<id>`
+### command.player.`<id>`
 
 ```json
 {
@@ -219,7 +219,7 @@ Time can be an offset (starts with +/-) if seeking on current track.
 
 ## Volume
 
-### command.radio.`<id>`
+### command.player.`<id>`
 
 Set to an absolute value:
 
@@ -239,7 +239,7 @@ Set using an offset of the current volume:
 }
 ```
 
-### event.radio.`<id>`.volume
+### event.player.`<id>`.volume
 
 ```json
 {
@@ -249,7 +249,7 @@ Set using an offset of the current volume:
 
 ## Repeat
 
-### command.radio.`<id>`
+### command.player.`<id>`
 
 ```json
 {
@@ -260,7 +260,7 @@ Set using an offset of the current volume:
 
 ## Random
 
-### command.radio.`<id>`
+### command.player.`<id>`
 
 ```json
 {
@@ -271,7 +271,7 @@ Set using an offset of the current volume:
 
 ## Pause
 
-### command.radio.`<id>`
+### command.player.`<id>`
 
 ```json
 {
@@ -283,7 +283,7 @@ Set using an offset of the current volume:
 
 ## Add
 
-### command.radio.`<id>`
+### command.player.`<id>`
 
 ```json
 {
@@ -302,7 +302,7 @@ Set using an offset of the current volume:
 
 Appends the content of the given playlist to the player's current playlist
 
-### command.radio.`<id>`
+### command.player.`<id>`
 
 ```json
 {
@@ -319,7 +319,7 @@ Appends the content of the given playlist to the player's current playlist
 
 ## Clear
 
-### command.radio.`<id>`
+### command.player.`<id>`
 
 ```json
 {
@@ -329,7 +329,7 @@ Appends the content of the given playlist to the player's current playlist
 
 ## Delete
 
-### command.radio.`<id>`
+### command.player.`<id>`
 
 ```json
 {
@@ -344,7 +344,7 @@ Must specify *either* a range (start & end) or position.
 
 ## Move
 
-### command.radio.`<id>`
+### command.player.`<id>`
 
 ```json
 {
@@ -381,7 +381,7 @@ composer performer comment disc filename any
 
 ## Update
 
-### command.radio.`<id>`
+### command.player.`<id>`
 
 ```json
 {
