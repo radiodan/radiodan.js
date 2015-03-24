@@ -1,11 +1,17 @@
 language: node_js
+before_install:
+  - git clone --depth 1 git://github.com/zeromq/zeromq4-x.git -b v4.0.3 zmqlib
+  - cd zmqlib
+  - ./autogen.sh
+  - ./configure
+  - make
+  - sudo make install
+  - cd ..
 node_js:
+  - "0.12"
   - "0.11"
   - "0.10"
-  - "0.8"
 matrix:
   fast_finish: true
-  allow_failures:
-    - node_js: "0.8"
 script: "npm run coverage"
 after_success: "npm run coveralls"
