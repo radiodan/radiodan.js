@@ -7,7 +7,7 @@ var program      = require('commander'),
     radiodan     = require('radiodan-client'),
     utils        = radiodan.utils,
     bootstrap    = require('../lib/bootstrap'),
-    audioDevice  = require('../lib/system/audio'),
+    system       = require('../lib/system'),
     pkg          = require('../package.json'),
     configFile,
     config,
@@ -51,4 +51,4 @@ messagingClient = radiodan.MessagingClient.create(config.broker);
 delete config.broker;
 
 bootstrap.generateRadios(config, configFile, messagingClient);
-audioDevice.create('default').listen(messagingClient);
+system.create(messagingClient);

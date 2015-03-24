@@ -4,35 +4,21 @@ var audio = require(libDir + 'system/audio');
 
 describe('system audio', function(){
   describe('when volume is valid', function() {
-    beforeEach(function(){
-      var execPromise = utils.promise.defer();
-
-      this.msgMock = new EventEmitter();
-      this.msgMock.createAndBindToExchange = sinon.spy();
-      this.execPromise = execPromise;
-    });
-
     it('execs command for osx', function(done) {
       var self = this,
-          data = { ack: sinon.spy(), content: { action: "volume", value: 71 }};
+          execSpy  = sinon.stub(),
+          execMock = function(cmd) {
+            execSpy(cmd);
+            return utils.promise.resolve("71");
+          };
 
-      var execSpy = sinon.stub();
+      var setVolume = audio.create(
+        'darwin', execMock
+      ).setVolume({value: 71});
 
-      self.execMock = function(cmd) {
-        var stdout = execSpy(cmd);
-        self.execPromise.resolve(stdout);
-        return self.execPromise.promise;
-      };
-
-      audio.create('test-device').listen(
-        self.msgMock, 'darwin', self.execMock
-      );
-
-      self.msgMock.emit('command.audio.test-device', data);
-
-      assert.isFulfilled(self.execPromise.promise).then(function(){
-        assert.equal(1, data.ack.callCount);
+      setVolume.then(function(volume){
         assert.equal(1, execSpy.callCount);
+        assert.equal(71, volume);
         assert.deepEqual(
           ["osascript -e 'set volume output volume 71'; osascript -e 'output volume of (get volume settings)'"],
           execSpy.firstCall.args);
@@ -41,23 +27,19 @@ describe('system audio', function(){
 
     it('execs command for linux', function(done){
       var self = this,
-          data = { ack: sinon.spy(), content: { action: "volume", value: 71 }};
+          execSpy  = sinon.stub(),
+          execMock = function(cmd) {
+            execSpy(cmd);
+            return utils.promise.resolve("71");
+          };
 
-      var execSpy = sinon.stub();
+      var setVolume = audio.create(
+        'linux', execMock
+      ).setVolume({value: 71});
 
-      self.execMock = function(cmd) {
-        var stdout = execSpy(cmd);
-        self.execPromise.resolve(stdout);
-        return self.execPromise.promise;
-      };
-
-      audio.create('test-device').listen(
-        self.msgMock, 'linux', self.execMock
-      );
-
-      self.msgMock.emit('command.audio.test-device', data);
-
-      assert.isFulfilled(self.execPromise.promise).then(function(){
+      setVolume.then(function(volume){
+        assert.equal(1, execSpy.callCount);
+        assert.equal(71, volume);
         assert.deepEqual(
           ["amixer -M set $(amixer | grep -o -m 1 \"'[^']*'\" | tr -d \"'\") 71% unmute | grep -o -m 1 '[[:digit:]]*%' | tr -d '%'"],
           execSpy.firstCall.args);
@@ -65,29 +47,15 @@ describe('system audio', function(){
     });
 
     it('execs nothing for unknown platforms', function(){
-      var self = this,
-          data = { ack: sinon.spy(), content: { value: 32 }};
+      var execMock = sinon.spy();
 
-      self.execMock = sinon.spy();
+      assert.throw(function() {
+        audio.create(
+          'win32', execMock
+        );
+      });
 
-      audio.create('test-device').listen(
-        self.msgMock, 'win32', self.execMock
-      );
-
-      self.msgMock.emit('command.audio.test-device', data);
-
-      assert.equal(0, self.execMock.callCount);
-    });
-
-    it('execs nothing for unknown event emission', function(){
-      var self = this;
-      self.execMock = sinon.spy();
-
-      audio.create('test-device').listen(self.msgMock, 'darwin', self.execMock);
-
-      self.msgMock.emit('command.radio.volume', 88);
-
-      assert.equal(0, self.execMock.callCount);
+      assert.equal(0, execMock.callCount);
     });
   });
 });
