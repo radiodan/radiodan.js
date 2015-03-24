@@ -26,30 +26,14 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
+      options: {
+        jshintrc: true
+      },
       src: {
-        src: ['Gruntfile.js', 'lib/**/*.js', 'bin/*'],
-        options: {
-          node: true
-        }
+        src: ['Gruntfile.js', 'lib/**/*.js', 'bin/*']
       },
       test: {
-        src: ['test/**/*.js'],
-        options: {
-          node: true,
-          globals: {
-            it: true,
-            describe: true,
-            assert: true,
-            libDir: true,
-            sinon: true,
-            before: true,
-            beforeEach: true,
-            utils: true,
-            EventEmitter: true,
-            fs: true,
-            winston: true
-          }
-        }
+        src: ['test/**/*.js']
       }
     }
   });

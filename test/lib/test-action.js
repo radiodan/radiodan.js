@@ -2,7 +2,7 @@
 
 describe('action', function() {
   beforeEach(function() {
-    this.subject = require(libDir + 'action');
+    this.subject = require(libDir + 'player/mpd/action');
   });
 
   it('is an invoker', function() {

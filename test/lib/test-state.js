@@ -1,6 +1,6 @@
 'use strict';
 
-var subject = require(libDir + 'state');
+var subject = require(libDir + 'player/mpd/state');
 
 describe('state', function() {
   it('is an invoker', function() {
