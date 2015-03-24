@@ -32,7 +32,7 @@
     "amqplib": "~0.1.1",
     "optimist": "~0.6.0",
     "q-io": "~1.10.8",
-    "radiodan-client": "https://github.com/radiodan/radiodan-client.js/archive/master.tar.gz",
+    "radiodan-client": "~1.0.0",
     "deep-equal": "~0.2.1",
     "mkdirp": "~0.3.5",
     "portfinder": "~0.2.1",
