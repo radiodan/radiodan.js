@@ -4,7 +4,6 @@ Radiodan at web scale.
 
 ## Requirements
 
-* RabbitMQ server
 * MPD
 
 [![Build Status](https://travis-ci.org/radiodan/radiodan.js.png?branch=master)](https://travis-ci.org/radiodan/radiodan.js)
