@@ -4,12 +4,14 @@
 
 var program      = require('commander'),
     path         = require('path'),
-    utils        = require('radiodan-client').utils,
+    radiodan     = require('radiodan-client'),
+    utils        = radiodan.utils,
     bootstrap    = require('../lib/bootstrap'),
-    audioDevice  = require('../lib/system/audio'),
+    system       = require('../lib/system'),
     pkg          = require('../package.json'),
     configFile,
-    config;
+    config,
+    messagingClient;
 
 program
   .version(pkg.version)
@@ -44,5 +46,9 @@ try {
   process.exit(1);
 }
 
-bootstrap.generateRadios(config, configFile);
-audioDevice.create('default').listen();
+// build messaging client using broker settings
+messagingClient = radiodan.MessagingClient.create(config.broker);
+delete config.broker;
+
+bootstrap.generateRadios(config, configFile, messagingClient);
+system.create(messagingClient);
