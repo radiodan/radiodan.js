@@ -1,21 +1,21 @@
 'use strict';
 
-var Player = require(libDir + 'player/mpd');
+var Player = require(libDir + 'player/mopidy');
 
-describe('MpdPlayer', function() {
+describe('MopidyPlayer', function() {
   describe('name', function() {
     it('should have a name', function() {
-      assert.equal(Player.name, "MPD");
+      assert.equal(Player.name, "Mopidy");
     });
   });
 
   describe('supportsPlayer', function() {
-    it('should support the mpd player process', function() {
-      assert.isTrue(Player.supportsPlayer('mpd'));
+    it('should support the mopidy player process', function() {
+      assert.isTrue(Player.supportsPlayer('mopidy'));
     });
 
-    it('should not support the mopidy player process', function() {
-      assert.isFalse(Player.supportsPlayer('mopidy'));
+    it('should not support the mpd player process', function() {
+      assert.isFalse(Player.supportsPlayer('mpd'));
     });
 
     it('should not support the vlc player process', function() {
