@@ -29,7 +29,6 @@
     "mustache": "~0.7.2",
     "tmp": "0.0.21",
     "lodash": "~2.4.1",
-    "amqplib": "~0.1.1",
     "optimist": "~0.6.0",
     "q-io": "~1.10.8",
     "radiodan-client": "~1.0.0",
