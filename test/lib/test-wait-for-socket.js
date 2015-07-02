@@ -10,6 +10,7 @@ describe('waitForSocket', function(){
   beforeEach(function () {
     this.mockSocket = new EventEmitter();
     this.mockSocket.connect = sinon.spy();
+    this.mockSocket.destroy = sinon.spy();
     this.mockSocket.setTimeout = sinon.spy();
   });
 
@@ -47,6 +48,7 @@ describe('waitForSocket', function(){
       clock.tick(timeout + 1);
 
       assert.equal(this.mockSocket.connect.calledTwice, true);
+      assert.equal(this.mockSocket.destroy.calledOnce, true);
 
       this.mockSocket.emit('connect');
       assert.equal(promise.isFulfilled(), true);
